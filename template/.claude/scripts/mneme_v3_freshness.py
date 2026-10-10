@@ -64,6 +64,7 @@ def _inside(vault, relative):
 
 
 STATUS = re.compile(r'"status"\s*:\s*"([a-z]+)"|^status:\s*"?([a-z]+)"?\s*$', re.M)
+DUE = re.compile(r'"due_at"\s*:\s*"(\d{4}-\d{2}-\d{2})|^due_at:\s*"?(\d{4}-\d{2}-\d{2})', re.M)
 
 
 def stale_tasks(vault, days, now):
@@ -83,6 +84,9 @@ def stale_tasks(vault, days, now):
             continue
         match = STATUS.search(head)
         status = match and (match[1] or match[2])
+        due = DUE.search(head)
+        if due and (due[1] or due[2]) > time.strftime('%Y-%m-%d', time.localtime(now)):
+            continue  # deliberately parked until a later date: quiet on purpose
         if status in OPEN:
             found.append((int(age), path.stem))
     found.sort(key=lambda item: (-item[0], item[1]))

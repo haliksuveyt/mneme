@@ -56,6 +56,18 @@ class FreshnessTest(unittest.TestCase):
         self.assertNotIn('new', line)
         self.assertNotIn('done', line)
 
+    def test_task_parked_until_a_later_date_stays_quiet(self):
+        later = time.strftime('%Y-%m-%d', time.localtime(self.now + 30 * DAY))
+        earlier = time.strftime('%Y-%m-%d', time.localtime(self.now - 2 * DAY))
+        self.write('tasks/parked.md', '---\n' + json.dumps({'id': 'p', 'kind': 'task', 'status': 'waiting',
+                                                            'due_at': later}) + '\n---\n', 9)
+        self.write('tasks/overdue.md', '---\n' + json.dumps({'id': 'o', 'kind': 'task', 'status': 'waiting',
+                                                             'due_at': earlier}) + '\n---\n', 9)
+        line = freshness.notice(self.vault, self.now)
+        self.assertIn('1 open task(s)', line)
+        self.assertIn('overdue', line)
+        self.assertNotIn('parked', line)
+
     def test_names_are_bounded(self):
         for i in range(6):
             self.write(f'tasks/t{i}.md', task('active'), 5 + i)
