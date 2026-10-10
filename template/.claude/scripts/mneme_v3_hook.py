@@ -203,6 +203,65 @@ def _has_knowledge_update(vault, receipt, since):
     return False
 
 
+CARD_HEADER = re.compile(r"(?m)^## [^\n]*·\s*([0-9a-f]{8})\s*$")
+CARD_REF = re.compile(r"`([^`\n]{1,200}\.(?:md|json|py|ps1|html|js|txt|csv))`")
+CARD_SUMMARY_CHARS = 1500
+
+
+def session_card(vault, short):
+    """(card text, companion Last-Session source) of this session's handoff card, or (None, None)."""
+    from mneme_v3_companion import directory
+    target = directory(Path(vault))
+    if target is None:
+        return None, None
+    path = target / "Last-Session.md"
+    if path.is_symlink() or not path.is_file():
+        return None, None
+    text = path.read_text(encoding="utf-8", errors="replace")
+    headers = list(CARD_HEADER.finditer(text))
+    for i, header in enumerate(headers):
+        if header.group(1) == short:
+            end = headers[i + 1].start() if i + 1 < len(headers) else len(text)
+            previous = re.search(r"(?im)^## (?:Previous|Önceki)", text[header.start():end])
+            card = text[header.start():header.start() + previous.start() if previous else end].strip()
+            return card, path.relative_to(Path(vault).resolve()).as_posix()
+    return None, None
+
+
+def card_receipt(vault, state, harness, session):
+    """Turn this session's Last-Session card into its receipt when the agent wrote none (#A4).
+
+    The card already says what was done, why, what is open and which sources it touched, so
+    a second hand-written summary is duplicate work that mostly never happened (receipt
+    coverage 2/18 in a real vault). Runs at most once per session; fails closed to the reminder.
+    """
+    folder = Path(state) / "receipt-reminders"
+    marker = folder / (session + ".card")
+    if marker.exists():
+        return False
+    if _get_session_receipt(Path(state) / "memory.sqlite3", harness, session, 0):
+        return False
+    card, source = session_card(vault, session[:8])
+    if not card:
+        return False
+    from mneme_v3_sync import SyncEngine
+    engine = SyncEngine(vault, state)
+    refs = [source]
+    for ref in CARD_REF.findall(card):
+        ref = ref.replace("\\", "/")
+        try:
+            if ref not in refs and len(refs) < 12:
+                engine.store._source(ref)
+                refs.append(ref)
+        except ValueError:
+            continue  # a path the card only mentions, not a vault source
+    summary = card if len(card) <= CARD_SUMMARY_CHARS else card[:CARD_SUMMARY_CHARS - 20].rstrip() + "\n[card truncated]"
+    engine.receipt("card-" + session, "Oturum kartından otomatik receipt.\n" + summary, refs, harness, session=session)
+    folder.mkdir(parents=True, exist_ok=True)
+    marker.touch()
+    return True
+
+
 def receipt_reminder(payload, state, harness, event, vault=None):
     """Track edits per session and return a one-time Stop block, or None.
 
@@ -237,6 +296,15 @@ def receipt_reminder(payload, state, harness, event, vault=None):
             if not edited.exists():
                 atomic(edited, {"at": time.time()})
             return None
+        if payload.get("stop_hook_active") is not True and vault is not None:
+            try:
+                card_receipt(vault, state, harness, digest[:24])
+            except Exception:
+                pass  # the reminder below still asks for a receipt by hand
+            if (folder / (digest[:24] + ".card")).exists():
+                # The session's card is its receipt; the agent keeps that card current.
+                edited.unlink(missing_ok=True)
+                return None
         if payload.get("stop_hook_active") is True or not edited.exists():
             return None
         since = float(json.loads(edited.read_text(encoding="utf-8"))["at"])

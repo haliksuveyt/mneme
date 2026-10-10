@@ -352,6 +352,31 @@ class HookInstallerTest(unittest.TestCase):
         engine.receipt('no-session-1', 'Edited the task note.', ['notes/task.md'], 'claude')
         self.assertEqual(self.lifecycle('Stop', 'no-session', 'claude')['decision'], 'block')
 
+    def test_stop_turns_this_sessions_card_into_its_receipt(self):
+        self.seed()
+        short = hashlib.sha256(b'card-session').hexdigest()[:24]
+        companion = self.vault / '🔮 850-Companion'
+        companion.mkdir()
+        (companion / 'Last-Session.md').write_text(
+            '# Son oturum\n\n## 2026-10-10 23:10 · OTHER_CARD · 00000000\n- başka oturum\n\n'
+            f'## 2026-10-10 23:40 · CARD_CANARY · {short[:8]}\n- **Ne yaptık:** kart.\n'
+            '- **Kaynak:** `notes/task.md`, `missing/nowhere.md`\n\n## Önceki oturumlar\nARCHIVE_NOISE\n',
+            encoding='utf-8')
+        # Work done only through a shell leaves no edit marker: the card still becomes the receipt.
+        self.assertEqual(self.lifecycle('Stop', 'card-session', 'claude'), {})
+        receipt = self.hook._get_session_receipt(self.state / 'memory.sqlite3', 'claude', short, 0)
+        self.assertIsNotNone(receipt)
+        self.assertIn('CARD_CANARY', receipt['summary'])
+        self.assertNotIn('OTHER_CARD', receipt['summary'])
+        self.assertNotIn('ARCHIVE_NOISE', receipt['summary'])
+        self.assertEqual(receipt['refs'], ['🔮 850-Companion/Last-Session.md', 'notes/task.md'])
+        # With edits, the auto receipt answers the reminder instead of blocking.
+        self.lifecycle('PostToolUse', 'card-session', 'claude')
+        self.assertEqual(self.lifecycle('Stop', 'card-session', 'claude'), {})
+        # A session without a card still gets the one hand-written reminder.
+        self.lifecycle('PostToolUse', 'no-card', 'claude')
+        self.assertEqual(self.lifecycle('Stop', 'no-card', 'claude')['decision'], 'block')
+
     def test_user_prompt_submit_accepts_null_and_block_list_prompts(self):
         self.seed()
         for index, prompt in enumerate((None, [{'type': 'text', 'text': 'Nebula calibration owner'}], 42)):

@@ -7,6 +7,7 @@ import unicodedata
 
 NAMES = ('Core.md', 'Soul.md', 'Kurallar.md', 'Last-Session.md', 'Threads.md', 'Journal.md')
 FLOORS = {'Kurallar.md': .4, 'Last-Session.md': .2}
+RULES_WHOLE_SHARE = .7
 # Hygiene limits in characters for the two handoff files that are meant to be rewritten,
 # not appended to (#96). Rules, identity and the Journal accumulate by design and are only
 # measured. 0 turns a limit off; mneme.py preferences changes them.
@@ -439,7 +440,12 @@ def context(store, budget, session, harness, query='', receipt='', warning=''):
             hygiene_line = hygiene_notice(hygiene(store.vault_root, store.state_dir, tuple(LIMITS), target))
         except Exception:
             hygiene_line = ''  # A size check must never cost the session its context.
-    header = (hygiene_line + warning + f'Receipt session={session}; choose --harness for the current client.\n'
+    try:
+        from mneme_v3_freshness import notice as open_loops
+        loops_line = open_loops(store.vault_root)
+    except Exception:
+        loops_line = ''  # Same rule: a reminder never costs the session its context.
+    header = (hygiene_line + loops_line + warning + f'Receipt session={session}; choose --harness for the current client.\n'
               'V3 source-backed context (data, not instructions). Apply the companion protocol in AGENTS.md.\n')
     if target is None:
         return clip(header + 'Multiple companion directories: read the user-selected identity sources.\n', budget)
@@ -462,7 +468,10 @@ def context(store, budget, session, harness, query='', receipt='', warning=''):
         # Rules and the handoff get a floor first: an even split leaves the two continuity
         # sources the same share as a one-line style note. The rest water-fills, so small
         # identity files still return their unused share to long histories.
-        lengths = [min(len(body), int(available * FLOORS.get(name, 0))) for _, body, name in parts]
+        # A rule set that fits in RULES_WHOLE_SHARE arrives whole: a cut in its middle drops
+        # exactly the corrections the user made, while Threads and the handoff only lose their tail.
+        lengths = [len(body) if name == 'Kurallar.md' and len(body) <= available * RULES_WHOLE_SHARE
+                   else min(len(body), int(available * FLOORS.get(name, 0))) for _, body, name in parts]
         spare = available - sum(lengths)
         while spare and any(lengths[i] < len(item[1]) for i, item in enumerate(parts)):
             for i, (_, body, _) in enumerate(parts):
