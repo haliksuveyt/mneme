@@ -8,6 +8,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import re
 import sys
 import time
 
@@ -268,6 +269,50 @@ def recap_bounds_inverted(since, until):
     return first > last
 
 
+OPEN_TASK_STATUSES = ("inbox", "active", "waiting", "blocked")
+
+
+def vault_stats(store, top=5):
+    """Counts over the index the last sync committed; no source is read, nothing is written.
+
+    Receipt summaries stay agent claims: only their number, dates, clients and refs are counted.
+    """
+    records, receipts = [], []
+    with store._connect() as db:
+        records = [json.loads(row[0]) for row in db.execute("SELECT payload FROM records")]
+        receipts = [json.loads(row[0]) for row in db.execute("SELECT payload FROM receipts")]
+    kinds, sources, open_tasks, knowledge = {}, set(), 0, set()
+    for record in records:
+        kinds[record.get("kind", "note")] = kinds.get(record.get("kind", "note"), 0) + 1
+        source = str(record.get("source", ""))
+        sources.add(source)
+        if source.startswith("knowledge/") and not source.startswith("knowledge/v3/"):
+            knowledge.add(source)
+        if record.get("kind") == "task" and record.get("status") in OPEN_TASK_STATUSES:
+            open_tasks += 1
+    days, harnesses, sessions, refs = set(), {}, set(), {}
+    for receipt in receipts:
+        stamp = str(receipt.get("created_at", ""))
+        if re.match(r"\d{4}-\d{2}-\d{2}", stamp):
+            days.add(stamp[:10])
+        harness = receipt.get("harness")
+        if isinstance(harness, str):
+            harnesses[harness] = harnesses.get(harness, 0) + 1
+        if isinstance(receipt.get("session"), str):
+            sessions.add(receipt["session"])
+        for ref in receipt.get("refs") or []:
+            if isinstance(ref, str):
+                refs[ref] = refs.get(ref, 0) + 1
+    ordered = sorted(days)
+    return {"sources": len(sources - {""}), "records": len(records), "kinds": dict(sorted(kinds.items())),
+            "knowledge_notes": len(knowledge), "open_tasks": open_tasks,
+            "receipts": len(receipts), "sessions": len(sessions), "active_days": len(days),
+            "first_receipt": ordered[0] if ordered else None, "last_receipt": ordered[-1] if ordered else None,
+            "harnesses": dict(sorted(harnesses.items(), key=lambda item: -item[1])),
+            "top_refs": [{"source": source, "receipts": count}
+                         for source, count in sorted(refs.items(), key=lambda item: (-item[1], item[0]))[:top]]}
+
+
 def parser():
     root = argparse.ArgumentParser(description=__doc__)
     root.add_argument("--vault", required=True, type=Path, help="Existing vault directory")
@@ -370,6 +415,8 @@ def parser():
     update.add_argument("--file", default="-", help="JSON {id, expected_revision, changes}")
     history = sub.add_parser("history", help="Read ordered revision snapshots for a record")
     history.add_argument("record_id")
+    stats = sub.add_parser("stats", help="Count notes, receipts, sessions and the most cited sources; no model call")
+    stats.add_argument("--top", type=int, default=5, help="Most cited sources to list (0..20)")
     return root
 
 
@@ -783,6 +830,10 @@ def main(argv=None):
             payload = read_json(args.file)
             result = sync.receipt(payload["event_id"], payload["summary"],
                                           payload["refs"], args.harness, session=payload.get('session'))
+        elif args.command == "stats":
+            if not 0 <= args.top <= 20:
+                raise ValueError('stats --top must be 0..20')
+            result = vault_stats(store, args.top)
         elif args.command == "history":
             # History is source-verified, so refresh first like context: an edit
             # made just before this command must not hide the audit trail.

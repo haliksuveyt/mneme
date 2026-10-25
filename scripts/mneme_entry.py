@@ -186,6 +186,18 @@ def human_result(result, command, installed_version=None):
         lines.append('Acikken gunde en fazla bir kez GitHub surum bilgisi okunur; notlar gonderilmez.')
         lines.append('Yerel kontroller model cagirmaz. Zamanlayici kurulmaz.')
         return '\n'.join(lines)
+    if command == 'stats':
+        kinds = ', '.join(f'{count} {kind}' for kind, count in result['kinds'].items())
+        lines = [f"Kaynak: {result['sources']} dosya ({kinds}); knowledge notu: {result['knowledge_notes']}; acik gorev: {result['open_tasks']}",
+                 f"Receipt: {result['receipts']} kayit, {result['sessions']} oturum, {result['active_days']} etkin gun" +
+                 (f" ({result['first_receipt']} - {result['last_receipt']})" if result['first_receipt'] else '')]
+        if result['harnesses']:
+            lines.append('Istemciler: ' + ', '.join(f'{name} {count}' for name, count in result['harnesses'].items()))
+        if result['top_refs']:
+            lines.append('En cok anilan kaynaklar:')
+            lines += [f"  {item['receipts']:>4}  {plain_text(item['source'])}" for item in result['top_refs']]
+        lines.append('Son senkronun indeksinden sayildi; receipt ozetleri ajan kaydidir, dogrulanmis olgu degil.')
+        return '\n'.join(lines)
     if command == 'recap':
         # --since/--until select local calendar days (as daily/v3 is named); the --days window stays UTC.
         local = result.get('timezone') == 'local'
