@@ -555,6 +555,8 @@ def context(store, budget, session, harness, query='', receipt='', warning='', c
 TOPUP_NAMES = ('Kurallar.md', 'Core.md', 'Soul.md')
 TOPUP_DIR = 'opening-topup'
 TOPUP_DAYS = 2
+# Characters the top-up may use before the client's own cap (client_budget) applies.
+TOPUP_CHARS = 24000
 
 
 def save_topup(state, session, sources):

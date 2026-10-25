@@ -582,7 +582,7 @@ def main():
                 if sync.get('potential_missing_receipts'):
                     warning += 'Prior checkpoints may lack structured receipts; check Last-Session/Threads and current sources for unfinished work.\n'
             from mneme_v3_companion import (context as companion_context, relevant, opening_budget, client_budget,
-                                            client_rebudget, fit_client, save_topup, take_topup)
+                                            client_rebudget, fit_client, save_topup, take_topup, TOPUP_CHARS)
             # Both budgets stop below a client's own cut-off; past it the client files the text away (#175).
             # A text over the client's own measure is rendered once more with a scaled budget.
             limit = client_budget(args.harness, settings['context_chars'])
@@ -604,12 +604,16 @@ def main():
                         pass  # The top-up is a convenience; the opening already names the cut.
             else:
                 # The first real turn carries the rules and identity the opening had to cut.
+                # It comes once per session, so it may use the client's whole cap, not context_chars.
                 try:
-                    topup = take_topup(store, session, limit - len(notice)) if event == 'UserPromptSubmit' else ''
+                    room = client_budget(args.harness, max(TOPUP_CHARS, opening_budget(state, settings['context_chars'])))
+                    topup = take_topup(store, session, room - len(notice)) if event == 'UserPromptSubmit' else ''
                 except (OSError, ValueError):
                     topup = ''
                 if topup:
                     notice += topup + '\n'
+                    # The turn's own matches keep their usual room on top, within the client's cap.
+                    limit = client_budget(args.harness, len(notice) + limit)
                 # Per-turn automatic context is strict: only meaningful lexical matches are
                 # injected, and an empty match injects nothing at all instead of a receipt
                 # header plus the newest unrelated notes.
