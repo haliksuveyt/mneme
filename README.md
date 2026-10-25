@@ -87,6 +87,16 @@ değildir. Özel notlara giden bağlantılar gizlenir, silinmiş kaynaklar liste
 Belirli bir aralık için `recap --since 2026-10-01 --until 2026-10-07`: tarih bu makinenin
 yerel günüdür (`daily/v3/` dosyalarıyla aynı), `--until` o günün sonuna kadar kapsar.
 
+### Yakala: beyne tek tuşla kaynak at (isteğe bağlı)
+
+`python3 mneme.py yakala kur` bir kısayol (Windows `Ctrl+Alt+B`, macOS `Control+Option+B`),
+Obsidian Web Clipper şablonu, `mneme-yakala` skill'i ve oturum başı bildirimini kurar.
+Kısayol açık sayfanın adresini, seçili metni ya da dosyayı `📥 000-Inbox/Yakala/` içine
+tek bir Markdown kartı olarak yazar; yakalarken ağa çıkılmaz. Sonra ajana
+**“yakalananları işle”** de: `yakala isle` metni çıkarır (Defuddle, YouTube altyazısı),
+ajan dersleri kaynak bağlantılı `knowledge/` notlarına bağlar. `yakala durum` kurulumu ve
+araçları gösterir, `yakala kaldir` kısayolu ve bildirimi kaldırır, notlara dokunmaz.
+
 Bir şey ters giderse ajana **“mneme-doktor ile kontrol et”** de. Terminalden, vault klasöründe:
 
 ```sh

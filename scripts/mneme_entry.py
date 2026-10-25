@@ -424,6 +424,9 @@ def main(argv=None):
         if argv and argv[0] == 'mcp':
             import mneme_v3_mcp
             return mneme_v3_mcp.serve(vault)
+        if argv and argv[0] == 'yakala':
+            import mneme_v3_yakala
+            return mneme_v3_yakala.main(argv[1:], vault, state)
         if argv and argv[0] in ('update', 'rollback', 'recover'):
             import argparse
             import mneme_v3_update as updater
