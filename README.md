@@ -84,6 +84,8 @@ Son günlerde ne yapıldığını görmek için vault klasöründe `python3 mnem
 model çağırmaz. Bunlar ajanın yazdığı sonuç iddialarıdır, bağımsız doğrulanmış olgular
 değildir. Özel notlara giden bağlantılar gizlenir, silinmiş kaynaklar listelenmez.
 `--days` (1-366) ve `--limit` (1-100) ile aralığı ve uzunluğu değiştirebilirsin.
+Belirli bir aralık için `recap --since 2026-10-01 --until 2026-10-07`: tarih bu makinenin
+yerel günüdür (`daily/v3/` dosyalarıyla aynı), `--until` o günün sonuna kadar kapsar.
 
 Bir şey ters giderse ajana **“mneme-doktor ile kontrol et”** de. Terminalden, vault klasöründe:
 
