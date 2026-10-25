@@ -545,7 +545,7 @@ def main():
                 if sync.get('potential_missing_receipts'):
                     warning += 'Prior checkpoints may lack structured receipts; check Last-Session/Threads and current sources for unfinished work.\n'
             from mneme_v3_companion import (context as companion_context, relevant, opening_budget, client_budget,
-                                            client_rebudget, fit_client)
+                                            client_rebudget, fit_client, save_topup, take_topup)
             # Both budgets stop below a client's own cut-off; past it the client files the text away (#175).
             # A text over the client's own measure is rendered once more with a scaled budget.
             limit = client_budget(args.harness, settings['context_chars'])
@@ -553,12 +553,26 @@ def main():
             if event == 'SessionStart' or relevant(query):
                 # The opening may carry its own machine-local budget (#140); never a vault preference.
                 limit = client_budget(args.harness, opening_budget(state, settings['context_chars']))
-                text = companion_context(store, limit, session, args.harness, query, receipt, warning)
+                clipped = []
+                text = companion_context(store, limit, session, args.harness, query, receipt, warning, clipped)
                 smaller = client_rebudget(args.harness, limit, notice + text)
                 if smaller is not None:
                     limit = smaller
-                    text = companion_context(store, limit, session, args.harness, query, receipt, warning)
+                    clipped = []
+                    text = companion_context(store, limit, session, args.harness, query, receipt, warning, clipped)
+                if event == 'SessionStart':
+                    try:
+                        save_topup(state, session, clipped)
+                    except OSError:
+                        pass  # The top-up is a convenience; the opening already names the cut.
             else:
+                # The first real turn carries the rules and identity the opening had to cut.
+                try:
+                    topup = take_topup(store, session, limit - len(notice)) if event == 'UserPromptSubmit' else ''
+                except (OSError, ValueError):
+                    topup = ''
+                if topup:
+                    notice += topup + '\n'
                 # Per-turn automatic context is strict: only meaningful lexical matches are
                 # injected, and an empty match injects nothing at all instead of a receipt
                 # header plus the newest unrelated notes.
