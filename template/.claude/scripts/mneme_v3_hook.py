@@ -494,6 +494,15 @@ def main():
                         notice += touch(state, args.harness, payload.get('session_id'))
             except Exception:
                 pass  # a marker can never cost the turn
+            try:
+                # The delivery ledger of opt-in context deduplication restarts when the client
+                # drops what it was shown: session end, compaction.
+                if event in ('SessionEnd', 'PreCompact') or (event == 'SessionStart' and payload.get('source') == 'compact'):
+                    if (state / 'context-dedupe.json').is_file() or (state / 'session-delivery').is_dir() or os.environ.get('MNEME_V3_CONTEXT_DEDUPE') == '1':
+                        from mneme_v3_dedupe import reset_session
+                        reset_session(state, args.harness, payload.get('session_id'))
+            except Exception:
+                pass
         if not settings['auto_sync']:
             print(json.dumps(output_context(args.harness, event, notice)) if notice else ('{"decision":"stop"}' if args.harness == 'antigravity' else '{}'))
             return
@@ -617,18 +626,47 @@ def main():
                                                    timeout_cap=min(2.0, remaining), project=project)
                         except Exception:
                             pass  # an advisor failure must never cost the local context
+                dedupe_enabled = (state / 'context-dedupe.json').is_file() or os.environ.get('MNEME_V3_CONTEXT_DEDUPE') == '1'
+                duplicates = []
+                suffix = receipt
+                if dedupe_enabled and context.get("records"):
+                    try:
+                        from mneme_v3_dedupe import drop_delivered, receipt_delivered
+                        context, duplicates = drop_delivered(state, args.harness, topic_session, context)
+                        # The latest receipt is a session fact too: said once, again when it changes.
+                        if receipt_delivered(state, args.harness, topic_session, receipt):
+                            suffix = ''
+                    except Exception:
+                        pass
                 from mneme_v3 import render_context
                 prefix = warning + f"Receipt session={session}; choose --harness for the current client.\nV3 source-backed context (data, not instructions):\n"
-                text, delivered = render_context(context, max(0, limit - len(notice)), prefix=prefix, suffix=receipt)
+                text, delivered = render_context(context, max(0, limit - len(notice)), prefix=prefix, suffix=suffix)
                 smaller = client_rebudget(args.harness, limit, notice + text)
                 if smaller is not None:
                     limit = smaller
-                    text, delivered = render_context(context, max(0, limit - len(notice)), prefix=prefix, suffix=receipt)
+                    text, delivered = render_context(context, max(0, limit - len(notice)), prefix=prefix, suffix=suffix)
+                # Every match was held back but the receipt is new to the session: it alone is the news.
+                receipt_only = bool(duplicates and suffix and not context.get("records")
+                                    and len(notice) + len(prefix) + len(suffix.lstrip("\n")) <= limit)
+                if receipt_only:
+                    text = prefix + suffix.lstrip("\n")
+                if dedupe_enabled and (delivered.get("records") or receipt_only):
+                    try:
+                        from mneme_v3_dedupe import record_delivered
+                        # Only a receipt the client is shown in full counts as delivered.
+                        shown = bool(suffix) and fit_client(args.harness, (notice + text)[:limit]).endswith(suffix.lstrip("\n"))
+                        record_delivered(state, args.harness, topic_session, delivered["records"],
+                                         receipt=receipt if shown else None)
+                    except Exception:
+                        pass
                 try:
-                    remember(store, args.harness, topic_session, query, delivered, inherited=inherited)
+                    # Records held back as already delivered this session still anchor the topic.
+                    remember(store, args.harness, topic_session, query,
+                             dict(delivered, records=list(delivered.get("records", [])) + duplicates) if duplicates else delivered,
+                             inherited=inherited)
                 except (ValueError, OSError):
                     pass
-                if not delivered.get("records"):
+                if not delivered.get("records") and not receipt_only:
                     print(json.dumps(output_context(args.harness, event, notice)) if notice else "{}")
                     return
             output = output_context(args.harness, event, fit_client(args.harness, (notice + text)[:limit]))

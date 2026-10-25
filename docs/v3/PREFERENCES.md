@@ -107,6 +107,22 @@ python3 mneme.py preferences --parallel-sessions on
 - SessionEnd kendi işaretini siler (`/clear` sonrası hayalet oturum kalmaz). Her yazımda 24 saatten eski işaretler silinir ve en fazla 128 işaret tutulur. Okunamayan işaret yok sayılır; işaret hatası hook'u düşürmez, yalnız satır düşer.
 - Ayar, eski sürümler bilinmeyen tercih alanını reddettiği için `.mneme-preferences.json` içinde değil, runtime klasöründeki `parallel-sessions.json` dosyasında tutulur; rollback güvenlidir. Kapalıyken hook çıktısı değişmez ve işaret yazılmaz. `doctor` açıkken etkin işaret sayısını salt okunur olarak yazar. Kapatmak için `--parallel-sessions off`.
 
+## Oturum içi bağlam tekrarını önleme (`--context-dedupe`)
+
+`context_mode: turn` açıkken kanca her kullanıcı isteminde arama yapar. Uzun ve odaklı oturumlarda aynı notlar her mesajda yeniden gelir ve bağlamı doldurur. Açmak için:
+
+```bash
+python3 mneme.py preferences --context-dedupe on
+```
+
+- Kanca bu oturumda verdiği kayıtları (`id`, `source_sha256` ve metin penceresi) runtime klasöründe `session-delivery/<sha256(harness + "\0" + session_id)>.json` dosyasında tutar. Oturum kimliğinin kendisi yazılmaz.
+- Daha önce verilmiş ve diskte değişmemiş not yeniden gönderilmez; uzun bir notun başka bir bölümü yeni sayılır. Geri tutulan kayıtların bütçesi yeni kayıtlara kalır.
+- Son receipt de aynı defterle izlenir: oturumda bir kez verilir, yeni receipt yazılınca ya da sıkıştırmadan sonra yeniden verilir.
+- Hiç yeni not kalmazsa kanca boş bağlam döner. Sıkıştırma (`PreCompact` ya da `SessionStart` `source: compact`) ve `SessionEnd` defteri sıfırlar.
+- Ayar rollback güvenliği için `.mneme-preferences.json` içinde değil, runtime klasöründeki `context-dedupe.json` dosyasındadır (varsayılan kapalı). Kapatmak için `--context-dedupe off`.
+
+Uyarlama: [avenoxai/avenoxbeyin](https://github.com/avenoxai/avenoxbeyin) #364, #377 (MIT).
+
 ## Stop'ta receipt hatırlatması
 
 Kurulum, Claude ve Codex için PostToolUse hook'unu yalnız dosya düzenleyen araçlara bağlar (`Edit|Write|apply_patch|MultiEdit|NotebookEdit`). Bu olay geldiğinde hook, vault dışındaki runtime klasörüne oturum kimliğinin hash'iyle adlandırılmış küçük bir düzenleme işareti yazar; transcript okunmaz. Kabuk komutuyla yapılan düzenlemeler bu olayı tetiklemez. Stop'ta runtime kaydında aynı istemci ve aynı `session` değeriyle, düzenlemelerden sonra yazılmış bir receipt yoksa hook oturum başına bir kez Stop'u engeller ve `python3 mneme.py receipt --file RECEIPT_JSON --harness claude` komutunu (Codex için `--harness codex`, Windows'ta `py -3`) `Receipt session=<değer>` bilgisiyle birlikte hatırlatır. Bu değer receipt JSON'undaki `session` alanına yazılmazsa receipt bu checkpoint'i kapatmaz. Receipt'ten sonra yapılan yeni düzenlemeler yeni bir pencere açar.

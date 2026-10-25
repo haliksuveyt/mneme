@@ -268,6 +268,8 @@ def parser():
                           help="Opt-in touch log for the doctor's hot/cold folder report")
     settings.add_argument("--parallel-sessions", choices=("on", "off"),
                           help="Opt-in one-line notice when another session is open on this vault")
+    settings.add_argument("--context-dedupe", choices=("on", "off"),
+                          help="Do not re-inject records already delivered in the same session")
     compact = sub.add_parser("companion-compact", help="Move older Last-Session/Threads entries verbatim into a private archive; deletes nothing")
     compact.add_argument("--dry-run", action="store_true", help="Report what would move without writing")
     skill = sub.add_parser("skill-import", help="Import one explicitly chosen skill directory")
@@ -444,6 +446,15 @@ def main(argv=None):
             result['parallel_sessions'] = 'on' if parallel_on else 'off'
             if not parallel_valid:
                 result['parallel_sessions_notice'] = 'parallel-sessions.json gecersiz; paralel oturum bildirimi kapali sayiliyor.'
+            # Machine-local as well: in-session context deduplication.
+            import mneme_v3_dedupe as dedupe
+            if args.context_dedupe is not None:
+                dedupe.save_settings(state, args.context_dedupe == 'on')
+                result['status'] = 'saved'
+            dedupe_on, dedupe_valid = dedupe.read_settings(state)
+            result['context_dedupe'] = 'on' if dedupe_on else 'off'
+            if not dedupe_valid:
+                result['context_dedupe_notice'] = 'context-dedupe.json gecersiz; oturum ici tekrar onleme kapali sayiliyor.'
         elif args.command == "jev":
             laya = {key: value for key, value in (("base_url", args.base_url), ("model", args.model)) if value is not None}
             if args.mode == "status":
@@ -565,6 +576,11 @@ def main(argv=None):
                 result['parallel_sessions'] = parallel.doctor(state)
             except Exception as exc:
                 result['parallel_sessions'] = {'status': 'unavailable', 'error': type(exc).__name__}
+            try:  # read-only report of in-session context deduplication
+                import mneme_v3_dedupe as dedupe
+                result['context_dedupe'] = dedupe.doctor(state)
+            except Exception as exc:
+                result['context_dedupe'] = {'status': 'unavailable', 'error': type(exc).__name__}
             # Name every cause behind needs_attention so the human output never leaves the user guessing.
             reasons = []
             sync_health = health.get('sync', {}) or {}
