@@ -1,7 +1,7 @@
 # Vault dışındaki oturumlar için opsiyonel köprü
 
 Normal V3 kurulumu yalnız vault içindeki hook ayarlarını yönetir. Başka proje
-klasörlerindeki oturumları göremez. [Issue #41](https://github.com/Mehximus/mneme/issues/41)
+klasörlerindeki oturumları göremez. [Issue #41](https://github.com/haliksuveyt/mneme/issues/41)
 bu sınırı ve eksik proje kökenini bildirdi. Paketle gelen bu sarmalayıcı açıkça
 seçilen proje klasörleri için bağlantı sağlar; varsayılan kurulum değişmez.
 

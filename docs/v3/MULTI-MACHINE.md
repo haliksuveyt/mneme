@@ -3,7 +3,7 @@
 Mneme yerel önceliklidir: makineler arasında senkron kodu yoktur ve Mneme git kurmaz
 ([UPDATE](UPDATE.md)). Aynı vault'u iki bilgisayarda (ör. iş ve ev) git gibi bir araçla
 eşitliyorsan bu belge hangi dosyaların eşitleneceğini ve iki makinenin aynı gün nasıl
-çalışacağını anlatır ([#112](https://github.com/Mehximus/mneme/issues/112)).
+çalışacağını anlatır ([#112](https://github.com/haliksuveyt/mneme/issues/112)).
 
 Her makine Mneme'i kendisi kurar ve günceller. Runtime (SQLite veritabanı) vault dışında,
 makineye özeldir ve eşitlenmez; her makine onu vault'taki Markdown'dan kendisi kurar.

@@ -5,7 +5,7 @@
 > This file is your complete, self-contained build spec. Read it once, top to bottom, then execute
 > it phase by phase. You need no other context.
 >
-> Source: https://raw.githubusercontent.com/Mehximus/mneme/main/mneme.md · Repo: https://github.com/Mehximus/mneme
+> Source: https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md · Repo: https://github.com/haliksuveyt/mneme
 
 ---
 
@@ -97,7 +97,7 @@ silently reused:
 
 ```powershell
 $MnemeRepo = Join-Path $env:TEMP ("mneme-" + [guid]::NewGuid().ToString("N"))
-git clone https://github.com/Mehximus/mneme.git $MnemeRepo
+git clone https://github.com/haliksuveyt/mneme.git $MnemeRepo
 if ($LASTEXITCODE -ne 0) { throw "mneme klonlanamadi; kurulum baslatilmadi" }
 Set-Location $MnemeRepo
 ```
@@ -177,7 +177,7 @@ out loud and getting a yes.
 ## FAST PATH: clone the open-source template (recommended, covers both cases)
 
 ```bash
-git clone https://github.com/Mehximus/mneme.git /tmp/mneme && cd /tmp/mneme
+git clone https://github.com/haliksuveyt/mneme.git /tmp/mneme && cd /tmp/mneme
 ```
 
 Then read and follow `SETUP.md` in that repo. It decides the mode (fresh install or upgrade from
@@ -386,7 +386,7 @@ without drift, so fetch them from the repo. Try this first:
 
 ```bash
 V="{{VAULT_PATH}}"
-RAW="https://raw.githubusercontent.com/Mehximus/mneme/main/template/.claude"
+RAW="https://raw.githubusercontent.com/haliksuveyt/mneme/main/template/.claude"
 mkdir -p "$V/.claude/hooks/.state" "$V/.claude/scripts/.state" "$V/.claude/skills"
 OK=1
 for F in hooks/lib.sh hooks/session-start.sh hooks/prompt-counter.sh hooks/session-end.sh \
@@ -404,7 +404,7 @@ echo "motor: $OK"
 Also fetch the two skills, they are what makes the system diagnosable and importable:
 
 ```bash
-SK="https://raw.githubusercontent.com/Mehximus/mneme/main/template/.claude/skills"
+SK="https://raw.githubusercontent.com/haliksuveyt/mneme/main/template/.claude/skills"
 mkdir -p "$V/.claude/skills/mneme-doktor" "$V/.claude/skills/gecmis-import"
 curl -fsSL "$SK/mneme-doktor/SKILL.md"  -o "$V/.claude/skills/mneme-doktor/SKILL.md"
 curl -fsSL "$SK/gecmis-import/SKILL.md" -o "$V/.claude/skills/gecmis-import/SKILL.md"
@@ -821,7 +821,7 @@ Then give the user this report, in Turkish:
 - 💸 **Maliyet:** Ekstra ücret yok; arka plan özetleyici ve derleyici mevcut Claude aboneliğinin
   günlük limitinden küçük bir pay kullanır (özet: her oturum sonunda küçük bir Haiku çağrısı;
   derleme: günde bir Sonnet çağrısı).
-- 🔗 Bu sistemi sen de kurdun: bir arkadaşına `https://raw.githubusercontent.com/Mehximus/mneme/main/mneme.md` gönder.
+- 🔗 Bu sistemi sen de kurdun: bir arkadaşına `https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md` gönder.
 
 ---
 
@@ -833,4 +833,4 @@ https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
 ### Done.
 
 You just gave someone a second brain that remembers without being asked. That is the whole point.
-Mneme · https://github.com/Mehximus/mneme
+Mneme · https://github.com/haliksuveyt/mneme

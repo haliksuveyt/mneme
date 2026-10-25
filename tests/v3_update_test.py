@@ -339,10 +339,10 @@ class OfflineUpdateTest(unittest.TestCase):
                 'release_id': 1,
                 'version': '3.0.0',
                 'published_at': '2026-09-01T00:00:00Z',
-                'release_url': 'https://github.com/Mehximus/mneme/releases/tag/v3.0.0',
+                'release_url': 'https://github.com/haliksuveyt/mneme/releases/tag/v3.0.0',
                 'asset_id': 1,
                 'asset_name': 'mneme-v3-3.0.0.zip',
-                'asset_url': 'https://github.com/Mehximus/mneme/releases/download/v3.0.0/mneme-v3-3.0.0.zip',
+                'asset_url': 'https://github.com/haliksuveyt/mneme/releases/download/v3.0.0/mneme-v3-3.0.0.zip',
                 'asset_size': 1000,
                 'asset_sha256': '00' * 32,
                 'checksum_url': None,
@@ -360,10 +360,10 @@ class OfflineUpdateTest(unittest.TestCase):
             'release_id': 2,
             'version': '3.0.1',
             'published_at': '2026-09-10T00:00:00Z',
-            'release_url': 'https://github.com/Mehximus/mneme/releases/tag/v3.0.1',
+            'release_url': 'https://github.com/haliksuveyt/mneme/releases/tag/v3.0.1',
             'asset_id': 2,
             'asset_name': 'mneme-v3-3.0.1.zip',
-            'asset_url': 'https://github.com/Mehximus/mneme/releases/download/v3.0.1/mneme-v3-3.0.1.zip',
+            'asset_url': 'https://github.com/haliksuveyt/mneme/releases/download/v3.0.1/mneme-v3-3.0.1.zip',
             'asset_size': 1000,
             'asset_sha256': '11' * 32,
             'checksum_url': None,
@@ -382,9 +382,9 @@ class OfflineUpdateTest(unittest.TestCase):
         self.module.update(self.vault, self.state, self.package)
         stamped = (self.vault / '.mneme-version').stat().st_mtime
         release = {'release_id': 1, 'version': '3.0.0', 'published_at': '2026-09-01T00:00:00Z',
-                   'release_url': 'https://github.com/Mehximus/mneme/releases/tag/v3.0.0',
+                   'release_url': 'https://github.com/haliksuveyt/mneme/releases/tag/v3.0.0',
                    'asset_id': 1, 'asset_name': 'mneme-v3-3.0.0.zip',
-                   'asset_url': 'https://github.com/Mehximus/mneme/releases/download/v3.0.0/mneme-v3-3.0.0.zip',
+                   'asset_url': 'https://github.com/haliksuveyt/mneme/releases/download/v3.0.0/mneme-v3-3.0.0.zip',
                    'asset_size': 1000, 'asset_sha256': '00' * 32, 'checksum_url': None}
         cache = self.state / 'release-cache.json'
         def doctor():

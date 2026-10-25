@@ -1,7 +1,7 @@
 {
   "date": "2026-09-16",
   "tested_commit": "5b99e4bb96729c663eae76f1383b9675c6e7419c",
-  "run_url": "https://github.com/Mehximus/mneme/actions/runs/35029453887",
+  "run_url": "https://github.com/haliksuveyt/mneme/actions/runs/35029453887",
   "conclusion": "success",
   "v3_tests_per_job": 114,
   "semantic_development": "10/10",
