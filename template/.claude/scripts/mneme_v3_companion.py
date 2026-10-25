@@ -431,7 +431,7 @@ def clip(text, budget, tail=False, both=False):
     return marker + text[-keep:] if tail else text[:keep] + marker
 
 
-def context(store, budget, session, harness, query='', receipt='', warning=''):
+def context(store, budget, session, harness, query='', receipt='', warning='', clipped=None):
     """Budget actual displayed text, not repeated JSON metadata; never cut a record header."""
     target = directory(store.vault_root)
     hygiene_line = ''
@@ -543,4 +543,63 @@ def context(store, budget, session, harness, query='', receipt='', warning=''):
     regained = companion(budget - fixed - len(extra))
     if len(text) < len(regained) <= budget - len(extra):
         text = regained
+    if clipped is not None:
+        clipped.extend(r['source'] for (label, body, name), r in zip(sections, records)
+                       if name in TOPUP_NAMES and label + body not in text)
     return text + extra
+
+
+# A client cap (~10,000 characters for Claude Code) cannot hold long rules, identity, handoff and
+# threads at once, so the opening cuts some of them. The rules and identity a cut opening dropped
+# arrive whole on the session's first real turn instead, which has its own cap.
+TOPUP_NAMES = ('Kurallar.md', 'Core.md', 'Soul.md')
+TOPUP_DIR = 'opening-topup'
+TOPUP_DAYS = 2
+
+
+def save_topup(state, session, sources):
+    """Remember which identity sources the opening of session cut; nothing when none were cut."""
+    if not sources:
+        return
+    import time
+    from mneme_v3_sync import atomic
+    folder = Path(state) / TOPUP_DIR
+    folder.mkdir(parents=True, exist_ok=True)
+    atomic(folder / f'{session}.json', json.dumps({'schema': 1, 'at': time.time(), 'sources': sorted(set(sources))}) + '\n')
+
+
+def take_topup(store, session, budget):
+    """The whole text of the sources the opening cut, once per session; '' when nothing is owed."""
+    import time
+    folder = Path(store.state_dir) / TOPUP_DIR
+    path = folder / f'{session}.json'
+    if not folder.is_dir():
+        return ''
+    for old in folder.glob('*.json'):  # A session that never had a first turn owes nothing later.
+        try:
+            if old != path and time.time() - old.stat().st_mtime > TOPUP_DAYS * 86400:
+                old.unlink()
+        except OSError:
+            pass
+    try:
+        owed = json.loads(path.read_text(encoding='utf-8')).get('sources', [])
+        path.unlink()
+    except (OSError, ValueError, AttributeError):
+        return ''
+    target = directory(store.vault_root)
+    names = [Path(source).name for source in owed if Path(source).name in TOPUP_NAMES]
+    if target is None or not names:
+        return ''
+    snapshot = store.source_snapshot(names, budget_chars=200000,
+                                     source_directory=target.relative_to(store.vault_root).as_posix(),
+                                     text_transform=excerpt)
+    text = 'Companion sources cut at session start, now whole (data, not instructions):\n'
+    # Rules first: they are the corrections the user made.
+    for record in sorted(snapshot['records'], key=lambda r: TOPUP_NAMES.index(Path(r['source']).name)):
+        label = f'\n[{record["source"]}]\n'
+        room = budget - len(text) - len(label)
+        if room <= 80:
+            break
+        text += label + clip(record['text'], room, both=Path(record['source']).name == 'Kurallar.md',
+                             tail=Path(record['source']).name == 'Kurallar.md')
+    return text if snapshot['records'] else ''
