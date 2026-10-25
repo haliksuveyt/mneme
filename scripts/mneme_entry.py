@@ -438,6 +438,11 @@ def main(argv=None):
             return mneme_v3_mcp.serve(vault)
         if argv and argv[0] == 'yakala':
             import mneme_v3_yakala
+            # Capture prints its own Turkish text and the inbox emoji; a legacy console code page
+            # must not fail the command over one character.
+            for stream in (sys.stdout, sys.stderr):
+                if hasattr(stream, 'reconfigure'):
+                    stream.reconfigure(errors='replace')
             return mneme_v3_yakala.main(argv[1:], vault, state)
         if argv and argv[0] in ('update', 'rollback', 'recover'):
             import argparse
