@@ -121,8 +121,6 @@ python3 mneme.py preferences --context-dedupe on
 - Hiç yeni not kalmazsa kanca boş bağlam döner. Sıkıştırma (`PreCompact` ya da `SessionStart` `source: compact`) ve `SessionEnd` defteri sıfırlar.
 - Ayar rollback güvenliği için `.mneme-preferences.json` içinde değil, runtime klasöründeki `context-dedupe.json` dosyasındadır (varsayılan kapalı). Kapatmak için `--context-dedupe off`.
 
-Uyarlama: [avenoxai/avenoxbeyin](https://github.com/avenoxai/avenoxbeyin) #364, #377 (MIT).
-
 ## Stop'ta receipt hatırlatması
 
 Kurulum, Claude ve Codex için PostToolUse hook'unu yalnız dosya düzenleyen araçlara bağlar (`Edit|Write|apply_patch|MultiEdit|NotebookEdit`). Bu olay geldiğinde hook, vault dışındaki runtime klasörüne oturum kimliğinin hash'iyle adlandırılmış küçük bir düzenleme işareti yazar; transcript okunmaz. Kabuk komutuyla yapılan düzenlemeler bu olayı tetiklemez. Stop'ta runtime kaydında aynı istemci ve aynı `session` değeriyle, düzenlemelerden sonra yazılmış bir receipt yoksa hook oturum başına bir kez Stop'u engeller ve `python3 mneme.py receipt --file RECEIPT_JSON --harness claude` komutunu (Codex için `--harness codex`, Windows'ta `py -3`) `Receipt session=<değer>` bilgisiyle birlikte hatırlatır. Bu değer receipt JSON'undaki `session` alanına yazılmazsa receipt bu checkpoint'i kapatmaz. Receipt'ten sonra yapılan yeni düzenlemeler yeni bir pencere açar.
