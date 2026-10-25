@@ -1,5 +1,6 @@
 """`stats`: counts over the committed index, read only, no summaries repeated."""
 import contextlib
+import importlib.util
 import io
 import json
 from pathlib import Path
@@ -12,7 +13,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
 sys.path.insert(0, str(ROOT / 'scripts'))
 
-import mneme_v3 as cli
+# The CLI shares its module name with the runtime engine other tests import; load it by path.
+spec = importlib.util.spec_from_file_location('mneme_v3_stats_cli', ROOT / 'scripts/mneme_v3.py')
+cli = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(cli)
 from mneme_entry import human_result
 
 
