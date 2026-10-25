@@ -175,6 +175,10 @@ def human_result(result, command, installed_version=None):
             lines.append('Paralel oturum bildirimi: ' + ('acik' if result['parallel_sessions'] == 'on' else 'kapali'))
         if result.get('parallel_sessions_notice'):
             lines.append(result['parallel_sessions_notice'])
+        if result.get('context_dedupe'):
+            lines.append('Oturum ici tekrar onleme: ' + ('acik' if result['context_dedupe'] == 'on' else 'kapali'))
+        if result.get('context_dedupe_notice'):
+            lines.append(result['context_dedupe_notice'])
         if result.get('excluded_components'):
             lines.append('Haric tutulan bilesenler: ' + ', '.join(result['excluded_components']))
         if result.get('exclusion_notice'):
@@ -353,6 +357,11 @@ def human_result(result, command, installed_version=None):
             lines.append('Paralel oturum bildirimi: acik (son 45 dakikada etkin ' + str(parallel.get('active', 0)) + ' oturum isareti)')
         elif parallel.get('valid') is False:
             lines.append('parallel-sessions.json gecersiz; paralel oturum bildirimi kapali sayiliyor.')
+        dedupe = result.get('context_dedupe') or {}
+        if dedupe.get('enabled'):
+            lines.append('Oturum ici tekrar onleme: acik (' + str(dedupe.get('sessions', 0)) + ' oturum defteri)')
+        elif dedupe.get('valid') is False:
+            lines.append('context-dedupe.json gecersiz; oturum ici tekrar onleme kapali sayiliyor.')
         lines += state_location_lines(result.get('state_location'))
         if status in ('needs_attention', 'pending'):
             lines.append('Ajanina "mneme doktor" diyerek ayrintiyi inceletebilirsin.')
