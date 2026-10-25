@@ -18,12 +18,14 @@ import urllib.parse
 import urllib.request
 sys.dont_write_bytecode = True
 
-OFFICIAL = 'https://api.github.com/repos/Mehximus/mneme/releases/latest'
-WEB = 'https://github.com/Mehximus/mneme/releases/'
-# Exact official repository slugs. A GitHub rename (Mehximus/mneme -> Mehximus/Mneme)
+OFFICIAL = 'https://api.github.com/repos/haliksuveyt/mneme/releases/latest'
+WEB = 'https://github.com/haliksuveyt/mneme/releases/'
+# Exact official repository slugs. A GitHub rename (haliksuveyt/mneme -> haliksuveyt/Mneme)
 # keeps the old API URL working through a redirect, but the API then reports asset URLs under
 # the new name. Both names are accepted, nothing broader: the old name must never be recreated.
-OFFICIAL_WEBS = tuple('https://github.com/' + slug + '/releases/' for slug in ('Mehximus/mneme', 'Mehximus/Mneme'))
+# The account itself was renamed Mehximus -> haliksuveyt (Oct 2026). The old account name is now
+# claimable by anyone, so it is deliberately not trusted.
+OFFICIAL_WEBS = tuple('https://github.com/' + slug + '/releases/' for slug in ('haliksuveyt/mneme', 'haliksuveyt/Mneme'))
 MAX_PACKAGE = 32 * 1024 * 1024
 DAY = 86400
 FRESH = 7 * DAY

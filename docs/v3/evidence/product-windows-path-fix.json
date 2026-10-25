@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "captured_at_utc": "2026-09-15T22:00:55.647790+00:00",
-  "failed_native_run": "https://github.com/Mehximus/mneme/actions/runs/35028468425",
+  "failed_native_run": "https://github.com/haliksuveyt/mneme/actions/runs/35028468425",
   "failed_commit": "b30d795",
   "affected_jobs": [
     "Windows Python 3.11",

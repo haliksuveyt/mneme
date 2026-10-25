@@ -660,11 +660,11 @@ log, and be precise about when the rest arrives.
 - 💸 **Maliyet:** Ekstra ücret yok; arka plan özetleyici ve derleyici mevcut Claude aboneliğinin
   günlük limitinden küçük bir pay kullanır (özet: her oturum sonunda küçük bir Haiku çağrısı;
   derleme: günde bir Sonnet çağrısı).
-- 🔗 **Sen de kurdun mu?** Bir arkadaşına gönder: `https://raw.githubusercontent.com/Mehximus/mneme/main/mneme.md`
+- 🔗 **Sen de kurdun mu?** Bir arkadaşına gönder: `https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md`
 
 Do not end the session by saying "kuruldu" alone. Show the pipeline once, with the user watching.
 
 ---
 
 Done. You just gave someone a second brain that remembers without being asked.
-Mneme · https://github.com/Mehximus/mneme
+Mneme · https://github.com/haliksuveyt/mneme

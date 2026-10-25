@@ -4,7 +4,7 @@ Vault içindeki `mneme.py` tek giriş noktasıdır. Komutları vault klasöründ
 
 ## Git kullanmadan ilk kurulum
 
-[Son kararlı release sayfasından](https://github.com/Mehximus/mneme/releases/latest) `mneme-v3-X.Y.Z.zip` paketini indirip aç (`X.Y.Z` sayfadaki sürüm numarasıdır). Paket ve minimum gereksinimler sürüm sayfasında belirtilir. GitHub'ın otomatik kaynak arşivi ile ürün paketi farklıdır.
+[Son kararlı release sayfasından](https://github.com/haliksuveyt/mneme/releases/latest) `mneme-v3-X.Y.Z.zip` paketini indirip aç (`X.Y.Z` sayfadaki sürüm numarasıdır). Paket ve minimum gereksinimler sürüm sayfasında belirtilir. GitHub'ın otomatik kaynak arşivi ile ürün paketi farklıdır.
 
 Bir vault klasörü seç veya oluştur. Açılan paketin içinde:
 
@@ -34,7 +34,7 @@ python3 mneme.py update
 
 `update --check` resmi stable release'i inceler ve paketi geçici alanda doğrular. Vault ve mevcut runtime dosyalarını değiştirmez. Paket verilmezse ağ erişimi gerekir. `update` aynı doğrulamadan sonra yeni sürümü uygular. Aynı sürüme ikinci güncelleme no-op'tur; sayısal sürüm sırası kullanılır. Eski bir paketi yükleyerek downgrade yapılmaz; geri dönüş için `rollback` kullanılır.
 
-Varsayılan indirme kaynağı `Mehximus/mneme` deposunun resmi GitHub stable release'idir. Preview, hareket eden geliştirme dalı veya üçüncü taraf paket kaynağı otomatik seçilmez. Stable release ya da beklenen ZIP yoksa bunu hata olarak bildirir; yayın varmış gibi sonuç vermez.
+Varsayılan indirme kaynağı `haliksuveyt/mneme` deposunun resmi GitHub stable release'idir. Preview, hareket eden geliştirme dalı veya üçüncü taraf paket kaynağı otomatik seçilmez. Stable release ya da beklenen ZIP yoksa bunu hata olarak bildirir; yayın varmış gibi sonuç vermez.
 
 Yerel, önceden indirilmiş ZIP ile ağ gerekmez:
 
@@ -199,7 +199,7 @@ V3.2.1 için hazırlanan paket biçimi bu eski doğrulayıcıyla uyumludur; stab
 olarak yayımlandıktan sonra normal `update` yeterlidir. Henüz yayımlanmamış
 bir düzeltmenin kurulu olduğunu varsayma. Mevcut V3.2.0'a hemen geçmek için:
 
-1. [Resmi V3.2.0 sayfasından](https://github.com/Mehximus/mneme/releases/tag/v3.2.0)
+1. [Resmi V3.2.0 sayfasından](https://github.com/haliksuveyt/mneme/releases/tag/v3.2.0)
    `mneme-v3-3.2.0.zip` ve yanındaki `.sha256` dosyasını indir. ZIP'i açmadan
    ve içindeki kodu çalıştırmadan önce SHA-256 değerini karşılaştır. macOS/Linux
    için `shasum -a 256 mneme-v3-3.2.0.zip`, Windows için

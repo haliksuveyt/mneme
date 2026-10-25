@@ -25,7 +25,7 @@ Hangisini kullanıyorsan onu aç:
 
 Sohbet kutusuna aynen yapıştır ve gönder:
 
-> https://raw.githubusercontent.com/Mehximus/mneme/main/mneme.md adresini oku. Bu klasöre ikinci beynimi kur. Mevcut kurulum varsa notlarımı koruyarak güncelle. Gerekli indirme ve kurulum adımlarını sen yap. Sonunda örnek bir bilgiyi kaydedip yeni oturumda geri okuyarak birlikte doğrulayalım.
+> https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md adresini oku. Bu klasöre ikinci beynimi kur. Mevcut kurulum varsa notlarımı koruyarak güncelle. Gerekli indirme ve kurulum adımlarını sen yap. Sonunda örnek bir bilgiyi kaydedip yeni oturumda geri okuyarak birlikte doğrulayalım.
 
 Gerisini yapay zeka yapar. Bilgisayarında Python yoksa onu da kendisi kurar.
 

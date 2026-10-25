@@ -10,7 +10,7 @@ V3'te Markdown kaynak, SQLite yerel indeks, Codex/Claude Code/Antigravity, [Herm
 
 Kurucu ortak motoru, `mneme`, `mneme-doktor`, `mneme-guncelle` skill'lerini, kurulu `mneme.py` girişini ve işletim sistemine uygun güncelleme kısayolunu dağıtır. Paket ZIP olarak açılıp kullanılabilir; Git gerekmez. Kurulu vault kaynak repo klasöründen bağımsız çalışır.
 
-[Son kararlı release](https://github.com/Mehximus/mneme/releases/latest) ve içindeki `mneme-v3-X.Y.Z.zip` paketi stable dağıtım noktasıdır. V3.7.1 turunda 875 test ile 10/10 development ve 6/6 holdout semantik senaryosu geçti; CI aynı paketi Windows, macOS ve Linux'ta doğrular.
+[Son kararlı release](https://github.com/haliksuveyt/mneme/releases/latest) ve içindeki `mneme-v3-X.Y.Z.zip` paketi stable dağıtım noktasıdır. V3.7.1 turunda 875 test ile 10/10 development ve 6/6 holdout semantik senaryosu geçti; CI aynı paketi Windows, macOS ve Linux'ta doğrular.
 
 ## Davranış
 

@@ -11,47 +11,47 @@
           "name": "windows-latest / Python 3.11",
           "status": "completed",
           "conclusion": "failure",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35024841994/job/104569260514",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35024841994/job/104569260514",
           "databaseId": 104569260514
         },
         {
           "name": "ubuntu-latest / Python 3.11",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35024841994/job/104569260750",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35024841994/job/104569260750",
           "databaseId": 104569260750
         },
         {
           "name": "macos-latest / Python 3.13",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35024841994/job/104569260754",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35024841994/job/104569260754",
           "databaseId": 104569260754
         },
         {
           "name": "windows-latest / Python 3.13",
           "status": "completed",
           "conclusion": "failure",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35024841994/job/104569260800",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35024841994/job/104569260800",
           "databaseId": 104569260800
         },
         {
           "name": "ubuntu-latest / Python 3.13",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35024841994/job/104569260912",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35024841994/job/104569260912",
           "databaseId": 104569260912
         },
         {
           "name": "macos-latest / Python 3.11",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35024841994/job/104569260928",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35024841994/job/104569260928",
           "databaseId": 104569260928
         }
       ],
       "status": "completed",
-      "url": "https://github.com/Mehximus/mneme/actions/runs/35024841994"
+      "url": "https://github.com/haliksuveyt/mneme/actions/runs/35024841994"
     },
     {
       "conclusion": "success",
@@ -62,47 +62,47 @@
           "name": "ubuntu-latest / Python 3.11",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35025071466/job/104570020283",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35025071466/job/104570020283",
           "databaseId": 104570020283
         },
         {
           "name": "ubuntu-latest / Python 3.13",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35025071466/job/104570020437",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35025071466/job/104570020437",
           "databaseId": 104570020437
         },
         {
           "name": "macos-latest / Python 3.11",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35025071466/job/104570020533",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35025071466/job/104570020533",
           "databaseId": 104570020533
         },
         {
           "name": "windows-latest / Python 3.11",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35025071466/job/104570020588",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35025071466/job/104570020588",
           "databaseId": 104570020588
         },
         {
           "name": "macos-latest / Python 3.13",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35025071466/job/104570020635",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35025071466/job/104570020635",
           "databaseId": 104570020635
         },
         {
           "name": "windows-latest / Python 3.13",
           "status": "completed",
           "conclusion": "success",
-          "url": "https://github.com/Mehximus/mneme/actions/runs/35025071466/job/104570020713",
+          "url": "https://github.com/haliksuveyt/mneme/actions/runs/35025071466/job/104570020713",
           "databaseId": 104570020713
         }
       ],
       "status": "completed",
-      "url": "https://github.com/Mehximus/mneme/actions/runs/35025071466"
+      "url": "https://github.com/haliksuveyt/mneme/actions/runs/35025071466"
     }
   ],
   "windows_log_checks": [

@@ -94,15 +94,16 @@ class ReleasesTest(unittest.TestCase):
         self.assertEqual(releases.safe_url('https://release-assets.githubusercontent.com/a'), 'https://release-assets.githubusercontent.com/a')
 
     def test_both_official_repository_names_are_accepted_and_nothing_broader(self):
-        # After a rename Mehximus/mneme -> Mehximus/Mneme the old API URL redirects and the
+        # After a rename haliksuveyt/mneme -> haliksuveyt/Mneme the old API URL redirects and the
         # API reports asset URLs under the new name; older installs must keep updating.
+        # The former account name Mehximus is claimable by anyone and must be rejected.
         def with_checksum(base):
             raw = fixture(); asset = raw['assets'][0]
             asset['browser_download_url'] = asset['browser_download_url'].replace(releases.WEB, base)
             raw['assets'].append(dict(asset, id=457, name=asset['name'] + '.sha256',
                                       browser_download_url=asset['browser_download_url'] + '.sha256'))
             return raw
-        for slug in ('Mehximus/mneme', 'Mehximus/Mneme'):
+        for slug in ('haliksuveyt/mneme', 'haliksuveyt/Mneme'):
             with self.subTest(slug=slug):
                 base = 'https://github.com/' + slug + '/releases/'
                 metadata = releases.release_metadata(with_checksum(base))
@@ -113,15 +114,16 @@ class ReleasesTest(unittest.TestCase):
                 with patch.object(releases, 'fetch_metadata', return_value=(metadata, None)):
                     releases.refresh(state, now=1000)
                 self.assertEqual(releases.cache(state)['release']['release_url'], base + 'tag/v3.1.0')
-        for slug in ('Mehximus/mneme-evil', 'Mehximus/mneme2', 'someone/mneme', 'someone/Mneme', 'MEHXIMUS/mneme'):
+        for slug in ('haliksuveyt/mneme-evil', 'haliksuveyt/mneme2', 'someone/mneme', 'someone/Mneme',
+                     'HALIKSUVEYT/mneme', 'Mehximus/mneme', 'Mehximus/Mneme'):
             with self.subTest(slug=slug), self.assertRaisesRegex(releases.ReleaseError, 'invalid_asset'):
                 releases.release_metadata(with_checksum('https://github.com/' + slug + '/releases/'))
-        mixed = with_checksum('https://github.com/Mehximus/Mneme/releases/')
+        mixed = with_checksum('https://github.com/haliksuveyt/Mneme/releases/')
         mixed['assets'][1]['browser_download_url'] = releases.WEB + 'download/v3.1.0/mneme-v3-3.1.0.zip.sha256'
         with self.assertRaisesRegex(releases.ReleaseError, 'invalid_checksum_asset'):
             releases.release_metadata(mixed)
         mixed = with_checksum(releases.WEB)
-        mixed['assets'][1]['browser_download_url'] = 'https://github.com/Mehximus/Mneme/releases/download/v3.1.0/mneme-v3-3.1.0.zip.sha256'
+        mixed['assets'][1]['browser_download_url'] = 'https://github.com/haliksuveyt/Mneme/releases/download/v3.1.0/mneme-v3-3.1.0.zip.sha256'
         with self.assertRaisesRegex(releases.ReleaseError, 'invalid_checksum_asset'):
             releases.release_metadata(mixed)
 

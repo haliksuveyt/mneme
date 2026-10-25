@@ -2,7 +2,7 @@
 
 ## Final V3.0.0 native verification
 
-**Windows, macOS and Ubuntu × Python 3.11/3.13: all six jobs passed, each with 114 V3 tests, development 10/10 and holdout 6/6.** [Final run](https://github.com/Mehximus/mneme/actions/runs/35029453887), source `5b99e4bb96729c663eae76f1383b9675c6e7419c`. [Machine evidence](evidence/product-native-ci.json).
+**Windows, macOS and Ubuntu × Python 3.11/3.13: all six jobs passed, each with 114 V3 tests, development 10/10 and holdout 6/6.** [Final run](https://github.com/haliksuveyt/mneme/actions/runs/35029453887), source `5b99e4bb96729c663eae76f1383b9675c6e7419c`. [Machine evidence](evidence/product-native-ci.json).
 
 This final run includes direct ZIP/V2 installation, interrupted install and rollback retries, Windows manifest and launcher paths, and direct context refresh without hooks. Earlier local Mac/Linux runs also passed the 47 legacy regressions. The exact release ZIP was installed, its extracted directory removed, then its CLI used to verify source freshness and same-version update checks. [Asset evidence](evidence/release-asset.json). Live model and Desktop app-host workflows are [separate](LIVE-CLIENTS.md).
 
@@ -31,7 +31,7 @@ The legacy README regression initially failed after the intentional V3 root READ
 
 **All six hosted jobs passed** on Windows, macOS and Ubuntu, each with Python 3.11 and 3.13. Every job ran **62 V3 tests** and the frozen development/holdout evaluation. This is real Windows runner execution, including the installed encoded PowerShell hook command under a minimal PATH.
 
-[Successful GitHub run](https://github.com/Mehximus/mneme/actions/runs/35025071466), tested code commit `89c9f37d6e4e4650edd71b1d52493b4ed84ed6f2`. [Machine evidence and hashes](evidence/native-ci.json).
+[Successful GitHub run](https://github.com/haliksuveyt/mneme/actions/runs/35025071466), tested code commit `89c9f37d6e4e4650edd71b1d52493b4ed84ed6f2`. [Machine evidence and hashes](evidence/native-ci.json).
 
 The first native Windows run failed on path separators in citations, regex replacement of backslashes during reinstall, and PowerShell discovery under a minimal PATH. The implementation now persists forward-slash source references, inserts instruction text literally and resolves built-in PowerShell from the system directory. A reinstall path regression was added; expectations were not relaxed. The failed run is retained in the evidence.
 

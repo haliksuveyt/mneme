@@ -12,7 +12,7 @@ class PublicEntryTest(unittest.TestCase):
         required = (
             'releases/latest', '.zip.sha256', 'install_v3.py --vault',
             'mneme.py doctor --human', 'mneme.py preferences --human',
-            'https://github.com/Mehximus/mneme', 'notlarini silme',
+            'https://github.com/haliksuveyt/mneme', 'notlarini silme',
             '.agents/skills/mneme/SKILL.md',
         )
         for phrase in required:

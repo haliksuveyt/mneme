@@ -32,7 +32,7 @@ Code'un kendisi yapar.
 Terminalde `claude` çalıştır ve şunu yapıştır:
 
 ```
-Read https://raw.githubusercontent.com/Mehximus/mneme/main/mneme.md and follow it exactly to build my second brain.
+Read https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md and follow it exactly to build my second brain.
 ```
 
 Bu tek satırlık giriş önce platformu ayırır: macOS/Linux mevcut `SETUP.md` yolunda kalır, yerel
@@ -42,7 +42,7 @@ içinde kalan POSIX yolunu kullanır. Böylece Windows'ta Bash/macOS komutları 
 Ya da macOS, Linux veya WSL'de repoyu doğrudan klonla, üç komut:
 
 ```bash
-git clone https://github.com/Mehximus/mneme.git
+git clone https://github.com/haliksuveyt/mneme.git
 cd mneme
 claude "Read SETUP.md and follow it exactly to set up my second brain from this template."
 ```
@@ -59,7 +59,7 @@ değiştirilmez. Claude Code ve Codex aynı router, skill ve kanca kodunu okur; 
 Google Antigravity kullanıyorsan:
 
 ```bash
-git clone https://github.com/Mehximus/mneme.git
+git clone https://github.com/haliksuveyt/mneme.git
 cd mneme
 agy -p "Read SETUP-ANTIGRAVITY.md and follow it exactly to set up my second brain."
 ```
@@ -72,7 +72,7 @@ skill'lerin ikinci kopyasını oluşturmaz. Doğrudan Gemini API anahtarı istem
 Yerel Windows için ayrı bir kurulum yolu vardır:
 
 ```powershell
-git clone https://github.com/Mehximus/mneme.git
+git clone https://github.com/haliksuveyt/mneme.git
 cd mneme
 claude "Read SETUP-WINDOWS.md and follow it exactly to set up my second brain."
 ```
@@ -220,7 +220,7 @@ her kırmızı satırın altında düzeltme komutu yazar.
 Bilgi derleme mimarisi Andrej Karpathy'nin LLM bilgi tabanı desenine dayanır:
 https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
 
-Geri kalanı [Mneme](https://github.com/Mehximus/mneme) günlük kullandığı sistemden, kişisel veriden arındırılıp
+Geri kalanı [Mneme](https://github.com/haliksuveyt/mneme) günlük kullandığı sistemden, kişisel veriden arındırılıp
 herkes için genelleştirilerek çıkarıldı.
 
 ## Lisans
@@ -239,7 +239,7 @@ to write its memory files. v2's thesis is that **memory must be a mechanism, not
 a small background Haiku call, and once a day a Sonnet compile pass turns those logs into linked
 articles under `knowledge/`. The next session starts with that knowledge index already in context.
 
-On macOS, Linux, or WSL, install with `git clone https://github.com/Mehximus/mneme.git && cd
+On macOS, Linux, or WSL, install with `git clone https://github.com/haliksuveyt/mneme.git && cd
 mneme && claude "Read SETUP.md and follow it exactly to set up my second brain from this
 template."` Codex can follow the same `SETUP.md`; its project hooks are rendered with absolute
 paths and require one-time approval in `/hooks`. On native Windows, use the same clone but ask
