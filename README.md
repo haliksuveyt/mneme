@@ -1,5 +1,11 @@
 # 🧠 Mneme
 
+[![V3 testleri](https://github.com/haliksuveyt/mneme/actions/workflows/v3.yml/badge.svg)](https://github.com/haliksuveyt/mneme/actions/workflows/v3.yml)
+[![Son sürüm](https://img.shields.io/github/v/release/haliksuveyt/mneme)](https://github.com/haliksuveyt/mneme/releases/latest)
+[![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-blue.svg)](LICENSE)
+
+**Türkçe** · [English](README.en.md)
+
 [![Mneme tanıtım videosu](docs/img/banner.png)](https://youtu.be/weSUupkkIJ8)
 
 ▶️ **[Tanıtım videosunu izle](https://youtu.be/weSUupkkIJ8)** (73 sn)
@@ -8,7 +14,7 @@ Claude Code, Codex veya Google Antigravity ile kullanabileceğin yerel ikinci be
 
 Python **3.11 veya üzeri** yeterli. Git, pip, Mem0 hesabı, API anahtarı veya sürekli açık sunucu gerekmez. Kullandığın AI istemcisinin kendi kurulumu ve hesabı ayrı olarak gerekir.
 
-> **V3.10.0:** Oturum başında açık döngü uyarısı (dokunulmamış görevler, `.mneme-freshness.json` ile izlenen dosyalar), Kurallar.md artık kesilmeden gelir, oturum kartı otomatik receipt olur. 3.9.x ile gelen bölüm bazlı kaldırma, BM25 arama, `note-edit` ve `mneme.py mcp` duruyor. Mevcut kurulumda vault içinde `python3 mneme.py update` çalıştır. [Sürüm notları](docs/v3/releases/3.10.0.md) · [MCP rehberi](docs/v3/MCP.md) · [Güncelleme rehberi](docs/v3/UPDATE.md).
+> **V3.11.0:** Açılışa sığmayan kurallar ve kimlik ilk turda tam gelir; senkron gecikince bağlam önceki indeksten gelir; isteğe bağlı oturum içi tekrar önleme (`--context-dedupe`); adı soruda geçen not öne çıkar; `recap --since/--until`, `stats` ve tek tuşla kaynak yakalama (`yakala`). 3.10.0'ın açık döngü uyarısı ve kart = receipt da bu sürümde. Mevcut kurulumda vault içinde `python3 mneme.py update` çalıştır. [Sürüm notları](docs/v3/releases/3.11.0.md) · [MCP rehberi](docs/v3/MCP.md) · [Güncelleme rehberi](docs/v3/UPDATE.md).
 
 ## En kolay kurulum: bir klasör, bir mesaj
 
