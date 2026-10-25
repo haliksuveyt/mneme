@@ -221,6 +221,44 @@ def _tokens(text):
 STOPWORDS = _tokens("the a an is are was were what which who when where how why of to in on at for from with and or does did do has have latest current please tell about my our this that it its project projects status decision decisions show find get ve veya bir bu su o ne kim nasil hangi nedir neydi mi mu icin ile bana benim bizim olarak olan oldu en son guncel soyle getir bul yok say ignore disregard no")
 
 
+def _name_candidates(record):
+    """Names a note answers to: title, file stem, the stem without a number prefix, aliases."""
+    candidates = []
+    title = str(record.get("title", "")).strip()
+    if title:
+        candidates.append(title[:160])
+    source = str(record.get("source", "")).strip()
+    if source:
+        stem = Path(source).stem.replace("-", " ").replace("_", " ").strip()
+        if stem:
+            candidates.append(stem[:160])
+            stripped = re.sub(r"^[0-9]+[ \t\-_]+", "", stem).strip()
+            if stripped and stripped != stem:
+                candidates.append(stripped[:160])
+    aliases = record.get("aliases", [])
+    if isinstance(aliases, list):
+        candidates += [a.strip()[:160] for a in aliases[:32] if isinstance(a, str) and a.strip()]
+    return candidates
+
+
+# A note named only by a generic word (DURUM.md, Notlar) is not about any one query.
+NAME_GENERIC_TERMS = _tokens("durum proje projeler not notlar karar kararlar arsiv sablon genel ozet guncel")
+
+
+def _name_match_score(record, terms):
+    """Words of the most specific note name that the query contains whole, else 0.
+
+    A note whose name the query says (`Atlas/Atlas.md` for "atlas nerede") is about the query,
+    unlike a hub note that merely mentions the name many times.
+    """
+    best = 0
+    for candidate in _name_candidates(record) if terms else ():
+        meaningful = {t for t in _tokens(candidate) - STOPWORDS if len(t) >= 2}
+        if meaningful and meaningful - NAME_GENERIC_TERMS and meaningful <= terms:
+            best = max(best, len(meaningful))
+    return best
+
+
 class MemoryStore:
     def __init__(self, state_dir, vault_root, read_only=False, busy_timeout=10):
         self.read_only = bool(read_only)
@@ -574,6 +612,9 @@ class MemoryStore:
     BM25_K1 = 1.2
     BM25_B = 0.75
     TITLE_BOOST = 2.0
+    # Per name word the query says whole; above any BM25 sum of an ordinary note.
+    NAME_MATCH_WEIGHT = 20.0
+    NAME_MATCH_STRICT_WEIGHT = 1.0
 
     def _bm25_scores(self, ranked, terms, vocabularies, titles):
         if not ranked:
@@ -597,7 +638,7 @@ class MemoryStore:
             scores[record["id"]] = score
         return scores
 
-    def _strict_rank(self, ranked, terms, vocabularies):
+    def _strict_rank(self, ranked, terms, vocabularies, name_scores=None):
         """Keep only meaningful lexical matches; see STRICT_* for the calibrated rules."""
         frequency = {}
         for vocabulary in vocabularies.values():
@@ -613,7 +654,7 @@ class MemoryStore:
             weight = sum(math.log((total + 1) / (frequency.get(token, 0) + 1)) + 1 for token in terms & vocabulary)
             weight = weight / idf_max / math.log(10 + len(vocabulary))
             if weight >= self.STRICT_MIN_WEIGHT:
-                weighted.append((weight, record))
+                weighted.append((weight + self.NAME_MATCH_STRICT_WEIGHT * (name_scores or {}).get(record["id"], 0), record))
         weighted.sort(key=lambda item: (item[1].get("updated_at", ""), item[1]["id"]), reverse=True)
         weighted.sort(key=lambda item: -item[0])
         return weighted
@@ -687,6 +728,7 @@ class MemoryStore:
         ranked = []
         vocabularies = {}
         titles = {}
+        name_scores = {}
         for record in eligible:
             if record["id"] in superseded:
                 continue
@@ -703,14 +745,17 @@ class MemoryStore:
             vocabularies[record["id"]] = vocabulary
             titles[record["id"]] = _tokens(str(record.get("title", "")) + " " + alias_text) - STOPWORDS
             score = len(terms & vocabulary)
-            if score or scoped_listing or snapshot:
+            name_score = _name_match_score(record, terms)
+            if name_score:
+                name_scores[record["id"]] = name_score
+            if score or name_score or scoped_listing or snapshot:
                 ranked.append((score, record))
         if strict and not snapshot:
-            ranked = self._strict_rank(ranked, terms, vocabularies)
+            ranked = self._strict_rank(ranked, terms, vocabularies, name_scores)
         else:
             ranked.sort(key=lambda item: (item[1].get("updated_at", ""), item[1]["id"]), reverse=True)
             bm25 = self._bm25_scores(ranked, terms, vocabularies, titles)
-            ranked.sort(key=lambda item: -bm25[item[1]["id"]])
+            ranked.sort(key=lambda item: -(bm25[item[1]["id"]] + self.NAME_MATCH_WEIGHT * name_scores.get(item[1]["id"], 0)))
         if candidate_only:
             return [record for _, record in ranked[:limit]]
         return pack_context([record for _, record in ranked], limit, budget_chars, stale_count)
