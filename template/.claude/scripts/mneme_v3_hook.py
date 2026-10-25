@@ -265,7 +265,7 @@ def card_receipt(vault, state, harness, session):
 def receipt_reminder(payload, state, harness, event, vault=None):
     """Track edits per session and return a one-time Stop block, or None.
 
-    Installed PostToolUse hooks match only Edit|Write|apply_patch for Claude and
+    Installed PostToolUse hooks match only Edit|Write|apply_patch|MultiEdit|NotebookEdit for Claude and
     Codex, so that event marks the session as edited without reading transcripts.
     Stop then looks for a receipt of this harness and session in the runtime store.
     If a receipt declared learnings but no note under knowledge/ was touched,
@@ -517,24 +517,45 @@ def main():
             print(json.dumps(reminder) if reminder else (json.dumps(output_context(args.harness, event, notice)) if notice else ('{"decision":"stop"}' if args.harness == 'antigravity' else '{}')))
             return
         if event in ("SessionStart", "UserPromptSubmit"):
-            if not due and not disabled:
-                print(json.dumps(output_context(args.harness, event, notice + 'V3 automatic check deferred by your interval preference. Read current sources or use mneme.py context for fresh information.')))
-                return
+            deferred = not due and not disabled
+            pending = False
             try:
                 if process is not None:
                     process.wait(timeout=1.5)
             except subprocess.TimeoutExpired:
-                print(json.dumps(output_context(args.harness, event, notice + "V3 source sync is pending. Verify current Markdown sources before using prior context.")))
-                return
-            if process is not None and process.returncode:
+                pending = True
+            if process is not None and not pending and process.returncode:
                 raise RuntimeError("Source sync failed; metadata remains queued")
-            from mneme_v3_sync import SyncEngine
-            store = SyncEngine(vault, state).store
+            if pending or deferred:
+                # A sync slower than the wait keeps running in the background, or an interval
+                # preference defers it. Retrieval reads the index the previous sync committed,
+                # read-only so it never contends for the worker's write lock; only a store that
+                # does not exist yet injects nothing. The busy wait stays inside the hook budget.
+                from mneme_v3 import MemoryStore
+                try:
+                    store = MemoryStore(state, vault, read_only=True,
+                                        busy_timeout=max(0.1, HOOK_BUDGET - 1.0 - (time.monotonic() - started)))
+                except ValueError:
+                    message = ("V3 source sync is pending. Verify current Markdown sources before using prior context."
+                               if pending else
+                               "V3 automatic check deferred by your interval preference. Read current sources or use mneme.py context for fresh information.")
+                    print(json.dumps(output_context(args.harness, event, notice + message)))
+                    return
+            else:
+                from mneme_v3_sync import SyncEngine
+                store = SyncEngine(vault, state).store
             query = prompt_text(payload)
             project = payload.get('project')
             project = project if isinstance(project, str) and project.strip() else None
             session = hashlib.sha256(str(payload.get('session_id', 'unknown')).encode()).hexdigest()[:24]
-            warning = ''
+            if pending:
+                warning = ('V3 source sync is still running; this context comes from the previous index. '
+                           'Verify current Markdown sources before relying on it.\n')
+            elif deferred:
+                warning = ('V3 automatic check deferred by your interval preference; this context comes from the previous index. '
+                           'Read current sources or use mneme.py context for fresh information.\n')
+            else:
+                warning = ''
             health = state / "hook-health.json"
             if health.exists():
                 sync = json.loads(health.read_text(encoding="utf-8")).get("sync", {})
@@ -615,6 +636,14 @@ def main():
         else:
             print(json.dumps(reminder) if reminder else (json.dumps(output_context(args.harness, event, notice)) if notice else ('{"decision":"stop"}' if args.harness == "antigravity" else "{}")))
     except Exception as exc:
+        if (locals().get("pending") is True or locals().get("deferred") is True) and type(exc).__module__ == "sqlite3":
+            # The previous index stayed locked past the hook budget: the worker is not failing,
+            # so keep the pending/deferred notice and record no hook error.
+            message = ("V3 source sync is pending. Verify current Markdown sources before using prior context."
+                       if locals().get("pending") is True else
+                       "V3 automatic check deferred by your interval preference. Read current sources or use mneme.py context for fresh information.")
+            print(json.dumps(output_context(args.harness, event, notice + message)))
+            return
         atomic(state / "hook-error.json", {"at": time.time(), "error": type(exc).__name__})
         if not args.metadata_only and locals().get("event") in ("SessionStart", "UserPromptSubmit"):
             print(json.dumps(output_context(args.harness, event, notice + "V3 source sync failed or conflicted; metadata remains queued. Run the local CLI doctor and verify current Markdown sources.")))

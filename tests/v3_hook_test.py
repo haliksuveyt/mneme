@@ -87,6 +87,62 @@ class HookInstallerTest(unittest.TestCase):
         self.assertEqual(len(lines), 1, 'Hook stdout must contain exactly one JSON response')
         return json.loads(lines[0])
 
+    def slow_sync_hook(self, exclusive=False):
+        """The real hook with a source sync that outlasts the wait and a due check.
+
+        exclusive: the sync holds the index's exclusive lock until the hook process exits,
+        as a large rewrite does before commit.
+        """
+        wrapper = self.root / 'slow_sync_hook.py'
+        wrapper.write_text(f'''import runpy, sqlite3, subprocess, sys
+sys.path.insert(0, {str(SCRIPTS)!r})
+HELD = []
+class SlowWorker:
+    returncode = None
+    def __init__(self, *args, **kwargs):
+        pass
+    def wait(self, timeout=None):
+        if {exclusive!r}:
+            db = sqlite3.connect({str(self.state / 'memory.sqlite3')!r}, isolation_level=None)
+            db.execute('BEGIN EXCLUSIVE')
+            HELD.append(db)
+        raise subprocess.TimeoutExpired('worker', timeout)
+subprocess.Popen = SlowWorker
+import mneme_v3_preferences
+mneme_v3_preferences.claim_check = lambda *args, **kwargs: True
+sys.argv[0] = {str(HOOK)!r}
+runpy.run_path({str(HOOK)!r}, run_name='__main__')
+''', encoding='utf-8')
+        self.env.pop('MNEME_V3_NO_SPAWN')
+        return wrapper
+
+    def test_user_prompt_submit_reads_previous_index_while_sync_is_pending(self):
+        # A slow sync used to inject only a pending notice, so a large vault never received
+        # prompt retrieval at all. The last committed index still answers, labeled as such.
+        self.seed()
+        payload = {'hook_event_name': 'UserPromptSubmit', 'session_id': 'slow-sync', 'event_id': 'slow-sync-1',
+                   'cwd': str(self.vault), 'prompt': 'Nebula calibration owner'}
+        context = self.invoke(payload, 'claude', script=self.slow_sync_hook())['hookSpecificOutput']['additionalContext']
+        self.assertIn('Synthetic Reviewer', context)
+        self.assertIn('previous index', context)
+
+    def test_user_prompt_submit_pending_sync_lock_stays_inside_hook_budget(self):
+        self.seed()
+        payload = {'hook_event_name': 'UserPromptSubmit', 'session_id': 'locked-sync', 'event_id': 'locked-sync-1',
+                   'cwd': str(self.vault), 'prompt': 'Nebula calibration owner'}
+        started = time.monotonic()
+        context = self.invoke(payload, 'claude', script=self.slow_sync_hook(exclusive=True))['hookSpecificOutput']['additionalContext']
+        self.assertLess(time.monotonic() - started, 8)
+        self.assertIn('V3 source sync is pending', context)
+        self.assertNotIn('failed or conflicted', context)
+        self.assertFalse((self.state / 'hook-error.json').exists())
+
+    def test_user_prompt_submit_without_index_keeps_pending_notice(self):
+        payload = {'hook_event_name': 'UserPromptSubmit', 'session_id': 'first-sync', 'event_id': 'first-sync-1',
+                   'cwd': str(self.vault), 'prompt': 'Nebula calibration owner'}
+        context = self.invoke(payload, 'claude', script=self.slow_sync_hook())['hookSpecificOutput']['additionalContext']
+        self.assertIn('V3 source sync is pending', context)
+
     def lifecycle(self, event, session, harness='claude', extra=None, **fields):
         self.lifecycle_count = getattr(self, 'lifecycle_count', 0) + 1
         payload = dict({'hook_event_name': event, 'session_id': session,
