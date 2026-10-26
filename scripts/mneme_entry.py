@@ -400,6 +400,9 @@ def human_result(result, command, installed_version=None):
         message = 'Onceki surume donuldu: ' + str(result.get('version', '?'))
     elif status == 'recovered':
         message = 'Yarim kalan islem kurtarildi. Surum: ' + str(result.get('version', '?'))
+    elif command == 'handoff':
+        # Preserve the structured packet when a terminal auto-selects human output.
+        return json.dumps(result, ensure_ascii=True, indent=2)
     elif command == 'context':
         records = result.get('records', [])
         message = '\n\n'.join(str(r.get('source', '')) + '\n' + str(r.get('text', '')) for r in records) or 'Eslesen kaynak bulunamadi.'
