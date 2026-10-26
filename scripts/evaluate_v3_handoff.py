@@ -13,14 +13,19 @@ from mneme_v3_handoff import build_packet, serialized_size
 from mneme_v3_sync import SyncEngine
 
 
-def evaluate():
-    fixture = ROOT / 'tests/fixtures/v3/handoff_scenarios.json'
-    raw = fixture.read_bytes()
-    cases = json.loads(raw)['cases']
+def read_fixture(fixture=None):
+    fixture = fixture or ROOT / 'tests/fixtures/v3/handoff_scenarios.json'
+    # Git checkouts may use CRLF on Windows; the contract hashes UTF-8 with LF.
+    raw = fixture.read_text(encoding='utf-8').encode('utf-8')
     digest = hashlib.sha256(raw).hexdigest()
     expected = fixture.with_suffix('.sha256').read_text(encoding='ascii').strip()
     if digest != expected:
         raise ValueError('handoff fixture changed; document a new version before updating its digest')
+    return json.loads(raw)['cases'], digest
+
+
+def evaluate():
+    cases, digest = read_fixture()
     results = []
     for case in cases:
         start = time.perf_counter()

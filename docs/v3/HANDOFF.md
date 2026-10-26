@@ -61,7 +61,8 @@ python3 scripts/evaluate_v3_handoff.py
 python3 -m unittest discover -s tests -p "v3_handoff_test.py"
 ```
 
-Hash'i yan dosyada dondurulmuş fixture'da 6 kategori × 10 sentetik kaynak senaryosu
+UTF-8/LF biçimine normalize edilip hash'i yan dosyada dondurulmuş fixture'da
+6 kategori × 10 sentetik kaynak senaryosu
 var: kaynak koruma, düzeltme, açık sınıflandırma, güncellik, istemci adaptörleri
 arasında veri eşitliği ve cevapsızlık/gizlilik. Çalıştırıcı kişisel veri veya model
 kullanmaz. Sonuçta fixture hash'i, kategori sonuçları ve süreler raporlanır.
