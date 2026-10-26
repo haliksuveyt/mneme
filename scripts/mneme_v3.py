@@ -399,6 +399,10 @@ def parser():
     handoff.add_argument("--audience", choices=("internal", "public"), default="internal")
     handoff.add_argument("--limit", type=int, default=8)
     handoff.add_argument("--budget-chars", type=int, default=8000)
+    diff = sub.add_parser("handoff-diff", help="Compare two exported handoff packets without changing notes or state")
+    diff.add_argument("--before", type=Path, required=True)
+    diff.add_argument("--after", type=Path, required=True)
+    diff.add_argument("--include-text", action="store_true", help="Include text diff only when both excerpts are complete")
     review = sub.add_parser("jev-review", help="Advisory source review; never saves or approves a candidate")
     review.add_argument("--file", required=True, help="JSON proposal (maximum 24,000 characters)")
     review.add_argument("--project", required=True)
@@ -442,6 +446,13 @@ def main(argv=None):
         vault = args.vault.expanduser().resolve()
         if not vault.is_dir():
             raise ValueError("--vault must be an existing directory")
+        if args.command == "handoff-diff":
+            sys.dont_write_bytecode = True
+            load_sync()  # locate packaged modules; no runtime or source sync is opened
+            from mneme_v3_handoff import compare_packets, read_packet
+            result = compare_packets(read_packet(args.before), read_packet(args.after), include_text=args.include_text)
+            print(json.dumps(result, ensure_ascii=True, indent=2))
+            return 0
         state = (args.state.expanduser() if args.state else default_state(vault)).resolve()
         if state == vault or vault in state.parents:
             raise ValueError("--state must be outside the vault")
