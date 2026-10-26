@@ -1,7 +1,8 @@
 # Devir paketi doğrulaması — 26 Ekim 2026
 
-- Yeni `v3_handoff_test.py`: 12 test geçti. Temiz vault'a kurulum ve kurulu `mneme.py`
+- Yeni `v3_handoff_test.py`: 13 test geçti. Temiz vault'a kurulum ve kurulu `mneme.py`
   üzerinden gerçek alt süreç çağrısı dahil.
+  Fixture hash'inin Git CRLF/LF dönüşümünden etkilenmemesi de ayrı kontrol edilir.
 - `evaluate_v3_handoff.py`: 60/60 sentetik kaynak-paketi senaryosu geçti. Ham kategori
   sonuçları: [JSON](handoff-source-contracts-2026-10-26.json). 0 model çağrısı, 0 canlı
   istemci oturumu; bu oran bir LLM cevap doğruluğu skoru değildir.

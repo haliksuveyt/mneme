@@ -155,6 +155,15 @@ class HandoffTest(unittest.TestCase):
         self.assertEqual(packet['citations'][0]['id'], 'safe')
         self.assertEqual(packet['used_chars'], len(result.stdout))
 
+    def test_fixture_digest_is_portable_across_git_line_endings(self):
+        spec = importlib.util.spec_from_file_location('mneme_handoff_fixture_test', ROOT / 'scripts/evaluate_v3_handoff.py')
+        evaluator = importlib.util.module_from_spec(spec); spec.loader.exec_module(evaluator)
+        source = ROOT / 'tests/fixtures/v3/handoff_scenarios.json'
+        local = Path(self.tmp.name) / 'scenarios.json'
+        local.write_bytes(source.read_text(encoding='utf-8').replace('\n', '\r\n').encode('utf-8'))
+        local.with_suffix('.sha256').write_text(source.with_suffix('.sha256').read_text(encoding='ascii'), encoding='ascii')
+        self.assertEqual(evaluator.read_fixture(local), evaluator.read_fixture(source))
+
 
 if __name__ == '__main__':
     unittest.main()
