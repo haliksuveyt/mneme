@@ -175,6 +175,8 @@ Kaynak geliştirme sürümünde `handoff` komutu, açık metadata ile kabul edil
 önerileri ve açık görevleri kaynaklarıyla başka istemciye devretmek için sınırlı JSON üretir.
 [Devir paketi ve 60 sentetik senaryo](docs/v3/HANDOFF.md). Bu değerlendirme model çağırmaz;
 gerçek istemcilerin cevap doğruluğundan ayrı bir kaynak/veri sözleşmesidir.
+`handoff-diff` iki paketteki kaynak/karar değişikliklerini gösterir; bütçe nedeniyle paketten
+çıkan kaydı silinmiş dosya saymaz, notları ve indeksi değiştirmez.
 
 [Kaynak formatı](docs/v3/MARKDOWN.md) · [Runtime](docs/v3/RUNTIME.md) · [Semantik test sözleşmesi](docs/v3/SEMANTIC-TEST-CONTRACT.md) · [Sürüm paketi ve updater](docs/v3/UPDATE.md) · [Birden çok makine](docs/v3/MULTI-MACHINE.md).
 

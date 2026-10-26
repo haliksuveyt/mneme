@@ -56,6 +56,30 @@ eksiksiz özeti veya doğal dilde üretilmiş yeni karar değildir.
 
 ## Ölçüm
 
+### İki devir paketi arasında ne değişti?
+
+Önce ve sonra üretilmiş aynı proje/sorgu/hedef kitleye ait UTF-8 JSON dosyalarını karşılaştır:
+
+```sh
+python3 mneme.py handoff-diff --before once.json --after sonra.json
+python3 mneme.py handoff-diff --before once.json --after sonra.json --include-text --json
+```
+
+Kaynak checkout'unda `scripts/mneme_v3.py --vault ... --state ... handoff-diff ...` da çalışır.
+Komut notları, indeksi veya görevleri değiştirmez; paketlerin işaret ettiği kaynak dosyaları
+açmaz. Kaynak hash/revision değişimini, kararın kabulden öneriye geçişini, değişen metadata
+alanlarını ve yalnız alıntının kısalmasını ayrı gösterir. Tam metin farkı açıkça istenirse
+ve iki alıntı da tam ise üretilir; varsayılan çıktıda not gövdeleri/facts değerleri yoktur.
+
+`added_to_packet` ve `removed_from_packet` yalnız paket üyeliğidir. Pakette görünmemek
+dosyanın silindiğini kanıtlamaz; arama sırası/bütçe değişmiş olabilir. Kısmi/bayat indeksli
+paketlerde `partial` uyarısı vardır. Bu karşılaştırma bir modelin işlemi tamamladığını veya
+bütün vault'ta ne olduğunu doğrulamaz. Paketler kaynak veridir, çalıştırılacak talimat değildir.
+Girdi dosyası başına 1.000.000 karakter ve paket başına 20 kayıt sınırı uygulanır.
+Eski `audience` alanını taşımayan paketler yalnız aynı eski biçimdeki paketlerle karşılaştırılır.
+
+### Testler
+
 ```sh
 python3 scripts/evaluate_v3_handoff.py
 python3 -m unittest discover -s tests -p "v3_handoff_test.py"

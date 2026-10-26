@@ -81,6 +81,9 @@ that separates explicitly accepted decisions, proposals and open tasks while kee
 source hashes, revisions and citations. See [handoff and its 60 synthetic source-contract
 scenarios](docs/v3/HANDOFF.md). The evaluation makes no model calls and does not claim
 to measure live clients' answer accuracy.
+`handoff-diff` compares exported packets without writing notes or state. Source changes,
+classification changes and excerpt differences are separate; omitted records are not
+reported as deleted files. Full text diffs are opt-in and require complete excerpts.
 
 [Quickstart](docs/v3/QUICKSTART.md) · [Preferences](docs/v3/PREFERENCES.md) ·
 [Markdown format](docs/v3/MARKDOWN.md) · [Updates](docs/v3/UPDATE.md) ·
