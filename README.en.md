@@ -76,6 +76,12 @@ limit arrive whole on the first turn instead of being cut.
 
 ## Docs
 
+The source development version includes a `handoff` command: a bounded JSON packet
+that separates explicitly accepted decisions, proposals and open tasks while keeping
+source hashes, revisions and citations. See [handoff and its 60 synthetic source-contract
+scenarios](docs/v3/HANDOFF.md). The evaluation makes no model calls and does not claim
+to measure live clients' answer accuracy.
+
 [Quickstart](docs/v3/QUICKSTART.md) · [Preferences](docs/v3/PREFERENCES.md) ·
 [Markdown format](docs/v3/MARKDOWN.md) · [Updates](docs/v3/UPDATE.md) ·
 [MCP](docs/v3/MCP.md) · [Multiple machines](docs/v3/MULTI-MACHINE.md) ·

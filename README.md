@@ -171,6 +171,11 @@ Arama yerel kelime eşleştirmesi kullanır; genel doğal dil anlama veya her so
 
 ## Geliştiriciler
 
+Kaynak geliştirme sürümünde `handoff` komutu, açık metadata ile kabul edilmiş kararları,
+önerileri ve açık görevleri kaynaklarıyla başka istemciye devretmek için sınırlı JSON üretir.
+[Devir paketi ve 60 sentetik senaryo](docs/v3/HANDOFF.md). Bu değerlendirme model çağırmaz;
+gerçek istemcilerin cevap doğruluğundan ayrı bir kaynak/veri sözleşmesidir.
+
 [Kaynak formatı](docs/v3/MARKDOWN.md) · [Runtime](docs/v3/RUNTIME.md) · [Semantik test sözleşmesi](docs/v3/SEMANTIC-TEST-CONTRACT.md) · [Sürüm paketi ve updater](docs/v3/UPDATE.md) · [Birden çok makine](docs/v3/MULTI-MACHINE.md).
 
 Açık kaynak, [MIT lisansı](LICENSE). V2 bilgi derleme fikri için [Karpathy'nin bilgi tabanı desenine](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) teşekkürler.

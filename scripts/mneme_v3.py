@@ -391,6 +391,14 @@ def parser():
     context.add_argument("--budget-chars", type=int, default=8000)
     context.add_argument("--no-sync", action="store_true", help="Read an existing index without writing to the vault or runtime")
     context.add_argument("--jev", action="store_true", help="Explicit optional remote advisor; requires state/jev.json and --project")
+    handoff = sub.add_parser("handoff", help="Build a bounded source-backed packet for another client; no model calls")
+    handoff.add_argument("query")
+    handoff.add_argument("--project", required=True)
+    handoff.add_argument("--harness", choices=("codex", "claude", "antigravity", "hermes", "opencode", "omp"), default="codex")
+    handoff.add_argument("--to", required=True, choices=("codex", "claude", "antigravity", "hermes", "opencode", "omp"))
+    handoff.add_argument("--audience", choices=("internal", "public"), default="internal")
+    handoff.add_argument("--limit", type=int, default=8)
+    handoff.add_argument("--budget-chars", type=int, default=8000)
     review = sub.add_parser("jev-review", help="Advisory source review; never saves or approves a candidate")
     review.add_argument("--file", required=True, help="JSON proposal (maximum 24,000 characters)")
     review.add_argument("--project", required=True)
@@ -447,7 +455,7 @@ def main(argv=None):
         # The advisor switch reads and writes one small file; it needs no index or sync engine.
         engine = load_engine() if args.command != "jev" else None
         store = engine.MemoryStore(state, vault, read_only=read_only_context) if engine else None
-        sync = load_sync()(vault, state) if args.command in ("sync", "recap", "receipt", "task-update", "note-create", "note-edit", "supersede", "task-create", "context", "jev-review", "jev-answer", "jev-memory", "history") and not read_only_context else None
+        sync = load_sync()(vault, state) if args.command in ("sync", "recap", "receipt", "task-update", "note-create", "note-edit", "supersede", "task-create", "context", "handoff", "jev-review", "jev-answer", "jev-memory", "history") and not read_only_context else None
         if args.command == "init":
             result = {"initialized": True, "state": str(state), "network": False,
                       "hooks_installed": False, "optional_provider": None}
@@ -807,6 +815,15 @@ def main(argv=None):
                         'warnings': warnings[:20],
                         'truncated': len(warnings) > 20,
                     }
+        elif args.command == "handoff":
+            from mneme_v3_handoff import build_packet
+            refreshed = sync.sync()
+            if refreshed.get("status") == "conflict":
+                raise RuntimeError("Handoff blocked: source sync conflict; inspect sync before retrying.")
+            result = build_packet(sync.store, args.query, project=args.project,
+                                  from_harness=args.harness, to_harness=args.to,
+                                  audience=args.audience, limit=args.limit,
+                                  budget_chars=args.budget_chars, source_sync=refreshed)
         elif args.command in ("jev-review", "jev-answer", "jev-memory"):
             from mneme_v3_jev import review_candidate, verify_answer
             max_chars = 32000 if args.command == "jev-answer" else 24000

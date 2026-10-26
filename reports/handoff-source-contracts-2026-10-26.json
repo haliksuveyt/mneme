@@ -1,0 +1,457 @@
+{
+  "schema": 1,
+  "fixture_sha256": "7b3ea9f7c851ae6fa39c0138061a8b8f3d5a5a64cbf69148f6f0042a66b542d4",
+  "measurement": "synthetic_source_packet_contracts",
+  "model_calls": 0,
+  "live_clients_tested": 0,
+  "categories": {
+    "source_retention": {
+      "passed": 10,
+      "total": 10
+    },
+    "correction": {
+      "passed": 10,
+      "total": 10
+    },
+    "classification": {
+      "passed": 10,
+      "total": 10
+    },
+    "source_freshness": {
+      "passed": 10,
+      "total": 10
+    },
+    "harness_continuity": {
+      "passed": 10,
+      "total": 10
+    },
+    "abstention_privacy": {
+      "passed": 10,
+      "total": 10
+    }
+  },
+  "passed": 60,
+  "total": 60,
+  "cases": [
+    {
+      "category": "source_retention",
+      "variant": "turkish",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 72.321
+    },
+    {
+      "category": "source_retention",
+      "variant": "english",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 66.292
+    },
+    {
+      "category": "source_retention",
+      "variant": "unicode",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 48.279
+    },
+    {
+      "category": "source_retention",
+      "variant": "facts",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 59.142
+    },
+    {
+      "category": "source_retention",
+      "variant": "citation",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 45.337
+    },
+    {
+      "category": "source_retention",
+      "variant": "revision",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 29.836
+    },
+    {
+      "category": "source_retention",
+      "variant": "long_text",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 35.517
+    },
+    {
+      "category": "source_retention",
+      "variant": "small_budget",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 40.919
+    },
+    {
+      "category": "source_retention",
+      "variant": "public",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 29.232
+    },
+    {
+      "category": "source_retention",
+      "variant": "source_instruction",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 26.797
+    },
+    {
+      "category": "correction",
+      "variant": "database",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 31.841
+    },
+    {
+      "category": "correction",
+      "variant": "owner",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 31.608
+    },
+    {
+      "category": "correction",
+      "variant": "deadline",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 31.93
+    },
+    {
+      "category": "correction",
+      "variant": "scope",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 31.264
+    },
+    {
+      "category": "correction",
+      "variant": "turkish",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 30.912
+    },
+    {
+      "category": "correction",
+      "variant": "english",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 30.188
+    },
+    {
+      "category": "correction",
+      "variant": "facts",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 45.016
+    },
+    {
+      "category": "correction",
+      "variant": "status",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 32.315
+    },
+    {
+      "category": "correction",
+      "variant": "title",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 31.882
+    },
+    {
+      "category": "correction",
+      "variant": "same_declared_revision",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 31.342
+    },
+    {
+      "category": "classification",
+      "variant": "accepted_decision",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.961
+    },
+    {
+      "category": "classification",
+      "variant": "proposed_decision",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.951
+    },
+    {
+      "category": "classification",
+      "variant": "proposal",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.024
+    },
+    {
+      "category": "classification",
+      "variant": "decision_without_status",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.514
+    },
+    {
+      "category": "classification",
+      "variant": "completed_task",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.724
+    },
+    {
+      "category": "classification",
+      "variant": "active_task",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.021
+    },
+    {
+      "category": "classification",
+      "variant": "blocked_task",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.571
+    },
+    {
+      "category": "classification",
+      "variant": "waiting_task",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 24.608
+    },
+    {
+      "category": "classification",
+      "variant": "inbox_task",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 24.496
+    },
+    {
+      "category": "classification",
+      "variant": "ordinary_fact",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 24.071
+    },
+    {
+      "category": "source_freshness",
+      "variant": "manual_edit",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.743
+    },
+    {
+      "category": "source_freshness",
+      "variant": "delete",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 28.186
+    },
+    {
+      "category": "source_freshness",
+      "variant": "sync_edit",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 30.001
+    },
+    {
+      "category": "source_freshness",
+      "variant": "sync_delete",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 28.408
+    },
+    {
+      "category": "source_freshness",
+      "variant": "supersede",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 30.731
+    },
+    {
+      "category": "source_freshness",
+      "variant": "reject",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 30.837
+    },
+    {
+      "category": "source_freshness",
+      "variant": "malformed_source",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 29.396
+    },
+    {
+      "category": "source_freshness",
+      "variant": "trust_change",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 30.035
+    },
+    {
+      "category": "source_freshness",
+      "variant": "visibility_change",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 29.151
+    },
+    {
+      "category": "source_freshness",
+      "variant": "project_change",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 29.858
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "claude:codex",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 25.624
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "codex:claude",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 25.072
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "codex:hermes",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 24.002
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "hermes:codex",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.656
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "claude:antigravity",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 22.869
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "antigravity:opencode",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 24.195
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "opencode:codex",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 26.076
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "omp:claude",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 26.243
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "hermes:omp",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 26.041
+    },
+    {
+      "category": "harness_continuity",
+      "variant": "codex:codex",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 24.841
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "unknown_query",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.257
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "private",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.594
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "untrusted",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 21.827
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "other_project",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.415
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "public_internal",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.754
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "rejected",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 24.189
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "deleted",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.264
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "no_sources",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 16.118
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "private_warning",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 16.298
+    },
+    {
+      "category": "abstention_privacy",
+      "variant": "untrusted_instruction",
+      "passed": true,
+      "error": null,
+      "elapsed_ms": 23.059
+    }
+  ]
+}
