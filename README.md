@@ -6,6 +6,8 @@
 
 **Türkçe** · [English](README.en.md)
 
+[Kaynaklı devir: vaka incelemesi ve gerçek Sol deneyi](docs/v3/CASE-STUDY.md)
+
 [![Mneme tanıtım videosu](docs/img/banner.png)](https://youtu.be/weSUupkkIJ8)
 
 ▶️ **[Tanıtım videosunu izle](https://youtu.be/weSUupkkIJ8)** (73 sn)
