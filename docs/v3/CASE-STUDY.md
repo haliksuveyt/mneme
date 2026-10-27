@@ -1,49 +1,43 @@
-# Ajan değişiminde kararları ve belirsizliği korumak
+# Source-linked continuity between agent sessions
 
-Bir ajanla alınmış karar başka oturumda öneri sanılabiliyor; eski bir tamamlanma iddiası da doğrulanmış sonuç gibi tekrar edilebiliyor. Mneme'nin yerel Markdown hafızası üzerinde geliştirdiğim kaynaklı devir katmanı bu ayrımları görünür ve sınanabilir hâle getirir.
+[English](#the-problem) · [Türkçe](#türkçe)
 
-## Geliştirdiğim katman
+## The problem
 
-`handoff`, açık metadata kullanarak kabul edilmiş kararları, önerileri, açık görevleri ve diğer bağlamı ayırır. Her kayıt kaynak yolu, SHA-256, revision ve alıntı taşır. `handoff-diff` aynı kapsamlı iki paketin kaynak, metadata ve metin değişikliklerini gösterir. Not gövdesindeki “onaylandı” sözcüğü kendiliğinden karar statüsü üretmez.
+A new agent session needs the current decisions, open tasks and supporting sources. A useful handoff preserves those distinctions and gives the next agent an inspectable record.
 
-```mermaid
-flowchart LR
-    A[Markdown kaynak] --> B[Senkron ve uygunluk kontrolü]
-    B --> C[Karakter bütçeli devir paketi]
-    C --> D[Yeni ajan oturumu]
-    C --> E[Önce / sonra paket farkı]
-```
+## The contribution
 
-Tasarım tercihleri:
+The handoff layer builds bounded packets from Mneme's local Markdown memory. Accepted decisions, proposals and open tasks are classified using explicit metadata. Records retain source paths, SHA-256 hashes and revisions. `handoff-diff` reports source, metadata and excerpt changes between matching packet scopes.
 
-- Metin kısalabilir; kaynak kimliği ve metadata sessizce kesilmez. Sığmayan kayıt sayısı görünür.
-- Özel, reddedilmiş veya güncelliği doğrulanamayan kaynaklar otomatik taşınmaz.
-- Paket dışında kalmak, kaynak dosyanın silindiği anlamına gelmez.
-- Başka bir ajanın işin bittiğini söylemesi, dış işlemin bağımsız doğrulanması değildir.
-- Yeni devir katmanı ek model, sunucu veya üçüncü taraf Python bağımlılığı gerektirmez; gerçek AI istemcisi kullanımı ayrı maliyettir.
+Context budgeting clips excerpts while preserving source identity. Freshness, visibility and validity checks apply to the selected records. Packet membership and source lifecycle are tracked as distinct concepts.
 
-## İki dakikalık demo
+## Run the demo
 
-Python 3.11+ ile `codex/mneme-handoff` geliştirme dalında:
+Python 3.11+ in the repository:
 
 ```bash
 python scripts/evaluate_v3_handoff.py
 python -m unittest discover -s tests -p "v3_handoff_diff_test.py"
 ```
 
-İlk komut 60 yapay kaynak-paketi senaryosunu çalıştırır; model çağırmaz. İkinci komut kaynak/metadata/metin farkı sözleşmelerini doğrular. Kendi örnek vault'undan paket üretme ve karşılaştırma adımları: [HANDOFF.md](HANDOFF.md). Kişisel notlar yerine yapay kaynaklarla demo yap.
+The first command runs 60 deterministic source-contract scenarios. The second verifies packet-diff behavior. To create a packet from your own example notes, follow [HANDOFF.md](HANDOFF.md).
 
-## Gerçek modelle küçük devam deneyi
+## Real Sol continuation evidence
 
-27 Ekim 2026 tarihinde iki ayrı, salt okunur Codex CLI oturumunda `gpt-6.1-sol` istendi. Birine Mneme paketi, diğerine **aynı altı kaynak kaydının tüm alanlarını koruyan düz liste** verildi. Yedi cevap hedefi çalıştırmalardan önce sabitlendi; kaynak atfı, alıntı içindeki yönlendirmeye uymama ve araç kullanmama ayrıca değerlendirildi.
+Two isolated Codex CLI sessions requested `gpt-6.1-sol`. One received a handoff packet; the other received the same six source records as a flat list. Seven answer targets were frozen before the runs; source citations, quoted-instruction handling and tool-free execution were also evaluated.
 
-| Koşul | Başarılı kontrol |
+| Input | Accepted checks |
 |---|---:|
-| Kaynaklı devir paketi | 10/10 |
-| Aynı kaynakların düz listesi | 10/10 |
+| Source-linked packet | 10/10 |
+| Flat source records | 10/10 |
 
-Her iki oturum da PostgreSQL düzeltmesini, öneri/engellenmiş görev ayrımını ve belirsiz teslim durumunu korudu. **Bu deneyde paket lehine cevap kalitesi üstünlüğü gösterilmedi.** Koşul başına tek yapay senaryo, aynı istemciyle devam kontrolüdür; farklı istemciler arası başarı oranı veya genel benchmark değildir. LF'ye normalize edilmiş hazırlık metinleri 4.351 karakterdir. Windows CRLF dosyaları ise 4.484 ve 5.828 bayttır; stdin aktarımında birebir karakter eşitliği doğrulanmadı. Token sayısı, sıralama ve paket sunumu da farklıdır. Bu nedenle tam eşit girdili bir karşılaştırma iddiası kurulmaz.
+Both sessions preserved the current database decision, proposal/task distinctions and delivery evidence. The [full experiment record](../../reports/live-handoff-2026-10-27.json) includes prompts, answer targets, responses, usage and transport verification. The fixture covers one synthetic scenario per condition. LF-normalized preparation texts were 4,351 characters; Windows CRLF files were 4,484 and 5,828 bytes. These are continuation observations, with method details retained alongside the results.
 
-Girdiler, sabit cevap hedefleri, ham cevaplar ve değerlendirme: [deney kanıtı](../../reports/live-handoff-2026-10-27.json). Hazırlık manifestindeki `model_runs: 0` çalıştırma öncesini; üst düzey `model_runs: 2` tamamlanan deneyi ifade eder. İstemci olayları ayrı bir sunucu model kimliği vermediğinden model adı istenen kimlik olarak kaydedilir.
+[Source-contract results](../../reports/handoff-source-contracts-2026-10-26.json) · [Source format](MARKDOWN.md)
 
-[60 senaryonun kaynak sözleşmesi](../../reports/handoff-source-contracts-2026-10-26.json) ve [geliştirme PR'ı](https://github.com/haliksuveyt/mneme/pull/1) ayrı kanıtlardır. Kaynak sözleşmesi, gerçek model devamı ve alternatif karşısında üstünlük üç farklı ölçüttür.
+## Türkçe
+
+Mneme'nin Markdown hafızası üzerinde kaynaklı devir ve paket farkı katmanı geliştirildi. Karar, öneri ve açık görev metadata ile ayrılır; kaynak yolu, hash ve revizyon korunur. Bütçeli paket, bir sonraki ajana işin izini taşır.
+
+60 kaynak sözleşmesi senaryosu ve paket farkı testleri yerel olarak çalışır. Aynı altı yapay kaynakla iki gerçek Sol oturumunda paket ve düz kayıt koşulları 10'ar kabul kontrolünü geçti. Yöntem, girdi, yanıt ve Windows satır sonu ayrıntıları deney kaydında birlikte sunulur.
