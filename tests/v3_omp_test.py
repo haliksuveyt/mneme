@@ -99,7 +99,7 @@ class OMPHarnessTest(unittest.TestCase):
 
     def drive(self, cwd=None):
         env = inherited_env(PLUGIN_PATH=str(self.hook_file), OMP_CWD=str(cwd or self.vault),
-                   OMP_OUTSIDE=str(Path(self.temp.name) / 'elsewhere'))
+                   OMP_OUTSIDE=str(Path(self.temp.name) / 'elsewhere'), MNEME_V3_NO_SPAWN='1')
         result = subprocess.run([BUN, 'run', str(self.driver)], env=env,
                                 capture_output=True, text=True, encoding='utf-8', cwd=self.vault)
         self.assertEqual(result.returncode, 0, result.stderr)

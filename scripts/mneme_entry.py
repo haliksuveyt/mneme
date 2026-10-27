@@ -400,6 +400,27 @@ def human_result(result, command, installed_version=None):
         message = 'Onceki surume donuldu: ' + str(result.get('version', '?'))
     elif status == 'recovered':
         message = 'Yarim kalan islem kurtarildi. Surum: ' + str(result.get('version', '?'))
+    elif command == 'handoff-diff':
+        lines = ['Devir paketi farki: ' + plain_text(result.get('project')),
+                 'Pakete eklenen: ' + str(len(result.get('added_to_packet', []))),
+                 'Paketten cikan: ' + str(len(result.get('removed_from_packet', []))),
+                 'Degisen: ' + str(len(result.get('updated', [])))]
+        for item in result.get('updated', []):
+            lines.append(plain_text(item['after']['source']) + ': ' +
+                         plain_text(item['before']['section']) + ' -> ' + plain_text(item['after']['section']) +
+                         '; kaynak baytlari ' + ('degisti' if item['source_changed'] else 'ayni') +
+                         '; alanlar: ' + ', '.join(plain_text(name) for name in item['metadata_fields_changed']))
+            if item.get('text_diff'):
+                lines.extend(plain_text(line) for line in item['text_diff'].splitlines())
+            elif item.get('text_diff_unavailable'):
+                lines.append('Metin kismi; tam metin farki gosterilmiyor.')
+        if result.get('partial'):
+            lines.append('Kismi paketler: eksik kaynaklardan sonuc cikarma.')
+        lines.append('Paketten cikmak, kaynak dosyanin silindigini gostermez.')
+        return '\n'.join(lines)
+    elif command == 'handoff':
+        # Preserve the structured packet when a terminal auto-selects human output.
+        return json.dumps(result, ensure_ascii=True, indent=2)
     elif command == 'context':
         records = result.get('records', [])
         message = '\n\n'.join(str(r.get('source', '')) + '\n' + str(r.get('text', '')) for r in records) or 'Eslesen kaynak bulunamadi.'
