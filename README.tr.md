@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/img/hero.svg" alt="mneme — Ajanların değişir. Bilgin kalır." width="100%"></p>
 
-<p align="center"><a href="README.md">English</a> · <strong>Türkçe</strong></p>
+<p align="center"><strong>Türkçe</strong> · <a href="README.en.md">English</a></p>
 
 <p align="center"><a href="https://github.com/haliksuveyt/mneme/actions/workflows/v3.yml"><img src="https://github.com/haliksuveyt/mneme/actions/workflows/v3.yml/badge.svg" alt="CI"></a> <a href="https://github.com/haliksuveyt/mneme/releases/latest"><img src="https://img.shields.io/github/v/release/haliksuveyt/mneme?color=8172c2" alt="Release"></a> <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-64748b" alt="MIT license"></a></p>
 

@@ -1,73 +1,71 @@
-<p align="center"><img src="docs/img/hero.svg" alt="mneme — Your agents change. Your knowledge stays." width="100%"></p>
+<p align="center"><img src="docs/img/hero.svg" alt="mneme — Ajanların değişir. Bilgin kalır." width="100%"></p>
 
-<p align="center"><strong>English</strong> · <a href="README.tr.md">Türkçe</a></p>
+<p align="center"><strong>Türkçe</strong> · <a href="README.en.md">English</a></p>
 
 <p align="center"><a href="https://github.com/haliksuveyt/mneme/actions/workflows/v3.yml"><img src="https://github.com/haliksuveyt/mneme/actions/workflows/v3.yml/badge.svg" alt="CI"></a> <a href="https://github.com/haliksuveyt/mneme/releases/latest"><img src="https://img.shields.io/github/v/release/haliksuveyt/mneme?color=8172c2" alt="Release"></a> <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-64748b" alt="MIT license"></a></p>
 
 
-# A second brain your agents can share
+# Ajanlarının ortak ikinci beyni
 
-Keep project decisions, personal context and lessons in a folder you own. Mneme brings the right source-backed context into your next AI session, records what changed and carries your work between agents.
+Proje kararlarını, kişisel bağlamını ve öğrendiklerini kendi klasöründe tut. Mneme, kaynaklı bilgiyi bir sonraki yapay zekâ oturumuna taşır; neyin değiştiğini ve hangi işin açık kaldığını görünür kılar.
 
 **Claude Code · Codex · Antigravity · Hermes · OpenCode · OMP**
 
-| Your knowledge | Your workflow | Your next session |
+| Bilgin | Çalışma biçimin | Sonraki oturumun |
 |---|---|---|
-| **Plain Markdown** you can read and edit anywhere | **Automatic context** from shared notes and rules | **Source-linked handoffs** with decisions and open work |
+| Her yerde açabileceğin **düz Markdown** | Ortak not ve kurallardan **otomatik bağlam** | Karar ve açık işleri koruyan **kaynaklı devir** |
 
-## One folder. One message.
+## Bir klasör. Bir mesaj.
 
-Python **3.11+**. Open your notes folder in your AI coding client and send:
+Python **3.11+**. Not klasörünü kullandığın yapay zekâ istemcisinde aç ve gönder:
 
-> Read https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md and install my second brain in this folder. Preserve my existing notes, verify the official release checksum, complete the setup and health check, then save an example fact and retrieve it in a new session.
+> https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md adresini oku. Bu klasöre ikinci beynimi kur. Mevcut notlarımı koru, resmî sürümün checksum değerini doğrula, kurulumu ve sağlık kontrolünü tamamla. Sonunda örnek bir bilgiyi kaydedip yeni oturumda geri okuyarak doğrulayalım.
 
-Your agent installs the official portable package and connects the client to the shared memory. Complete your client's workspace and hook trust review, then open a new session.
+Ajanın taşınabilir resmî paketi kurar ve istemciyi ortak hafızaya bağlar. İstemcinin workspace/hook güven incelemesini tamamla, ardından yeni oturum aç.
 
-### Prefer a manual install?
+### Elle kurulum
 
-Download `mneme-v3-3.12.0.zip` and its `.sha256` from [the release page](https://github.com/haliksuveyt/mneme/releases/latest), verify the checksum and extract the ZIP. From the extracted folder:
+[Son sürümden](https://github.com/haliksuveyt/mneme/releases/latest) `mneme-v3-3.12.0.zip` ve `.sha256` dosyasını indir, checksum'u doğrula ve ZIP'i aç. Paket klasöründe:
 
 ```bash
-# macOS / Linux
-python3 scripts/install_v3.py --vault "/path/to/My Notes"
 # Windows
-py -3 scripts/install_v3.py --vault "C:\Notes\My Brain"
+py -3 scripts/install_v3.py --vault "C:\Notlar\Beynim"
+# macOS / Linux
+python3 scripts/install_v3.py --vault "/tam/yol/Notlarım"
 ```
 
-Existing users can run `python3 mneme.py update` from their vault; on Windows use `py -3 mneme.py update`.
+Mevcut kullanıcılar vault klasöründe `py -3 mneme.py update` çalıştırabilir; macOS/Linux'ta `python3 mneme.py update` kullanılır. [Adım adım kurulum →](KURULUM.md)
 
-## Remember the work, not just the chat
+## İşin hafızası seninle gelsin
 
-<img src="docs/img/workflow.svg" alt="Markdown notes to source-linked recall, bounded handoffs and receipts" width="100%">
+<img src="docs/img/workflow.svg" alt="Markdown notlardan kaynaklı bağlama, devir paketine ve sonuç kayıtlarına" width="100%">
 
-- **Context that follows the task.** Recall carries the source path, revision and relevant text, with a configurable context budget.
-- **Decisions stay decisions.** Handoff packets separate accepted decisions, proposals, open tasks and other context using explicit metadata.
-- **Changes stay visible.** Compare two handoff packets to see source, metadata and text changes.
-- **Work has a trail.** Source-linked receipts, revision-aware task updates and session handoffs keep the record connected to the notes.
-- **A folder you control.** The local memory engine uses Python's standard library. AI client access remains with your chosen client.
+- **İşe uygun bağlam.** İlgili metin, kaynak yolu ve revizyonla, ayarlanabilir bütçe içinde gelir.
+- **Karar ile öneri ayrı.** Devir paketi kabul edilmiş kararları, önerileri ve açık görevleri metadata üzerinden ayırır.
+- **Değişiklik görünür.** İki paket arasında kaynak, metadata ve metin farkını incele.
+- **İşin izi kalır.** Kaynak bağlantılı receipt, revizyon kontrollü görev güncellemesi ve oturum kartı birlikte çalışır.
+- **Klasör senin.** Yerel hafıza motoru Python standart kütüphanesini kullanır. Yapay zekâ erişimi seçtiğin istemcide kalır.
 
 ```bash
-python3 mneme.py context "project decisions"
-python3 mneme.py handoff "Orbit" --project orbit --to codex
-python3 mneme.py handoff-diff --before before.json --after after.json
+py -3 mneme.py context "proje kararları"
+py -3 mneme.py handoff "Orbit" --project orbit --to codex
+py -3 mneme.py handoff-diff --before once.json --after sonra.json
 ```
 
-## Built around sources
+## Kaynak merkezli çalışma
 
-Markdown is the source of truth. Sync updates the local index; recall respects source freshness, visibility and validity. Accepted decisions come from metadata. A receipt records a work outcome with references to the supporting sources.
+Gerçek kaynak Markdown dosyalarıdır. Sync yerel indeksi günceller; arama güncellik, görünürlük ve geçerlilik alanlarını dikkate alır. Kabul edilmiş kararlar açık metadata'dan gelir. Receipt, iş sonucunu dayanaklarıyla kaydeder.
 
-[Handoff guide](docs/v3/HANDOFF.md) · [Source format](docs/v3/MARKDOWN.md) · [Preferences](docs/v3/PREFERENCES.md) · [Update and rollback](docs/v3/UPDATE.md)
+[Devir rehberi](docs/v3/HANDOFF.md) · [Kaynak formatı](docs/v3/MARKDOWN.md) · [Tercihler](docs/v3/PREFERENCES.md) · [Güncelleme ve geri alma](docs/v3/UPDATE.md)
 
-## See it in action
+## Çalışırken gör
 
-[Watch the product walkthrough](https://youtu.be/weSUupkkIJ8) · [Engineering case study](docs/v3/CASE-STUDY.md) · [3.12.0 release notes](docs/v3/releases/3.12.0.md)
+[Tanıtım videosu](https://youtu.be/weSUupkkIJ8) · [Mühendislik vaka incelemesi](docs/v3/CASE-STUDY.md) · [3.12.0 sürüm notları](docs/v3/releases/3.12.0.md)
 
-The handoff layer has **60 source-contract scenarios**, packet-diff tests and real Sol continuation evidence. CI exercises Linux, macOS and Windows with Python 3.11 and 3.13. The [case study](docs/v3/CASE-STUDY.md) explains the experiment and design decisions.
+Devir katmanı **60 kaynak sözleşmesi senaryosu**, paket farkı testleri ve gerçek Sol oturumlarıyla incelendi. CI; Linux, macOS ve Windows'ta Python 3.11/3.13 matrisini çalıştırır. Deneyin yöntemi ve tasarım kararları [vaka incelemesinde](docs/v3/CASE-STUDY.md).
 
-## Choose your client
+## İstemcini seç
 
-[MCP](docs/v3/MCP.md) · [Hermes](docs/v3/HERMES.md) · [OpenCode](docs/v3/OPENCODE.md) · [OMP](docs/v3/OMP.md) · [Multiple machines](docs/v3/MULTI-MACHINE.md)
+[MCP](docs/v3/MCP.md) · [Hermes](docs/v3/HERMES.md) · [OpenCode](docs/v3/OPENCODE.md) · [OMP](docs/v3/OMP.md) · [Birden çok makine](docs/v3/MULTI-MACHINE.md)
 
-The [Turkish step-by-step setup](KURULUM.md) starts from creating your first notes folder. Existing Markdown and Obsidian folders work directly.
-
-Built by [Halik Suveyt](https://github.com/haliksuveyt). [MIT license](LICENSE) · [Issues](https://github.com/haliksuveyt/mneme/issues)
+[Halik Suveyt](https://github.com/haliksuveyt) tarafından geliştirildi. [MIT lisansı](LICENSE) · [Sorun bildir](https://github.com/haliksuveyt/mneme/issues)
