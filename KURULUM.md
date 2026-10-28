@@ -29,9 +29,9 @@ Sohbet kutusuna aynen yapıştır ve gönder:
 
 Gerisini yapay zeka yapar. Bilgisayarında Python yoksa onu da kendisi kurar.
 
-## 4. İzin isteklerini onayla
+## 4. İzin isteğini incele
 
-Kurulum sırasında araç "bu klasöre güveniyor musun", "hook'ları çalıştırayım mı" gibi sorular sorabilir. **Evet / İzin ver** de. Bunlar hafızanın her sohbette otomatik yüklenmesi için gerekli.
+İstemci güven onayı isterse kasanın yolunu ve gösterilen hook tanımlarını incele. Beklediğin kasayı ve Mneme kurulumuyla eşleşen hook'ları onayla.
 
 ## 5. Tanış
 
