@@ -17,7 +17,7 @@ Requires Python 3.11 or newer. Open your notes folder in your AI client and send
 
 > Read https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md and install my second brain in this folder. Preserve my existing notes, verify the official release checksum, complete the setup and health check, then save an example fact and retrieve it in a new session.
 
-The agent installs the package and connects the client to the shared memory. Approve the client's trust prompt if it asks, then open a new session.
+The agent installs the package and connects the client to the shared memory. If the client asks for trust, inspect the vault path and the hook definitions shown; approve them when they match the Mneme setup you expect. Then open a new session.
 
 ### Manual install
 
@@ -44,9 +44,10 @@ Existing users can run `python3 mneme.py update` from their vault; on Windows us
 
 ```bash
 python3 mneme.py context "project decisions"
-python3 mneme.py handoff "Orbit" --project orbit --to codex
-python3 mneme.py handoff-diff --before before.json --after after.json
+python3 mneme.py handoff "Orbit database migration" --project orbit --harness claude --to codex --audience internal
 ```
+
+`--harness` selects the client creating the packet; `--to` labels its recipient and does not message another client. The packet is written to stdout. For a complete synthetic example that creates both packets and shows their diff, see the [handoff guide](docs/v3/HANDOFF.md).
 
 ## Sources
 
