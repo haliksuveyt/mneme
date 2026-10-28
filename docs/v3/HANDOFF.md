@@ -17,6 +17,10 @@ Windows'ta `python3` yerine uygun Python 3.11+ çalıştırıcısını kullan.
 `--project` ve `--to` zorunludur. Proje alanı olmayan notlar için mevcut
 `.mneme-projects.json` klasör eşlemesini kullanabilirsin. Alıcı istemciyi seçmek
 ona mesaj göndermez; paket stdout'a yazılır ve kaynak alıntıları veri olarak taşınır.
+`--harness` paketi üreten istemciyi, `--to` alıcı etiketini belirtir. Yerel
+istemciler arası devir için kullandığın istemciyi `--harness` ile, hedef istemciyi
+`--to` ile seç. Bu rehberdeki örnekler `--audience internal` kullanır; bu değer
+varsayılandır ve kamuya açık notlarla iç notları kapsar.
 
 ## Alanlar
 
@@ -58,18 +62,33 @@ eksiksiz özeti veya doğal dilde üretilmiş yeni karar değildir.
 
 ### İki devir paketi arasında ne değişti?
 
-Önce ve sonra üretilmiş aynı proje/sorgu/hedef kitleye ait UTF-8 JSON dosyalarını karşılaştır:
+Depo kökünden çalışan bu örnek resmî yükleyiciyle yalnız geçici bir sentetik kasa
+kurar ve kurulan `mneme.py` giriş noktasını çalıştırır. İlk pakette kabul edilmiş
+SQLite kararı vardır; not daha sonra PostgreSQL önerisine çevrilir. Aynı proje,
+sorgu, kaynak istemci, alıcı, audience, kayıt sınırı ve karakter bütçesiyle iki
+UTF-8 paket üretilir; ardından kurulu giriş noktasındaki gerçek `handoff-diff`
+komutu çalıştırılır. Hook tetiklenmez; kişisel kasa okunmaz, ağ veya model çağrısı
+yapılmaz.
 
-```sh
-python3 mneme.py handoff-diff --before once.json --after sonra.json
-python3 mneme.py handoff-diff --before once.json --after sonra.json --include-text --json
+```text
+# Windows PowerShell
+py -3 docs/v3/examples/handoff_diff_demo.py
+
+# macOS / Linux
+python3 docs/v3/examples/handoff_diff_demo.py
 ```
 
-Kaynak checkout'unda `scripts/mneme_v3.py --vault ... --state ... handoff-diff ...` da çalışır.
-Komut notları, indeksi veya görevleri değiştirmez; paketlerin işaret ettiği kaynak dosyaları
-açmaz. Kaynak hash/revision değişimini, kararın kabulden öneriye geçişini, değişen metadata
-alanlarını ve yalnız alıntının kısalmasını ayrı gösterir. Tam metin farkı açıkça istenirse
-ve iki alıntı da tam ise üretilir; varsayılan çıktıda not gövdeleri/facts değerleri yoktur.
+Örnek Python `stdout` yakalayıp JSON'u UTF-8 olarak dosyaya yazar; bu yüzden Windows
+PowerShell 5'in `>` ile farklı kodlamada dosya üretmesine dayanmaz. Paket dosyaları,
+kasa ve runtime geçici dizinde tutulur ve örnek bitince silinir. Özet diff,
+kabul edilmiş karardan öneriye geçişi, kaynak değişimini ve örnek metin farkını gösterir.
+
+`handoff-diff`, örneğin oluşturduğu iki UTF-8 paketi dosyadan okuyup doğrudan
+karşılaştırır. Komut notları, indeksi veya görevleri değiştirmez; paketlerin işaret
+ettiği kaynak dosyaları açmaz. Kaynak hash/revision değişimini, kararın kabulden öneriye geçişini,
+değişen metadata alanlarını ve yalnız alıntının kısalmasını ayrı gösterir. Tam metin
+farkı yalnız `--include-text` açıkça verildiğinde ve iki alıntı da tam olduğunda
+üretilir; varsayılan çıktıda not gövdeleri/facts değerleri yoktur.
 
 `added_to_packet` ve `removed_from_packet` yalnız paket üyeliğidir. Pakette görünmemek
 dosyanın silindiğini kanıtlamaz; arama sırası/bütçe değişmiş olabilir. Kısmi/bayat indeksli

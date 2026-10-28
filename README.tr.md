@@ -17,7 +17,7 @@ Python 3.11 ya da üstü gerekir. Not klasörünü kullandığın yapay zekâ is
 
 > https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md adresini oku. Bu klasöre ikinci beynimi kur. Mevcut notlarımı koru, resmî sürümün checksum değerini doğrula, kurulumu ve sağlık kontrolünü tamamla. Sonunda örnek bir bilgiyi kaydedip yeni oturumda geri okuyarak doğrulayalım.
 
-Ajan paketi kurar ve istemciyi ortak hafızaya bağlar. İstemci güven onayı isterse onayla, sonra yeni bir oturum aç.
+Ajan paketi kurar ve istemciyi ortak hafızaya bağlar. İstemci güven onayı isterse kasanın yolunu ve gösterilen hook tanımlarını incele; beklediğin Mneme kurulumuyla eşleşiyorsa onayla. Sonra yeni bir oturum aç.
 
 ### Elle kurulum
 
@@ -44,9 +44,10 @@ Mevcut kullanıcılar vault klasöründe `py -3 mneme.py update` çalıştırabi
 
 ```bash
 py -3 mneme.py context "proje kararları"
-py -3 mneme.py handoff "Orbit" --project orbit --to codex
-py -3 mneme.py handoff-diff --before once.json --after sonra.json
+py -3 mneme.py handoff "Orbit database migration" --project orbit --harness claude --to codex --audience internal
 ```
+
+`--harness` paketi üreten istemciyi, `--to` paketteki alıcı etiketini seçer; `--to` başka istemciye mesaj göndermez. Paket stdout'a yazılır. İki paketi üretip farkını gösteren, baştan sona çalışan sentetik örnek için [devir rehberine](docs/v3/HANDOFF.md) bak.
 
 ## Kaynaklar
 
