@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/img/hero.en.svg" alt="mneme — Your agents change. Your knowledge stays." width="100%"></p>
 
-<p align="center"><a href="README.md">Türkçe</a> · <strong>English</strong></p>
+<p align="center"><strong>English</strong> · <a href="README.tr.md">Türkçe</a></p>
 
 <p align="center"><a href="https://github.com/haliksuveyt/mneme/actions/workflows/v3.yml"><img src="https://github.com/haliksuveyt/mneme/actions/workflows/v3.yml/badge.svg" alt="CI"></a> <a href="https://github.com/haliksuveyt/mneme/releases/latest"><img src="https://img.shields.io/github/v/release/haliksuveyt/mneme?color=8172c2" alt="Release"></a> <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-64748b" alt="MIT license"></a></p>
 
@@ -15,7 +15,7 @@ You keep project decisions, notes and lessons in a folder of plain Markdown. Mne
 
 Requires Python 3.11 or newer. Open your notes folder in your AI client and send:
 
-> Read https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.md and install my second brain in this folder. Preserve my existing notes, verify the official release checksum, complete the setup and health check, then save an example fact and retrieve it in a new session.
+> Read https://raw.githubusercontent.com/haliksuveyt/mneme/main/mneme.en.md and install my second brain in this folder. Preserve my existing notes, verify the official release checksum, complete the setup and health check, then save an example fact and retrieve it in a new session.
 
 The agent installs the package and connects the client to the shared memory. If the client asks for trust, inspect the vault path and the hook definitions shown; approve them when they match the Mneme setup you expect. Then open a new session.
 
@@ -47,13 +47,13 @@ python3 mneme.py context "project decisions"
 python3 mneme.py handoff "Orbit database migration" --project orbit --harness claude --to codex --audience internal
 ```
 
-`--harness` selects the client creating the packet; `--to` labels its recipient and does not message another client. The packet is written to stdout. For a complete synthetic example that creates both packets and shows their diff, see the [handoff guide](docs/v3/HANDOFF.md).
+`--harness` selects the client creating the packet; `--to` labels its recipient and does not message another client. The packet is written to stdout. For a complete synthetic example that creates both packets and shows their diff, see the [handoff guide](docs/v3/HANDOFF.en.md).
 
 ## Sources
 
 Markdown files are the source of truth. Sync updates the local index, and recall takes freshness, visibility and validity into account. Accepted decisions come from metadata. A receipt records the outcome of a piece of work with its supporting sources.
 
-[Handoff guide](docs/v3/HANDOFF.md) · [Source format](docs/v3/MARKDOWN.md) · [Preferences](docs/v3/PREFERENCES.md) · [Update and rollback](docs/v3/UPDATE.md)
+[Handoff guide](docs/v3/HANDOFF.en.md) · [Source format](docs/v3/MARKDOWN.md) · [Preferences](docs/v3/PREFERENCES.en.md) · [Update and rollback](docs/v3/UPDATE.en.md)
 
 ## More
 
@@ -63,8 +63,8 @@ The handoff layer was tested with 60 source-contract scenarios, packet-diff test
 
 ## Client guides
 
-[MCP](docs/v3/MCP.md) · [Hermes](docs/v3/HERMES.md) · [OpenCode](docs/v3/OPENCODE.md) · [OMP](docs/v3/OMP.md) · [Multiple machines](docs/v3/MULTI-MACHINE.md)
+[MCP](docs/v3/MCP.en.md) · [Hermes](docs/v3/HERMES.md) · [OpenCode](docs/v3/OPENCODE.md) · [OMP](docs/v3/OMP.md) · [Multiple machines (Turkish)](docs/v3/MULTI-MACHINE.md)
 
-The [Turkish step-by-step setup](KURULUM.md) starts from creating your first notes folder. Existing Markdown and Obsidian folders work directly.
+The [Turkish installer guide](mneme.md) provides the full one-message installation instructions.
 
 Built by [Halik Suveyt](https://github.com/haliksuveyt). [MIT license](LICENSE) · [Issues](https://github.com/haliksuveyt/mneme/issues)
