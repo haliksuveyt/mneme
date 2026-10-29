@@ -21,7 +21,7 @@ python scripts/evaluate_v3_handoff.py
 python -m unittest discover -s tests -p "v3_handoff_diff_test.py"
 ```
 
-The first command runs 60 deterministic source-contract scenarios. The second verifies packet-diff behavior. To create a packet from your own example notes, follow [HANDOFF.md](HANDOFF.md).
+The first command runs 60 deterministic source-contract scenarios. The second verifies packet-diff behavior. To create a packet from your own example notes, follow the [English handoff guide](HANDOFF.en.md).
 
 ## Real Sol continuation evidence
 
