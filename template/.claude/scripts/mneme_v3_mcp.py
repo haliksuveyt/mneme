@@ -109,6 +109,8 @@ def handle(message, run):
     if request_id is None:
         return None  # notifications, e.g. notifications/initialized
     params = message.get("params") or {}
+    if not isinstance(params, dict):
+        return _error(request_id, -32602, "params must be an object")
     if method == "initialize":
         asked = params.get("protocolVersion")
         version = asked if asked in PROTOCOL_VERSIONS else PROTOCOL_VERSIONS[0]
@@ -144,11 +146,17 @@ def serve(vault, stdin=None, stdout=None):
         if not raw:
             continue
         try:
-            response = handle(json.loads(raw.decode("utf-8")), run)
-        except ValueError:
+            message = json.loads(raw.decode("utf-8"))
+        except (ValueError, RecursionError):
             response = _error(None, -32700, "parse error")
+        else:
+            try:
+                response = handle(message, run)
+            except Exception:  # one bad request must not end the server
+                response = _error(message.get("id") if isinstance(message, dict) else None, -32603, "internal error")
         if response is not None:
-            stdout.write((json.dumps(response, ensure_ascii=False) + "\n").encode("utf-8"))
+            # ASCII output cannot fail to encode, even for a lone surrogate.
+            stdout.write((json.dumps(response) + "\n").encode("ascii"))
             stdout.flush()
     return 0
 

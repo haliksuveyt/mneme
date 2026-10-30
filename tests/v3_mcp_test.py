@@ -77,6 +77,46 @@ class McpTest(unittest.TestCase):
         self.assertEqual(responses[1]['error']['code'], -32700)
         self.assertEqual(len(responses), 2)
 
+    def test_malformed_requests_get_an_error_and_the_server_keeps_serving(self):
+        """#7: each of these used to end the process, and every tool with it."""
+        def serve(*requests):
+            stdout = io.BytesIO()
+            mcp.serve(SCRIPTS, io.BytesIO(b'\n'.join(requests) + b'\n'), stdout)
+            return [json.loads(line) for line in stdout.getvalue().splitlines()]
+
+        ping = b'{"jsonrpc":"2.0","id":9,"method":"ping"}'
+        for method in ('initialize', 'tools/call'):
+            with self.subTest(method=method):
+                bad = json.dumps({'jsonrpc': '2.0', 'id': 1, 'method': method, 'params': [1]}).encode()
+                first, second = serve(bad, ping)
+                self.assertEqual(first['error']['code'], -32602)
+                self.assertEqual(first['id'], 1)
+                self.assertEqual(second['result'], {})
+        surrogate = b'{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"\\ud800"}}'
+        first, second = serve(surrogate, ping)
+        self.assertEqual(first['error']['code'], -32602)
+        self.assertEqual(second['result'], {})
+        first, second = serve(b'[' * 200000, ping)
+        self.assertEqual(first['error']['code'], -32700)
+        self.assertEqual(second['result'], {})
+
+    def test_unexpected_handler_failure_is_an_internal_error(self):
+        original, mcp.handle = mcp.handle, lambda *a: 1 / 0
+        self.addCleanup(setattr, mcp, 'handle', original)
+        stdout = io.BytesIO()
+        mcp.serve(SCRIPTS, io.BytesIO(b'{"jsonrpc":"2.0","id":4,"method":"ping"}\n[1]\n'), stdout)
+        first, second = [json.loads(line) for line in stdout.getvalue().splitlines()]
+        self.assertEqual((first['id'], first['error']['code']), (4, -32603))
+        self.assertEqual((second['id'], second['error']['code']), (None, -32603))
+
+    def test_non_ascii_tool_output_survives_the_wire(self):
+        stdout = io.BytesIO()
+        original, mcp.make_runner = mcp.make_runner, lambda vault: lambda *a: (0, 'doğrulama')
+        self.addCleanup(setattr, mcp, 'make_runner', original)
+        request = {'jsonrpc': '2.0', 'id': 1, 'method': 'tools/call', 'params': {'name': 'mneme_doctor', 'arguments': {}}}
+        mcp.serve(SCRIPTS, io.BytesIO(json.dumps(request).encode() + b'\n'), stdout)
+        self.assertEqual(json.loads(stdout.getvalue())['result']['content'][0]['text'], 'doğrulama')
+
     def test_real_process_speaks_json_rpc(self):
         request = json.dumps({'jsonrpc': '2.0', 'id': 1, 'method': 'tools/list'}) + '\n'
         done = subprocess.run([sys.executable, str(SCRIPTS / 'mneme_v3_mcp.py')], input=request.encode(),

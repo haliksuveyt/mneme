@@ -9,8 +9,8 @@ import sqlite3
 
 
 BUILTIN_PATTERNS = (
-    re.compile(r"(?i)(?<=[?&])(?:api[_ -]?key|access[_ -]?token|token|secret|password|passwd)=[^&\s]{8,}"),
-    re.compile(r"""(?i)(?<![a-zA-Z0-9_])(?:\\{0,8}["\']?(?:api[_ -]?key|access[_ -]?token|token|secret|password|passwd)\\{0,8}["\']?)\s*[:=]\s*(?:\\{0,8}["\']\S{8,}\\{0,8}["\']|[^"\'\s,;][^\s,;]{7,})"""),
+    re.compile(r"(?i)(?<=[?&])(?:[A-Za-z0-9_-]*[_-])?(?:api[_ -]?key|access[_ -]?token|token|secret(?:[_ -]?access)?(?:[_ -]?key)?|password|passwd)=[^&\s]{8,}"),
+    re.compile(r"""(?i)(?<![a-zA-Z0-9])(?:\\{0,8}["\']?(?:api[_ -]?key|access[_ -]?token|token|secret(?:[_ -]?access)?(?:[_ -]?key)?|password|passwd)\\{0,8}["\']?)\s*[:=]\s*(?:\\{0,8}["\']\S{8,}\\{0,8}["\']|[^"\'\s,;][^\s,;]{7,})"""),
     re.compile(r"(?<=://)[^/\s?#:]*:[^/\s?#]+(?=@[^/\s?#@]+)"),
     re.compile(r"\bgh(?:p|o|u|s|r)_[A-Za-z0-9]{20,255}\b"),
     re.compile(r"\bgithub_pat_[A-Za-z0-9_]{20,255}\b"),
@@ -65,11 +65,14 @@ def redact(text, state):
     for pattern in BUILTIN_PATTERNS:
         result, matches = pattern.subn('[REDACTED]', result)
         count += matches
-    for literal in _custom_literals(state):
-        matches = result.count(literal)
-        if matches:
-            result = result.replace(literal, '[REDACTED]')
-            count += matches
+    literals = _custom_literals(state)
+    if literals:
+        # One longest-first pass, so a shorter literal cannot split a longer one.
+        # The marker is an alternative too, so a literal cannot match inside it.
+        pattern = re.compile('|'.join(map(re.escape, sorted({*literals, '[REDACTED]'}, key=len, reverse=True))))
+        matches = pattern.findall(result)
+        count += len(matches) - matches.count('[REDACTED]')
+        result = pattern.sub('[REDACTED]', result)
     return result, count
 
 
