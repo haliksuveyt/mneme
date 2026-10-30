@@ -21,7 +21,7 @@ The agent installs the package and connects the client to the shared memory. If 
 
 ### Manual install
 
-Download `mneme-v3-3.12.0.zip` and its `.sha256` from [the release page](https://github.com/haliksuveyt/mneme/releases/latest), verify the checksum and extract the ZIP. From the extracted folder:
+Download `mneme-v3-3.12.1.zip` and its `.sha256` from [the release page](https://github.com/haliksuveyt/mneme/releases/latest), verify the checksum and extract the ZIP. From the extracted folder:
 
 ```bash
 # macOS / Linux
@@ -57,7 +57,7 @@ Markdown files are the source of truth. Sync updates the local index, and recall
 
 ## More
 
-[Watch the product walkthrough](https://youtu.be/weSUupkkIJ8) · [Engineering case study](docs/v3/CASE-STUDY.md) · [3.12.0 release notes](docs/v3/releases/3.12.0.md#english)
+[Watch the product walkthrough](https://youtu.be/weSUupkkIJ8) · [Engineering case study](docs/v3/CASE-STUDY.md) · [3.12.1 release notes](docs/v3/releases/3.12.1.md#english)
 
 The handoff layer was tested with 60 source-contract scenarios, packet-diff tests and real agent handoff sessions. CI runs on Linux, macOS and Windows with Python 3.11 and 3.13. The method and design decisions are in the [case study](docs/v3/CASE-STUDY.md).
 
