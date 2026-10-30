@@ -142,6 +142,58 @@ class SecretFilterTest(unittest.TestCase):
         database = (self.state/'secret-filter.sqlite3').read_bytes()
         self.assertNotIn(literal.encode(), database)
 
+    def test_prefixed_names_are_redacted(self):
+        """#5: most .env lines and OAuth responses put a prefix before the name."""
+        value = 'synthetic-value-123'
+        names = ['DB_PASSWORD', 'OPENAI_API_KEY', 'MEM0_API_KEY', 'GITHUB_TOKEN', 'client_secret',
+                 'refresh_token', 'AWS_SECRET_ACCESS_KEY', 'aws-secret-access-key', 'SECRET_KEY']
+        for name in names:
+            for text in (f'{name}={value}', f'{name}: {value}', f'"{name}": "{value}"'):
+                with self.subTest(text=text):
+                    filtered, count = redact(text, self.state)
+                    self.assertGreaterEqual(count, 1)
+                    self.assertNotIn(value, filtered)
+        for url in (f'https://x.test/cb?client_secret={value}&format=json',
+                    f'https://x.test/cb?a=1&refresh_token={value}&format=json',
+                    f'https://x.test/cb?x-api-key={value}&format=json'):
+            with self.subTest(url=url):
+                filtered, count = redact(url, self.state)
+                self.assertEqual(count, 1)
+                self.assertNotIn(value, filtered)
+                self.assertIn('&format=json', filtered)
+
+    def test_names_that_only_contain_a_keyword_are_left_alone(self):
+        for text in ('token_count=123456789', 'max_tokens=123456789', 'secret_filter=enabled-here',
+                     'password_hint=remember-the-dog', 'https://x.test/?token_count=123456789',
+                     'https://x.test/?page_size=123456789'):
+            with self.subTest(text=text):
+                self.assertEqual(redact(text, self.state), (text, 0))
+
+    def test_prefixed_fact_keys_are_redacted_like_bare_ones(self):
+        save(self.vault, {'secret_filter': True})
+        result = self.engine.task_create('tasks/prefixed.md', 'Body.', {
+            'id': 'prefixed-task', 'title': 'Prefixed', 'status': 'active', 'owner': 'me',
+            'facts': {'db_password': 'hunter2hunter2', 'environment': 'production'}})
+        self.assertEqual(result['facts'], {'db_password': '[REDACTED]', 'environment': 'production'})
+        self.assertNotIn('hunter2hunter2', (self.vault/'tasks/prefixed.md').read_text(encoding='utf-8'))
+
+    def test_custom_literal_order_cannot_leave_part_of_a_longer_secret(self):
+        """#6: a shorter literal listed first used to leave the secret's tail in the note."""
+        self.state.mkdir(parents=True, exist_ok=True)
+        path = self.state/'secret-patterns.txt'
+        for lines in (('acme-prod', 'acme-prod-7f3k9q2x'), ('acme-prod-7f3k9q2x', 'acme-prod')):
+            with self.subTest(lines=lines):
+                path.write_text('\n'.join(lines)+'\n', encoding='utf-8')
+                self.assertEqual(redact('key acme-prod-7f3k9q2x and acme-prod', self.state),
+                                 ('key [REDACTED] and [REDACTED]', 2))
+
+    def test_custom_literal_cannot_damage_the_replacement_marker(self):
+        self.state.mkdir(parents=True, exist_ok=True)
+        (self.state/'secret-patterns.txt').write_text('DACT\nCUSTOM-CANARY\n', encoding='utf-8')
+        self.assertEqual(redact('CUSTOM-CANARY then password=hunter2hunter2', self.state),
+                         ('[REDACTED] then [REDACTED]', 2))
+        self.assertEqual(redact('DACTYL', self.state), ('[REDACTED]YL', 1))
+
     def test_quoted_json_secrets_are_redacted_and_natural_text_preserved(self):
         """JSON credentials must be redacted while natural text phrases with spaces are not."""
         fixtures = [
