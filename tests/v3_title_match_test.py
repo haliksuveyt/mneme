@@ -8,11 +8,12 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "template/.claude/scripts"))
 import mneme_v3  # noqa: E402
+from v3_package_helpers import TemporaryDirectory
 
 
 class TitleMatchSearchTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix="v3-title-match-")
+        self.tmp = TemporaryDirectory(prefix="v3-title-match-")
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / "vault"

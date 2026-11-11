@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -35,7 +35,7 @@ class FakeHermesContext:
 
 class HermesHarnessTest(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(prefix='mneme-hermes-')
+        self.temp = TemporaryDirectory(prefix='mneme-hermes-')
         self.addCleanup(self.temp.cleanup)
         home = Path(self.temp.name) / 'home'
         home.mkdir()

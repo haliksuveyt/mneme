@@ -10,7 +10,7 @@ import unittest
 from contextlib import redirect_stdout
 from unittest.mock import patch
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
@@ -24,7 +24,7 @@ SECRET = 'sk-' + 'a' * 40
 
 class AutoContextTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'
@@ -229,7 +229,7 @@ class HookWiringTest(unittest.TestCase):
         return json.loads(output.getvalue())
 
     def test_hook_filters_when_enabled_and_is_unchanged_otherwise(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with TemporaryDirectory() as tmp:
             vault, state = Path(tmp) / 'vault', Path(tmp) / 'state'
             (vault / 'notes').mkdir(parents=True)
             (vault / 'notes/deploy.md').write_text('---\nid: deploy\n---\nQuartz deploy steps: push to main.\n', encoding='utf-8')

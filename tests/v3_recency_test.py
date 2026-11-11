@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE = ROOT / 'template/.claude/scripts/mneme_v3_sync.py'
@@ -34,7 +35,7 @@ BODY = 'Nebula calibration toplanti kararlari owner Synthetic Reviewer.\n'
 class RecencyAliasTest(unittest.TestCase):
     def setUp(self):
         self.module = load_module()
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-recency-test-')
+        self.tmp = TemporaryDirectory(prefix='mneme-recency-test-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'Synthetic Mneme Çalışma'

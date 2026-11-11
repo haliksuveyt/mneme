@@ -23,7 +23,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from v3_package_helpers import INSTALLER, ROOT, build_package, install, isolated_env, rewrite_zip
+from v3_package_helpers import INSTALLER, ROOT, build_package, install, isolated_env, rewrite_zip, TemporaryDirectory
 
 MODULE = ROOT / 'template/.claude/scripts/mneme_v3_update.py'
 ORIGINAL_RESOLVE = Path.resolve
@@ -40,7 +40,7 @@ def load(path, name):
 class RedirectedChildrenTest(unittest.TestCase):
     def setUp(self):
         self.updater = load(MODULE, 'mneme_v3_update_redirect_test_subject')
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-update-redirect-')
+        self.tmp = TemporaryDirectory(prefix='v3-update-redirect-')
         self.addCleanup(self.tmp.cleanup)
         # Resolve the fixture base first so the only alias under test is the faked one.
         self.base = ORIGINAL_RESOLVE(Path(self.tmp.name))

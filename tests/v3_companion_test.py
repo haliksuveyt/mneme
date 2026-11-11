@@ -8,7 +8,7 @@ import tempfile
 import unittest
 import zipfile
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 COMPANION = '🔮 850-Companion'
@@ -16,7 +16,7 @@ COMPANION = '🔮 850-Companion'
 
 class CompanionTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='companion-regression-')
+        self.tmp = TemporaryDirectory(prefix='companion-regression-')
         self.addCleanup(self.tmp.cleanup)
         self.base = Path(self.tmp.name)
         self.vault = self.base / 'Örnek Mneme'; self.vault.mkdir()

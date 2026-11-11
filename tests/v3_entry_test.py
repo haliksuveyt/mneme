@@ -3,12 +3,12 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from v3_package_helpers import install, isolated_env, run_python
+from v3_package_helpers import install, isolated_env, run_python, TemporaryDirectory
 
 
 class EntryPresentationTest(unittest.TestCase):
     def test_human_doctor_and_machine_doctor_report_unverified_install(self):
-        with tempfile.TemporaryDirectory(prefix='v3-entry-test-') as t:
+        with TemporaryDirectory(prefix='v3-entry-test-') as t:
             root = Path(t);vault=root/'vault';vault.mkdir();state=root/'state';env=isolated_env(root/'home')
             installed=install(vault,state,env)
             self.assertEqual(installed.returncode,0,installed.stderr)

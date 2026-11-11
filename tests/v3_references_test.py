@@ -11,7 +11,7 @@ import tempfile
 import unicodedata
 import unittest
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -24,7 +24,7 @@ COMPANION = '🔮 850-Companion'
 
 class ReferencesTest(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-references-')
+        tmp = TemporaryDirectory(prefix='v3-references-')
         self.addCleanup(tmp.cleanup)
         self.vault = Path(tmp.name) / 'Örnek Mneme'
         self.write('knowledge/concepts/Var Olan Not.md', '# Var olan not\n')
@@ -101,7 +101,7 @@ class ReferencesTest(unittest.TestCase):
 
 class DoctorIntegrationTest(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-references-doctor-')
+        tmp = TemporaryDirectory(prefix='v3-references-doctor-')
         self.addCleanup(tmp.cleanup)
         self.vault, self.state = Path(tmp.name) / 'Örnek Mneme', Path(tmp.name) / 'state'
         self.vault.mkdir()

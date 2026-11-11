@@ -15,7 +15,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -65,7 +65,7 @@ def oversized_threads(count=15, updates=16):
 
 class HygieneCliTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='companion-hygiene-')
+        self.tmp = TemporaryDirectory(prefix='companion-hygiene-')
         self.addCleanup(self.tmp.cleanup)
         self.base = Path(self.tmp.name)
         self.vault = self.base / 'Örnek Mneme'
@@ -610,7 +610,7 @@ class CompactionPlanTest(unittest.TestCase):
 
 class CompactionRaceTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='companion-race-')
+        self.tmp = TemporaryDirectory(prefix='companion-race-')
         self.addCleanup(self.tmp.cleanup)
         self.vault = Path(self.tmp.name) / 'vault'
         self.directory = self.vault / COMPANION

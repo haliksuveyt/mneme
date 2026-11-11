@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import types
 import subprocess
 import unittest
 
@@ -13,11 +14,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
 from mneme_v3_handoff import build_packet, serialized_size
 from mneme_v3_sync import SyncEngine
+from v3_package_helpers import TemporaryDirectory
 
 
 class HandoffTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-handoff-')
+        self.tmp = TemporaryDirectory(prefix='mneme-handoff-')
         self.addCleanup(self.tmp.cleanup)
         self.vault = Path(self.tmp.name) / 'vault'
         self.vault.mkdir()
@@ -133,6 +135,8 @@ class HandoffTest(unittest.TestCase):
     def test_frozen_sixty_source_packet_scenarios(self):
         spec = importlib.util.spec_from_file_location('mneme_handoff_evaluator_test', ROOT / 'scripts/evaluate_v3_handoff.py')
         evaluator = importlib.util.module_from_spec(spec); spec.loader.exec_module(evaluator)
+        # The evaluator creates sixty scratch trees; give each the retrying Windows cleanup.
+        evaluator.tempfile = types.SimpleNamespace(TemporaryDirectory=TemporaryDirectory)
         report = evaluator.evaluate()
         self.assertEqual(report['total'], 60)
         self.assertEqual(report['passed'], 60, [case for case in report['cases'] if not case['passed']])

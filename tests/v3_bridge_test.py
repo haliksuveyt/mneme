@@ -8,7 +8,7 @@ import tempfile
 import unittest
 import zipfile
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -20,7 +20,7 @@ from mneme_v3_sync import SyncEngine
 
 class BridgeTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name).resolve()
         self.vault = self.root / 'Brain Space'; self.vault.mkdir()

@@ -20,11 +20,12 @@ sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
 import mneme_entry
 from mneme_v3_projections import knowledge_freshness, check_instruction_conflicts
 from mneme_v3_sync import SyncEngine
+from v3_package_helpers import TemporaryDirectory
 
 
 class KnowledgeDistillationTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'
