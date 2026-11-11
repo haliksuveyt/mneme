@@ -28,7 +28,7 @@ class PackagingTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='v3-packaging-') as t:
             payload = _payload.copy_payload(ROOT, Path(t) / 'payload')
             installer = cli.load_installer(payload)
-            self.assertEqual(installer.ROOT, payload)
+            self.assertEqual(installer.ROOT.resolve(), payload.resolve())
             self.assertEqual(installer.DEFAULT_VERSION, (ROOT / 'VERSION').read_text().strip())
             vault = Path(t) / 'vault'; vault.mkdir()
             plan = installer.install(vault, Path(t) / 'state', plan_only=True)
