@@ -1,0 +1,4 @@
+include VERSION LICENSE README.md
+include scripts/install_v3.py scripts/mneme_v3.py scripts/mneme_entry.py
+graft template
+global-exclude __pycache__ *.py[cod]

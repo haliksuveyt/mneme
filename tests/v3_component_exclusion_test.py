@@ -8,14 +8,14 @@ import sys
 import tempfile
 import unittest
 
-from v3_package_helpers import ROOT, build_package, isolated_env, run_python
+from v3_package_helpers import ROOT, build_package, isolated_env, run_python, TemporaryDirectory
 
 START, END = "<!-- mneme-v3:start -->", "<!-- mneme-v3:end -->"
 
 
 class ComponentExclusionTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix="v3-component-exclusion-")
+        self.tmp = TemporaryDirectory(prefix="v3-component-exclusion-")
         self.addCleanup(self.tmp.cleanup)
         self.base = Path(self.tmp.name)
         self.vault = self.base / "Örnek Vault"

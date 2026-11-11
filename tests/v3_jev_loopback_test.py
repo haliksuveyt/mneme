@@ -10,7 +10,7 @@ import unittest
 import urllib.request
 from unittest.mock import patch
 
-from v3_package_helpers import windows_runtime_env
+from v3_package_helpers import windows_runtime_env, TemporaryDirectory
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'template/.claude/scripts'))
 import mneme_v3_jev_client as client
@@ -53,7 +53,7 @@ def scores(body):
 
 class LoopbackProxyTest(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
+        tmp = TemporaryDirectory()
         self.addCleanup(tmp.cleanup)
         self.state = Path(tmp.name)
         self.bridge, self.bridge_hits = serve(self, scores)
@@ -101,7 +101,7 @@ class LoopbackProxyTest(unittest.TestCase):
 
 class TelemetryTest(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
+        tmp = TemporaryDirectory()
         self.addCleanup(tmp.cleanup)
         self.state = Path(tmp.name)
         patcher = patch.dict(os.environ, {'TYPESAFE_API_KEY': KEY, **windows_runtime_env()}, clear=True)

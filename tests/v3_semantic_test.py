@@ -3,6 +3,7 @@
 import importlib.util
 from pathlib import Path
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('evaluate_v3', ROOT / 'scripts/evaluate_v3.py')
@@ -39,7 +40,7 @@ class SemanticContractTest(unittest.TestCase):
         fixture, _ = evaluator.read_fixture()
         import tempfile
         from unittest.mock import patch
-        with tempfile.TemporaryDirectory(prefix='v3-adapter-negative-') as tmp:
+        with TemporaryDirectory(prefix='v3-adapter-negative-') as tmp:
             store = evaluator.seed_store(module, Path(tmp), fixture)
             try:
                 original = module.shared_context

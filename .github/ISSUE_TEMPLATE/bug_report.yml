@@ -1,0 +1,58 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use synthetic notes in examples. Do not paste real vault content or secrets.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what you got.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Mneme version
+      description: Contents of `.mneme-version` in your vault, or the `VERSION` file of the package.
+      placeholder: "3.12.1"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [Windows, macOS, Linux, Other]
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      description: Output of `python3 --version` (Windows `py -3 --version`).
+      placeholder: "3.13.1"
+    validations:
+      required: true
+  - type: dropdown
+    id: client
+    attributes:
+      label: Client
+      options: [Claude Code, Codex, Antigravity, Hermes, OpenCode, OMP, MCP client, CLI only]
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: doctor output
+      description: Run `python3 mneme.py doctor` (Windows `py -3 mneme.py doctor`) in your vault and paste the output.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Commands or prompts, in order.

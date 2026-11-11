@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -25,7 +26,7 @@ OTHER_NOTE = 'Grocery list for the weekend: apples, bread, olive oil.'
 class StrictRetrieveTest(unittest.TestCase):
     def setUp(self):
         self.module = evaluator.load_runtime()
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-strict-test-')
+        self.tmp = TemporaryDirectory(prefix='v3-strict-test-')
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'
@@ -69,7 +70,7 @@ class StrictRetrieveTest(unittest.TestCase):
 
 class StrictHookTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-strict-hook-')
+        self.tmp = TemporaryDirectory(prefix='v3-strict-hook-')
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'

@@ -6,6 +6,7 @@ import tempfile
 import unittest
 
 from v3_sync_test import load_module
+from v3_package_helpers import TemporaryDirectory
 
 LF = chr(10)
 CR = chr(13)
@@ -14,7 +15,7 @@ CR = chr(13)
 class NoteEditTest(unittest.TestCase):
     def setUp(self):
         self.module = load_module()
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-note-edit-test-')
+        self.tmp = TemporaryDirectory(prefix='mneme-note-edit-test-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

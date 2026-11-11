@@ -14,7 +14,7 @@ import sys
 import tempfile
 import unittest
 
-from v3_package_helpers import isolated_env
+from v3_package_helpers import isolated_env, TemporaryDirectory
 from v3_transaction_root_test import link_directory
 
 ROOT = Path(os.environ.get("MNEME_TEST_REPO", Path(__file__).resolve().parents[1]))
@@ -28,7 +28,7 @@ CONTAINER = "C:" + SEP + "Users" + SEP + "ada" + SEP + "AppData" + SEP + "Local"
 
 class StateLocationTest(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix="v3-state-location-")
+        tmp = TemporaryDirectory(prefix="v3-state-location-")
         self.addCleanup(tmp.cleanup)
         base = Path(tmp.name).resolve()
         self.vault = base / "vault"

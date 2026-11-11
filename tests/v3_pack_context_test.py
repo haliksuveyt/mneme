@@ -15,6 +15,7 @@ if str(SCRIPTS) not in sys.path:
 
 import mneme_v3 as runtime  # noqa: E402
 from mneme_v3 import pack_context, render_context, MemoryStore, _json  # noqa: E402
+from v3_package_helpers import TemporaryDirectory
 
 MARKER = runtime.CONTEXT_MARKER
 HOOK_PREFIX = ('Receipt session=000000000000000000000000; choose --harness for the current client.\n'
@@ -163,7 +164,7 @@ class TestPackContextFairShare(unittest.TestCase):
 
     def test_retrieve_integration_delivers_multiple_sources(self):
         """Integration: MemoryStore.retrieve delivers multiple sources when one is long."""
-        tmp = tempfile.TemporaryDirectory(prefix='mneme_test_pack_context_')
+        tmp = TemporaryDirectory(prefix='mneme_test_pack_context_')
         self.addCleanup(tmp.cleanup)
         root = Path(tmp.name)
         vault = root / 'vault'

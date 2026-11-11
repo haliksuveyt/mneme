@@ -11,11 +11,12 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
 from mneme_v3_sync import SyncEngine, parse
+from v3_package_helpers import TemporaryDirectory
 
 
 class TaskCompletionTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-task-completion-')
+        self.tmp = TemporaryDirectory(prefix='v3-task-completion-')
         self.addCleanup(self.tmp.cleanup)
         self.vault = Path(self.tmp.name) / 'vault'
         self.vault.mkdir()

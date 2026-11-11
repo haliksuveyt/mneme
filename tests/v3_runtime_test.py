@@ -8,6 +8,7 @@ import sqlite3
 import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('v3_runtime_evaluator', ROOT / 'scripts/evaluate_v3.py')
@@ -19,7 +20,7 @@ class RuntimeContractTest(unittest.TestCase):
     def setUp(self):
         self.module = evaluator.load_runtime()
         self.assertIsNotNone(self.module, 'Runtime not implemented')
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-runtime-test-')
+        self.tmp = TemporaryDirectory(prefix='v3-runtime-test-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

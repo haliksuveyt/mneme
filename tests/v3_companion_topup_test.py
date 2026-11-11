@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
@@ -36,7 +37,7 @@ BODIES = {
 
 class TopupTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='topup-')
+        self.tmp = TemporaryDirectory(prefix='topup-')
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'

@@ -10,6 +10,7 @@ import sys
 import tempfile
 import unittest
 import zipfile
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 # Exactly the Python files the release builder packages (scripts/build_v3_release.py).
@@ -58,7 +59,7 @@ class StdlibImportTest(unittest.TestCase):
         builder = importlib.util.module_from_spec(spec); spec.loader.exec_module(builder)
         spec = importlib.util.spec_from_file_location('mneme_updater_under_test', ROOT / 'template/.claude/scripts/mneme_v3_update.py')
         updater = importlib.util.module_from_spec(spec); spec.loader.exec_module(updater)
-        with tempfile.TemporaryDirectory() as directory:
+        with TemporaryDirectory() as directory:
             archive = Path(directory) / 'release.zip'
             builder.build(archive, '3.0.0')
             with zipfile.ZipFile(archive) as release:

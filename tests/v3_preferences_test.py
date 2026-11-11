@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
@@ -17,7 +17,7 @@ import mneme_v3_preferences as prefs
 
 class PreferencesTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'Örnek Vault'; self.vault.mkdir()

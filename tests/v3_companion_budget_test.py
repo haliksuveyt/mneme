@@ -6,6 +6,7 @@ import re
 import sys
 import tempfile
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 
@@ -36,7 +37,7 @@ BODIES = {
 
 class CompanionBudgetTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='companion-budget-')
+        self.tmp = TemporaryDirectory(prefix='companion-budget-')
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'
@@ -111,7 +112,7 @@ class CompanionBudgetTest(unittest.TestCase):
     def test_session_start_snapshot_is_included_when_companion_sources_fit(self):
         # When companion sources are small and fit within their floor, spare budget
         # carries an ambient snapshot as intended.
-        tmp = tempfile.TemporaryDirectory(prefix='companion-small-')
+        tmp = TemporaryDirectory(prefix='companion-small-')
         self.addCleanup(tmp.cleanup)
         root = Path(tmp.name)
         vault = root / 'vault'
@@ -193,7 +194,7 @@ class CompanionBudgetTest(unittest.TestCase):
     def test_knowledge_index_scales_with_room_on_larger_budgets(self):
         # Issue #146: with standard companion sizes, allowance expands beyond
         # the legacy 600 cap proportionally with room (up to 1500 chars).
-        tmp = tempfile.TemporaryDirectory(prefix='companion-index-scale-')
+        tmp = TemporaryDirectory(prefix='companion-index-scale-')
         self.addCleanup(tmp.cleanup)
         root = Path(tmp.name)
         vault = root / 'vault'
@@ -244,7 +245,7 @@ class CompanionBudgetTest(unittest.TestCase):
     def test_knowledge_index_does_not_grow_while_companion_is_clipped(self):
         # #146 kept the map at its old share while companion sources are clipped; only the
         # separate opening budget (up to 24000) has room//4 above 600 in that state.
-        tmp = tempfile.TemporaryDirectory(prefix='companion-index-clipped-')
+        tmp = TemporaryDirectory(prefix='companion-index-clipped-')
         self.addCleanup(tmp.cleanup)
         vault = Path(tmp.name) / 'vault'
         (vault / COMPANION).mkdir(parents=True)

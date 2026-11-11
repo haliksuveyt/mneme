@@ -16,7 +16,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tests'))
-from v3_package_helpers import inherited_env  # noqa: E402
+from v3_package_helpers import inherited_env, TemporaryDirectory  # noqa: E402
 
 spec = importlib.util.spec_from_file_location('evaluate_v3_usage', ROOT / 'scripts/evaluate_v3_usage.py')
 usage = importlib.util.module_from_spec(spec)
@@ -79,7 +79,7 @@ class Transcript:
 
 class UsageReport(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-usage-')
+        self.tmp = TemporaryDirectory(prefix='v3-usage-')
         self.addCleanup(self.tmp.cleanup)
         base = Path(self.tmp.name)
         (base / 'Kasa Şube 🔮' / 'knowledge/concepts').mkdir(parents=True)

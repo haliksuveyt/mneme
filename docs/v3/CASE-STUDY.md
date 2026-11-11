@@ -32,9 +32,9 @@ Two isolated Codex CLI sessions requested `gpt-6.1-sol`. One received a handoff 
 | Source-linked packet | 10/10 |
 | Flat source records | 10/10 |
 
-Both sessions preserved the current database decision, proposal/task distinctions and delivery evidence. The [full experiment record](../../reports/live-handoff-2026-10-27.json) includes prompts, answer targets, responses, usage and transport verification. The fixture covers one synthetic scenario per condition. LF-normalized preparation texts were 4,351 characters; Windows CRLF files were 4,484 and 5,828 bytes. These are continuation observations, with method details retained alongside the results.
+Both sessions preserved the current database decision, proposal/task distinctions and delivery evidence. The [full experiment record](evidence/reports/live-handoff-2026-10-27.json) includes prompts, answer targets, responses, usage and transport verification. The fixture covers one synthetic scenario per condition. LF-normalized preparation texts were 4,351 characters; Windows CRLF files were 4,484 and 5,828 bytes. These are continuation observations, with method details retained alongside the results.
 
-[Source-contract results](../../reports/handoff-source-contracts-2026-10-26.json) · [Source format](MARKDOWN.md)
+[Source-contract results](evidence/reports/handoff-source-contracts-2026-10-26.json) · [Source format](MARKDOWN.md)
 
 ## Türkçe
 

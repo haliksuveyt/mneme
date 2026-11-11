@@ -17,6 +17,7 @@ sys.path.insert(0, str(SCRIPTS))
 import mneme_v3 as runtime  # noqa: E402
 import mneme_v3_jev as advisor  # noqa: E402
 import mneme_v3_passage as passage  # noqa: E402
+from v3_package_helpers import TemporaryDirectory
 
 FILLER = ' '.join(f'dolgu{i} kelime{i % 7} satir{i % 11}.' for i in range(60))
 ANSWER = 'Yedekleme işi her gece 03:40 saatinde zirkon kovasına yazıyor.'
@@ -30,7 +31,7 @@ HOOK_PREFIX = ('Receipt session=000000000000000000000000; choose --harness for t
 
 class Vault(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-passage-')
+        self.tmp = TemporaryDirectory(prefix='v3-passage-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

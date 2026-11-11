@@ -15,7 +15,7 @@ import time
 import unittest
 import unicodedata
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 MODULE = ROOT / 'template/.claude/scripts' / 'mneme_v3_hygiene.py'
@@ -26,7 +26,7 @@ spec.loader.exec_module(hygiene)
 
 class BoundaryTest(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-hygiene-bound-')
+        tmp = TemporaryDirectory(prefix='v3-hygiene-bound-')
         self.addCleanup(tmp.cleanup)
         self.root = Path(tmp.name)
         self.vault = self.root / 'Mneme'
@@ -129,7 +129,7 @@ class ClosedTasksTest(unittest.TestCase):
         self.assertEqual(hygiene.closed_tasks(self.vault)['closed'], [])
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-hygiene-kapali-')
+        tmp = TemporaryDirectory(prefix='v3-hygiene-kapali-')
         self.addCleanup(tmp.cleanup)
         self.vault = Path(tmp.name)
         (self.vault / 'tasks').mkdir()
@@ -167,7 +167,7 @@ class CompanionExemptionTest(unittest.TestCase):
     """#130 decision: tam muafiyet — companion memory files never enter a scan."""
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-hygiene-companion-')
+        tmp = TemporaryDirectory(prefix='v3-hygiene-companion-')
         self.addCleanup(tmp.cleanup)
         root = Path(tmp.name)
         self.vault = root / 'vault'
@@ -221,7 +221,7 @@ class FolderQuestionsBudgetTest(unittest.TestCase):
     """#130: SessionStart never rglobs the vault — shallow mtimes only."""
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-hygiene-soru-budget-')
+        tmp = TemporaryDirectory(prefix='v3-hygiene-soru-budget-')
         self.addCleanup(tmp.cleanup)
         self.root = Path(tmp.name)
         self.vault = self.root / 'vault'
@@ -271,7 +271,7 @@ class FolderQuestionsBudgetTest(unittest.TestCase):
 
 class HarnessGateTest(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-hygiene-harness-')
+        tmp = TemporaryDirectory(prefix='v3-hygiene-harness-')
         self.addCleanup(tmp.cleanup)
         self.vault = Path(tmp.name)
         self.note = self.vault / 'not.md'
@@ -287,7 +287,7 @@ class HarnessGateTest(unittest.TestCase):
 
 class TouchLogOptInTest(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-hygiene-touch-')
+        tmp = TemporaryDirectory(prefix='v3-hygiene-touch-')
         self.addCleanup(tmp.cleanup)
         root = Path(tmp.name)
         self.vault = root / 'vault'
@@ -316,7 +316,7 @@ class RealLayoutTest(unittest.TestCase):
     """Maintainer regressions re-derived on template-shaped names, not synthetic bare names."""
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-hygiene-real-')
+        tmp = TemporaryDirectory(prefix='v3-hygiene-real-')
         self.addCleanup(tmp.cleanup)
         root = Path(tmp.name)
         self.vault, self.state = root / 'vault', root / 'state'
@@ -364,7 +364,7 @@ class RealLayoutTest(unittest.TestCase):
 
 class SettingsAndDoctorTest(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-hygiene-settings-')
+        tmp = TemporaryDirectory(prefix='v3-hygiene-settings-')
         self.addCleanup(tmp.cleanup)
         root = Path(tmp.name)
         self.vault, self.state = root / 'vault', root / 'state'

@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from v3_package_helpers import TemporaryDirectory, copy_tree, remove_tree
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 REWRITTEN = b'kullanici bu dosyayi bastan yazdi\n'
@@ -22,7 +23,7 @@ def module(path, name):
 
 class LineEndingGateTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-line-endings-')
+        self.tmp = TemporaryDirectory(prefix='mneme-line-endings-')
         self.addCleanup(self.tmp.cleanup)
         self.base = Path(self.tmp.name)
         self.vault = self.base / 'Örnek Mneme'
@@ -39,16 +40,16 @@ class LineEndingGateTest(unittest.TestCase):
         self.save()
 
     def save(self):
-        shutil.rmtree(self.snapshot, ignore_errors=True)
+        remove_tree(self.snapshot)
         self.snapshot.mkdir()
-        shutil.copytree(self.vault, self.snapshot / 'vault')
-        shutil.copytree(self.state, self.snapshot / 'state')
+        copy_tree(self.vault, self.snapshot / 'vault')
+        copy_tree(self.state, self.snapshot / 'state')
 
     def restore(self):
-        shutil.rmtree(self.vault, ignore_errors=True)
-        shutil.rmtree(self.state, ignore_errors=True)
-        shutil.copytree(self.snapshot / 'vault', self.vault)
-        shutil.copytree(self.snapshot / 'state', self.state)
+        remove_tree(self.vault)
+        remove_tree(self.state)
+        copy_tree(self.snapshot / 'vault', self.vault)
+        copy_tree(self.snapshot / 'state', self.state)
 
     def crlf(self, name):
         path = self.vault / name

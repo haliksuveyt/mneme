@@ -9,6 +9,7 @@ import sys
 import tempfile
 import time
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +25,7 @@ NOTE_B = 'PostgreSQL performance indexing: btree indexes are ideal for equality 
 
 class ContextDedupeHookTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-dedupe-hook-')
+        self.tmp = TemporaryDirectory(prefix='v3-dedupe-hook-')
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'
@@ -345,7 +346,7 @@ class DedupeLedgerTest(unittest.TestCase):
     """Maintainer contracts for the ledger itself: excerpts, size cap and pruning."""
 
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-dedupe-ledger-')
+        self.tmp = TemporaryDirectory(prefix='v3-dedupe-ledger-')
         self.addCleanup(self.tmp.cleanup)
         self.state = Path(self.tmp.name)
         sys.path.insert(0, str(SCRIPTS))

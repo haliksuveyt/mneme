@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 MODULE = Path(__file__).resolve().parents[1] / 'template/.claude/scripts/mneme_v3_launchers.py'
 
@@ -16,7 +17,7 @@ class LauncherTest(unittest.TestCase):
         spec = importlib.util.spec_from_file_location('test_v3_launchers_module', MODULE)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        with tempfile.TemporaryDirectory(prefix='mneme-launcher-') as temp:
+        with TemporaryDirectory(prefix='mneme-launcher-') as temp:
             vault = Path(temp) / 'Mneme Ölçüm & Space'
             vault.mkdir()
             entry = vault / 'mneme.py'

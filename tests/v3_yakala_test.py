@@ -11,7 +11,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -22,7 +22,7 @@ import mneme_v3_yakala as yakala  # noqa: E402
 
 class YakalaUnitTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-yakala-unit-')
+        self.tmp = TemporaryDirectory(prefix='v3-yakala-unit-')
         self.addCleanup(self.tmp.cleanup)
         self.vault = Path(self.tmp.name) / 'Örnek Beyin'
         self.vault.mkdir()
@@ -187,7 +187,7 @@ class YakalaUnitTest(unittest.TestCase):
 
 class YakalaInstalledTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-yakala-')
+        self.tmp = TemporaryDirectory(prefix='v3-yakala-')
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault, self.state = root / 'Örnek Beyin', root / 'state'

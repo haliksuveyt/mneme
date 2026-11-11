@@ -9,6 +9,7 @@ import tempfile
 import time
 import unittest
 from unittest.mock import patch
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -41,7 +42,7 @@ class ReceiptDayTest(unittest.TestCase):
 
 class DailyLocalDayProjectionTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-daily-day-')
+        self.tmp = TemporaryDirectory(prefix='mneme-daily-day-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

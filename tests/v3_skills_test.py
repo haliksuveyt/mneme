@@ -3,6 +3,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -12,7 +13,7 @@ def module():
 
 class SkillsTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
+        self.tmp = TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
         self.vault = Path(self.tmp.name)/"vault"; self.vault.mkdir()
         self.state = Path(self.tmp.name)/"state"; self.state.mkdir()
     def write(self,side,name,text):

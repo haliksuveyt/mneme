@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mneme-brain"
+dynamic = ["version"]
+description = "Local Markdown second brain and memory layer for AI coding agents"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/haliksuveyt/mneme"
+
+[project.scripts]
+mneme-brain = "mneme_brain.cli:main"
+mneme-install = "mneme_brain.cli:main"
+
+[tool.setuptools]
+packages = ["mneme_brain"]
+include-package-data = false
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }

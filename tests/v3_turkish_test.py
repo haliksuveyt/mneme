@@ -6,6 +6,7 @@ from pathlib import Path
 import sqlite3
 import tempfile
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('v3_turkish_evaluator', ROOT / 'scripts/evaluate_v3.py')
@@ -48,7 +49,7 @@ FILLER = 'Bu sentetik test kaydıdır.'
 class VaultTestCase(unittest.TestCase):
     def setUp(self):
         self.module = evaluator.load_runtime()
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-turkish-test-')
+        self.tmp = TemporaryDirectory(prefix='v3-turkish-test-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

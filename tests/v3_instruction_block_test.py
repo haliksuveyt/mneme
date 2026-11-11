@@ -10,7 +10,7 @@ import sys
 import tempfile
 import unittest
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 START, END = '<!-- mneme-v3:start -->', '<!-- mneme-v3:end -->'
@@ -26,7 +26,7 @@ IMPORT = b'@AGENTS.md\n'
 
 class InstructionBlockTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-instruction-block-')
+        self.tmp = TemporaryDirectory(prefix='mneme-instruction-block-')
         self.addCleanup(self.tmp.cleanup)
         self.base = Path(self.tmp.name)
         self.vault = self.base / 'Örnek Mneme'

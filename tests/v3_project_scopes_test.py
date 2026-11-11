@@ -7,7 +7,7 @@ import tempfile
 import unicodedata
 import unittest
 from unittest.mock import patch
-from v3_package_helpers import clean_environ
+from v3_package_helpers import clean_environ, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
@@ -20,7 +20,7 @@ ARCHIVE = 'Projeler/Arşiv'
 
 class ProjectScopesTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.vault = Path(self.tmp.name) / 'vault'
         self.vault.mkdir()

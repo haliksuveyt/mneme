@@ -10,6 +10,7 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE = ROOT / 'template/.claude/scripts/mneme_v3_sync.py'
@@ -36,7 +37,7 @@ def load_module():
 class SourceSyncTest(unittest.TestCase):
     def setUp(self):
         self.module = load_module()
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-sync-test-')
+        self.tmp = TemporaryDirectory(prefix='mneme-sync-test-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'Synthetic Mneme Çalışma'
@@ -604,7 +605,7 @@ class SourceSyncTest(unittest.TestCase):
 class ReceiptStateResetTest(unittest.TestCase):
     def setUp(self):
         self.module = load_module()
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-receipt-reset-')
+        self.tmp = TemporaryDirectory(prefix='mneme-receipt-reset-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

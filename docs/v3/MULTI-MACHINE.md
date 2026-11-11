@@ -1,3 +1,5 @@
+English: [MULTI-MACHINE.en.md](MULTI-MACHINE.en.md)
+
 # Birden çok makinede kullanım
 
 Mneme yerel önceliklidir: makineler arasında senkron kodu yoktur ve Mneme git kurmaz
