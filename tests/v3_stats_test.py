@@ -18,6 +18,7 @@ spec = importlib.util.spec_from_file_location('mneme_v3_stats_cli', ROOT / 'scri
 cli = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cli)
 from mneme_entry import human_result
+from v3_package_helpers import TemporaryDirectory
 
 
 class FakeStore:
@@ -69,7 +70,7 @@ class StatsTest(unittest.TestCase):
         self.assertIn('0 kayit', human_result(result, 'stats'))
 
     def test_cli_runs_on_an_empty_vault(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with TemporaryDirectory() as tmp:
             vault, state = Path(tmp) / 'vault', Path(tmp) / 'state'
             vault.mkdir()
             output = io.StringIO()

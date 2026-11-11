@@ -10,10 +10,11 @@ from unittest.mock import patch
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'template/.claude/scripts'))
 import mneme_v3_jev_client as j
+from v3_package_helpers import TemporaryDirectory
 
 class ClientTests(unittest.TestCase):
     def setUp(self):
-        self.temp=tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
+        self.temp=TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.vault=Path(self.temp.name); None
         self.cards=[dict(id='one',title='A',statement='B',scope='user',domains=['all'],secret_extra='never send')]
         self.calls=[]

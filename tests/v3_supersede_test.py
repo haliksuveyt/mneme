@@ -6,6 +6,7 @@ import tempfile
 import unittest
 
 from v3_sync_test import load_module
+from v3_package_helpers import TemporaryDirectory
 
 
 def note(vault, name, body, **metadata):
@@ -16,7 +17,7 @@ def note(vault, name, body, **metadata):
 class SupersedeTest(unittest.TestCase):
     def setUp(self):
         self.module = load_module()
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-supersede-test-')
+        self.tmp = TemporaryDirectory(prefix='mneme-supersede-test-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

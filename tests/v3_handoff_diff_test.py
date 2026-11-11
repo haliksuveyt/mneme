@@ -13,6 +13,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
 from mneme_v3_handoff import compare_packets, read_packet
+from v3_package_helpers import TemporaryDirectory
 
 
 def packet(text='Orbit old choice', **updates):
@@ -77,7 +78,7 @@ class PacketDiffTest(unittest.TestCase):
         with self.assertRaises(ValueError): compare_packets(packet(), mislabeled)
 
     def test_input_bound_and_utf8_bom(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with TemporaryDirectory() as tmp:
             path = Path(tmp) / 'packet.json'
             path.write_text(json.dumps(packet()), encoding='utf-8-sig')
             self.assertEqual(read_packet(path), packet())
@@ -85,7 +86,7 @@ class PacketDiffTest(unittest.TestCase):
             with self.assertRaises(ValueError): read_packet(path)
 
     def test_cli_diff_never_creates_state_or_changes_vault(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with TemporaryDirectory() as tmp:
             root = Path(tmp); vault = root / 'vault'; vault.mkdir()
             before, after = root / 'before.json', root / 'after.json'
             before.write_text(json.dumps(packet()), encoding='utf-8')
@@ -112,7 +113,7 @@ class PacketDiffTest(unittest.TestCase):
         self.assertIn('Kismi paketler', entry.human_result(compare_packets(packet(), after), 'handoff-diff'))
 
     def test_installed_diff_command_works_without_reading_referenced_sources(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with TemporaryDirectory() as tmp:
             root = Path(tmp); vault = root / 'vault'; vault.mkdir()
             before, after = root / 'before.json', root / 'after.json'
             before.write_text(json.dumps(packet()), encoding='utf-8')

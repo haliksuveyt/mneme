@@ -6,6 +6,7 @@ import re
 import sys
 import tempfile
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 
@@ -48,7 +49,7 @@ def norm(text):
 
 class CompanionRulesTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='companion-rules-')
+        self.tmp = TemporaryDirectory(prefix='companion-rules-')
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'

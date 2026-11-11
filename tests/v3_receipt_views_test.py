@@ -6,6 +6,7 @@ import tempfile
 import unittest
 
 from v3_sync_test import load_module
+from v3_package_helpers import TemporaryDirectory
 
 VIEW = 'knowledge/v3/outcomes.md'
 
@@ -13,7 +14,7 @@ VIEW = 'knowledge/v3/outcomes.md'
 class ReceiptViewsTest(unittest.TestCase):
     def setUp(self):
         self.module = load_module()
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-views-test-')
+        self.tmp = TemporaryDirectory(prefix='mneme-views-test-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

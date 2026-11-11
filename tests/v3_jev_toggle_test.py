@@ -10,7 +10,7 @@ import time
 import unittest
 from unittest.mock import patch
 
-from v3_package_helpers import ROOT, install, isolated_env, run_python
+from v3_package_helpers import ROOT, install, isolated_env, run_python, TemporaryDirectory
 
 CLI = ROOT / 'scripts/mneme_v3.py'
 ENTRY = ROOT / 'scripts/mneme_entry.py'
@@ -87,7 +87,7 @@ def load_module(name, path):
 
 class JevToggleTestCase(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-jev-toggle-')
+        self.tmp = TemporaryDirectory(prefix='v3-jev-toggle-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

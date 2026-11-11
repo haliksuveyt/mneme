@@ -5,13 +5,14 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'template/.claude/scripts'))
 
 
 class MigrationTest(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory()
+        self.temp = TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name) / 'vault'
         self.root.mkdir()

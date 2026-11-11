@@ -9,7 +9,7 @@ import sys
 import tempfile
 import unittest
 
-from v3_package_helpers import ROOT, build_package, isolated_env, run_python, snapshot
+from v3_package_helpers import ROOT, build_package, isolated_env, run_python, snapshot, TemporaryDirectory
 
 RELEASED = Path(__file__).resolve().parent / 'fixtures/v3/released-skills'
 TAGS = ('v3.0.0', 'v3.0.1', 'v3.0.2')
@@ -44,7 +44,7 @@ class ReleasedLegacyHooksTest(unittest.TestCase):
 
 class InstallLegacyExemptionTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-install-legacy-')
+        self.tmp = TemporaryDirectory(prefix='v3-install-legacy-')
         self.addCleanup(self.tmp.cleanup)
         self.base = Path(self.tmp.name)
         self.env = isolated_env(self.base / 'home')

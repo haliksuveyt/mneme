@@ -15,7 +15,7 @@ import time
 import unittest
 from unittest.mock import patch
 from concurrent.futures import ThreadPoolExecutor
-from v3_package_helpers import clean_environ
+from v3_package_helpers import clean_environ, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -40,7 +40,7 @@ def load_hook():
 
 class HookInstallerTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-hook-test-')
+        self.tmp = TemporaryDirectory(prefix='v3-hook-test-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'Synthetic Mneme Ölçüm Space'

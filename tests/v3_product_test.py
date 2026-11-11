@@ -5,12 +5,12 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from v3_package_helpers import ROOT, install, isolated_env, run_python, snapshot
+from v3_package_helpers import ROOT, install, isolated_env, run_python, snapshot, TemporaryDirectory
 
 
 class ProductInstallationTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-product-test-')
+        self.tmp = TemporaryDirectory(prefix='v3-product-test-')
         self.addCleanup(self.tmp.cleanup)
         self.base = Path(self.tmp.name)
         self.vault = self.base / 'Synthetic Mneme Ölçüm'
