@@ -13,7 +13,7 @@ from unittest.mock import patch
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
 
-from v3_package_helpers import ROOT, build_package, clean_environ, install, isolated_env, rewrite_zip, snapshot, run_python
+from v3_package_helpers import ROOT, build_package, clean_environ, install, isolated_env, rewrite_zip, snapshot, run_python, TemporaryDirectory
 
 MODULE = ROOT / 'template/.claude/scripts/mneme_v3_update.py'
 
@@ -31,7 +31,7 @@ def load_updater():
 class OfflineUpdateTest(unittest.TestCase):
     def setUp(self):
         self.module = load_updater()
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-update-test-')
+        self.tmp = TemporaryDirectory(prefix='v3-update-test-')
         self.addCleanup(self.tmp.cleanup)
         self.base = Path(self.tmp.name)
         self.vault = self.base / 'Synthetic Vault Ölçüm'

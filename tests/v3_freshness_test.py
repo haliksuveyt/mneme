@@ -7,6 +7,7 @@ import sys
 import tempfile
 import time
 import unittest
+from v3_package_helpers import TemporaryDirectory
 
 ROOT = Path(os.environ.get('MNEME_TEST_REPO', Path(__file__).resolve().parents[1]))
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -33,7 +34,7 @@ def task(status):
 
 class FreshnessTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='freshness-')
+        self.tmp = TemporaryDirectory(prefix='freshness-')
         self.addCleanup(self.tmp.cleanup)
         self.vault = Path(self.tmp.name) / 'vault'
         (self.vault / 'tasks').mkdir(parents=True)

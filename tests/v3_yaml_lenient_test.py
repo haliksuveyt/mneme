@@ -5,12 +5,13 @@ import tempfile
 import unittest
 
 from v3_sync_test import load_module
+from v3_package_helpers import TemporaryDirectory
 
 
 class LenientYamlTest(unittest.TestCase):
     def setUp(self):
         self.module = load_module()
-        self.tmp = tempfile.TemporaryDirectory(prefix='mneme-yaml-test-')
+        self.tmp = TemporaryDirectory(prefix='mneme-yaml-test-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault = self.root / 'vault'

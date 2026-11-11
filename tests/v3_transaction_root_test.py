@@ -16,7 +16,7 @@ import sys
 import tempfile
 import unittest
 
-from v3_package_helpers import INSTALLER, ROOT, isolated_env
+from v3_package_helpers import INSTALLER, ROOT, isolated_env, TemporaryDirectory
 
 MODULE = ROOT / 'template/.claude/scripts/mneme_v3_update.py'
 
@@ -70,7 +70,7 @@ def load_updater():
 class TransactionRootTest(unittest.TestCase):
     def setUp(self):
         self.updater = load_updater()
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-transaction-root-')
+        self.tmp = TemporaryDirectory(prefix='v3-transaction-root-')
         self.addCleanup(self.tmp.cleanup)
         # Resolve the fixture base first so the only alias under test is the one made here.
         self.base = Path(self.tmp.name).resolve()

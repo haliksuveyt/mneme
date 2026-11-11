@@ -14,7 +14,7 @@ import unittest
 from unittest.mock import patch
 import urllib.error
 
-from v3_package_helpers import ROOT, clean_environ, install, isolated_env, run_python, snapshot
+from v3_package_helpers import ROOT, clean_environ, install, isolated_env, run_python, snapshot, TemporaryDirectory
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
 import mneme_v3_releases as releases
 import mneme_v3_update as updater
@@ -31,7 +31,7 @@ def fixture(v='3.1.0', data=b'synthetic ZIP'):
 
 class ReleasesTest(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory()
+        self.temp = TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.vault = self.root / 'Synthetic Vault Ölçüm'; self.vault.mkdir()

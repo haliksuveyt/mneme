@@ -9,11 +9,12 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'template/.claude/scripts'))
 from mneme_v3_sync import SyncEngine, parse
+from v3_package_helpers import TemporaryDirectory
 
 
 class TaskCreateTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.vault = Path(self.tmp.name)/'vault'
         self.vault.mkdir()

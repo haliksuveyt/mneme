@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 
 from mneme_v3_projections import recent_receipts
 from mneme_entry import human_result
+from v3_package_helpers import TemporaryDirectory
 
 
 class RecentReceiptsTest(unittest.TestCase):
@@ -70,7 +71,7 @@ class RecentReceiptsTest(unittest.TestCase):
         self.assertIn('ozel kaynak baglantisi gizlendi', text)
 
     def test_cli_withholds_private_and_missing_sources(self):
-        with tempfile.TemporaryDirectory() as temp:
+        with TemporaryDirectory() as temp:
             vault, state, moved = Path(temp) / 'vault', Path(temp) / 'state', Path(temp) / 'moved'
             (vault / 'notes').mkdir(parents=True)
             moved.mkdir()
@@ -94,7 +95,7 @@ class RecentReceiptsTest(unittest.TestCase):
             self.assertNotIn('diary', read.stdout)
 
     def test_cli_returns_recorded_receipt_without_model_call(self):
-        with tempfile.TemporaryDirectory() as temp:
+        with TemporaryDirectory() as temp:
             vault, state = Path(temp) / 'vault', Path(temp) / 'state'
             (vault / 'notes').mkdir(parents=True)
             (vault / 'notes/source.md').write_text('Source evidence.\n', encoding='utf-8')

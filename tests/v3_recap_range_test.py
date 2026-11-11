@@ -21,7 +21,7 @@ import time
 import unittest
 from unittest.mock import patch
 
-from v3_package_helpers import install, isolated_env, run_python, snapshot
+from v3_package_helpers import install, isolated_env, run_python, snapshot, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -227,7 +227,7 @@ class InstalledRecapRange:
 
     @classmethod
     def setUpClass(cls):
-        tmp = tempfile.TemporaryDirectory(prefix='v3-recap-range-')
+        tmp = TemporaryDirectory(prefix='v3-recap-range-')
         cls.addClassCleanup(tmp.cleanup)
         cls.root = Path(tmp.name)
         cls.vault, cls.state = cls.root / 'vault', cls.root / 'state'

@@ -10,7 +10,7 @@ import time
 import unittest
 from unittest.mock import patch
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -29,7 +29,7 @@ def marker_name(harness, session_id):
 
 class ParallelSessionsTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-parallel-')
+        self.tmp = TemporaryDirectory(prefix='v3-parallel-')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.vault, self.state = self.root / 'Örnek Mneme', self.root / 'state'
@@ -284,7 +284,7 @@ class ParallelModuleTest(unittest.TestCase):
         self.addCleanup(sys.path.remove, str(SCRIPTS))
         import mneme_v3_parallel
         self.module = mneme_v3_parallel
-        self.tmp = tempfile.TemporaryDirectory(prefix='v3-parallel-module-')
+        self.tmp = TemporaryDirectory(prefix='v3-parallel-module-')
         self.addCleanup(self.tmp.cleanup)
         self.state = Path(self.tmp.name)
 

@@ -19,7 +19,7 @@ import time
 import unittest
 from unittest.mock import patch
 
-from v3_package_helpers import windows_runtime_env
+from v3_package_helpers import windows_runtime_env, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / 'template/.claude/scripts'
@@ -122,7 +122,7 @@ class FakeLaya:
 
 class LayaCase(unittest.TestCase):
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
+        tmp = TemporaryDirectory()
         self.addCleanup(tmp.cleanup)
         self.root = Path(tmp.name)
         self.state = self.root / 'state'
@@ -684,7 +684,7 @@ sys.stdout.write('REPORT:' + json.dumps({'output': buffer.getvalue(), 'modules':
 class HookTest(unittest.TestCase):
     def test_hook_with_laya_down_keeps_local_context_and_never_loads_torch(self):
         from v3_package_helpers import isolated_env
-        with tempfile.TemporaryDirectory() as tmp:
+        with TemporaryDirectory() as tmp:
             root = Path(tmp)
             vault, state = root / 'vault', root / 'state'
             (vault / 'notes').mkdir(parents=True)

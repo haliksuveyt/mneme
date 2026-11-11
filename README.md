@@ -11,6 +11,20 @@ You keep project decisions, notes and lessons in a folder of plain Markdown. Mne
 
 **Claude Code · Codex · Antigravity · Hermes · OpenCode · OMP**
 
+[Watch the product walkthrough](https://youtu.be/weSUupkkIJ8)
+
+## Why Mneme
+
+A single memory file, such as one `CLAUDE.md`, belongs to one agent and holds whatever was last written into it. Mneme keeps the notes in your own folder and adds what that file cannot:
+
+- **Shared across agents.** Six clients read and write the same Markdown vault, so a decision made in one is visible in the next.
+- **Source-linked recall.** Every piece of context arrives with its source path and revision, so you can open the note it came from and check it.
+- **Bounded handoff packets.** A packet fits a budget and keeps accepted decisions, proposals and open tasks apart.
+- **Receipts.** Finished work leaves a record that points to its sources, and task updates are revision-checked.
+- **Local and dependency-free.** The engine runs on Python's standard library on your machine. No third-party package is needed.
+
+Measured on the repository's own offline search benchmarks (3.8.0 to 3.9.0, standard search): Recall@1 rose from 71.9% to 93.8% on an engineering vault (35 notes, 32 queries) and from 70% to 100% on a Turkish personal vault (8 notes, 10 queries). Both sets are small; see the [3.9.0 release notes](docs/v3/releases/3.9.0.md) for the method and known limits.
+
 ## Install
 
 Requires Python 3.11 or newer. Open your notes folder in your AI client and send:
@@ -30,11 +44,21 @@ python3 scripts/install_v3.py --vault "/path/to/My Notes"
 py -3 scripts/install_v3.py --vault "C:\Notes\My Brain"
 ```
 
+### Install with uv or pipx
+
+```bash
+uvx --from git+https://github.com/haliksuveyt/mneme mneme-install --vault "/path/to/My Notes"
+```
+
+This installs the same files as the release ZIP. Add `--plan` to preview. See [Install with uv / pipx](docs/v3/INSTALL-PIP.md).
+
 Existing users can run `python3 mneme.py update` from their vault; on Windows use `py -3 mneme.py update`.
 
 ## How it works
 
 <img src="docs/img/workflow.en.svg" alt="Markdown notes to source-linked recall, bounded handoffs and receipts" width="100%">
+
+<p align="center"><img src="docs/img/demo.en.svg" alt="Terminal demo: save a decision, retrieve it with its source, hand off to another client" width="100%"></p>
 
 - Context is picked per task: the relevant text arrives with its source path and revision, within a configurable budget.
 - Handoff packets keep accepted decisions, proposals and open tasks separate.
@@ -57,13 +81,13 @@ Markdown files are the source of truth. Sync updates the local index, and recall
 
 ## More
 
-[Watch the product walkthrough](https://youtu.be/weSUupkkIJ8) · [Engineering case study](docs/v3/CASE-STUDY.md) · [3.12.1 release notes](docs/v3/releases/3.12.1.md#english)
+[Engineering case study](docs/v3/CASE-STUDY.md) · [3.12.1 release notes](docs/v3/releases/3.12.1.md#english)
 
 The handoff layer was tested with 60 source-contract scenarios, packet-diff tests and real agent handoff sessions. CI runs on Linux, macOS and Windows with Python 3.11 and 3.13. The method and design decisions are in the [case study](docs/v3/CASE-STUDY.md).
 
 ## Client guides
 
-[MCP](docs/v3/MCP.en.md) · [Hermes](docs/v3/HERMES.md) · [OpenCode](docs/v3/OPENCODE.md) · [OMP](docs/v3/OMP.md) · [Multiple machines (Turkish)](docs/v3/MULTI-MACHINE.md)
+[MCP](docs/v3/MCP.en.md) · [Hermes](docs/v3/HERMES.md) · [OpenCode](docs/v3/OPENCODE.md) · [OMP](docs/v3/OMP.md) · [Multiple machines](docs/v3/MULTI-MACHINE.en.md)
 
 The [Turkish installer guide](mneme.md) provides the full one-message installation instructions.
 

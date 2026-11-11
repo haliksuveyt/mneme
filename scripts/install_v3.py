@@ -18,6 +18,9 @@ import zipfile
 sys.dont_write_bytecode = True
 
 ROOT = Path(__file__).resolve().parents[1]
+# Version stamped when no release manifest sits next to the tree (source checkout). The pip wrapper
+# (mneme_brain) overrides it with the packaged VERSION.
+DEFAULT_VERSION = "3.0.0"
 START, END = "<!-- mneme-v3:start -->", "<!-- mneme-v3:end -->"
 # By default Claude Code skips AGENTS.md whenever a CLAUDE.md exists; an import keeps it loaded once (#84).
 AGENTS_IMPORT = re.compile(r"(?m)^@(?:\./)?AGENTS\.md\s*$")
@@ -742,7 +745,7 @@ def install(vault, state, uninstall=False, plan_only=False, version=None, legacy
         legacy_hashes = package.get('legacy_hashes', {})
         legacy_skill_hashes = package.get('legacy_skill_hashes', {})
     else:
-        version = version or '3.0.0'
+        version = version or DEFAULT_VERSION
     if plan_only or uninstall:
         return _install(vault, state, uninstall, plan_only, version, legacy_hashes, legacy_skill_hashes,
                         accept_customized=accept_customized, keep_customized=keep_customized,

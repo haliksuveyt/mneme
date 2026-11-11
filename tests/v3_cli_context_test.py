@@ -9,11 +9,11 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 class ContextRefreshTest(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory()
+        self.temp = TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.vault = Path(self.temp.name)/'vault'
         (self.vault/'notes').mkdir(parents=True)

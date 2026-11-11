@@ -10,7 +10,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from v3_package_helpers import inherited_env
+from v3_package_helpers import inherited_env, TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 NODE = shutil.which('node')
@@ -151,7 +151,7 @@ def load(path, name):
 
 class OpenCodeHarnessTest(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(prefix='mneme-opencode-')
+        self.temp = TemporaryDirectory(prefix='mneme-opencode-')
         self.addCleanup(self.temp.cleanup)
         home = Path(self.temp.name) / 'home'
         home.mkdir()

@@ -17,11 +17,12 @@ import mneme_entry
 import mneme_v3_hook as hook
 from mneme_v3_projections import receipt_coverage, _checkpoint_schema
 from mneme_v3_sync import SyncEngine
+from v3_package_helpers import TemporaryDirectory
 
 
 class ReceiptCoverageTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'

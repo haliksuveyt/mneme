@@ -12,11 +12,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'template/.claude/scripts'))
 import mneme_v3 as runtime
 import mneme_v3_jev as advisor
+from v3_package_helpers import TemporaryDirectory
 
 
 class AdvisorTest(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         root = Path(self.tmp.name)
         self.vault = root / 'vault'
@@ -215,7 +216,7 @@ class AdvisorTest(unittest.TestCase):
 class InstalledAdvisorTest(unittest.TestCase):
     def test_installed_cli_keeps_local_default_and_reviews_without_writing_source(self):
         from v3_package_helpers import install, isolated_env, run_python
-        with tempfile.TemporaryDirectory() as temporary:
+        with TemporaryDirectory() as temporary:
             root = Path(temporary)
             vault = root / 'vault'
             vault.mkdir()
