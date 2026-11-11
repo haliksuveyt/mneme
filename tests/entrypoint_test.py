@@ -8,8 +8,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ENTRYPOINT = (ROOT / "docs" / "mneme-v2.md").read_text(encoding="utf-8")
-README = (ROOT / "docs" / "V2-README.md").read_text(encoding="utf-8")
+ENTRYPOINT = (ROOT / "docs" / "archive" / "mneme-v2.md").read_text(encoding="utf-8")
+README = (ROOT / "docs" / "archive" / "V2-README.md").read_text(encoding="utf-8")
 
 
 def section(text: str, start: str, end: str) -> str:

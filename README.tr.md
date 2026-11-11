@@ -30,7 +30,7 @@ py -3 scripts/install_v3.py --vault "C:\Notlar\Beynim"
 python3 scripts/install_v3.py --vault "/tam/yol/Notlarım"
 ```
 
-Mevcut kullanıcılar vault klasöründe `py -3 mneme.py update` çalıştırabilir; macOS/Linux'ta `python3 mneme.py update` kullanılır. [Adım adım kurulum →](KURULUM.md)
+Mevcut kullanıcılar vault klasöründe `py -3 mneme.py update` çalıştırabilir; macOS/Linux'ta `python3 mneme.py update` kullanılır. [Adım adım kurulum →](docs/setup/KURULUM.md)
 
 ## Nasıl çalışır
 
