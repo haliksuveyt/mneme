@@ -11,6 +11,20 @@ You keep project decisions, notes and lessons in a folder of plain Markdown. Mne
 
 **Claude Code · Codex · Antigravity · Hermes · OpenCode · OMP**
 
+[Watch the product walkthrough](https://youtu.be/weSUupkkIJ8)
+
+## Why Mneme
+
+A single memory file, such as one `CLAUDE.md`, belongs to one agent and holds whatever was last written into it. Mneme keeps the notes in your own folder and adds what that file cannot:
+
+- **Shared across agents.** Six clients read and write the same Markdown vault, so a decision made in one is visible in the next.
+- **Source-linked recall.** Every piece of context arrives with its source path and revision, so you can open the note it came from and check it.
+- **Bounded handoff packets.** A packet fits a budget and keeps accepted decisions, proposals and open tasks apart.
+- **Receipts.** Finished work leaves a record that points to its sources, and task updates are revision-checked.
+- **Local and dependency-free.** The engine runs on Python's standard library on your machine. No third-party package is needed.
+
+Measured on the repository's own offline search benchmarks (3.8.0 to 3.9.0, standard search): Recall@1 rose from 71.9% to 93.8% on an engineering vault (35 notes, 32 queries) and from 70% to 100% on a Turkish personal vault (8 notes, 10 queries). Both sets are small; see the [3.9.0 release notes](docs/v3/releases/3.9.0.md) for the method and known limits.
+
 ## Install
 
 Requires Python 3.11 or newer. Open your notes folder in your AI client and send:
@@ -57,7 +71,7 @@ Markdown files are the source of truth. Sync updates the local index, and recall
 
 ## More
 
-[Watch the product walkthrough](https://youtu.be/weSUupkkIJ8) · [Engineering case study](docs/v3/CASE-STUDY.md) · [3.12.1 release notes](docs/v3/releases/3.12.1.md#english)
+[Engineering case study](docs/v3/CASE-STUDY.md) · [3.12.1 release notes](docs/v3/releases/3.12.1.md#english)
 
 The handoff layer was tested with 60 source-contract scenarios, packet-diff tests and real agent handoff sessions. CI runs on Linux, macOS and Windows with Python 3.11 and 3.13. The method and design decisions are in the [case study](docs/v3/CASE-STUDY.md).
 
