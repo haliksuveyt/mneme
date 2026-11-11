@@ -1,0 +1,40 @@
+# an agent saves a decision as a Markdown note
+$ python3 mneme.py note-create --file decision.json
+{
+  "status": "succeeded",
+  "source": "notes/orbit-database.md",
+…
+}
+
+# later, any agent asks for it, with the source attached
+$ python3 mneme.py context "SQLite" --project orbit --harness claude
+{
+  "records": [
+    {
+      "id": "orbit-database",
+      "kind": "decision",
+      "revision": 1,
+      "source": "notes/orbit-database.md",
+      "status": "accepted",
+      "text": "Orbit stores data in SQLite for the first release. Revisit PostgreSQL after beta.\n",
+…
+
+# switching clients: a bounded, source-linked packet
+$ python3 mneme.py handoff "Orbit" --project orbit --harness claude --to codex
+{
+  "format": "mneme-handoff-v1",
+  "from_harness": "claude",
+  "to_harness": "codex",
+  "sections": {
+    "accepted_decisions": [
+      {
+        "id": "orbit-database",
+        "source": "notes/orbit-database.md",
+        "status": "accepted",
+…
+    "open_tasks": [
+      {
+        "id": "orbit-auth",
+        "source": "notes/orbit-auth.md",
+        "status": "active",
+…
