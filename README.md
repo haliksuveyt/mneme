@@ -44,11 +44,21 @@ python3 scripts/install_v3.py --vault "/path/to/My Notes"
 py -3 scripts/install_v3.py --vault "C:\Notes\My Brain"
 ```
 
+### Install with uv or pipx
+
+```bash
+uvx --from git+https://github.com/haliksuveyt/mneme mneme-install --vault "/path/to/My Notes"
+```
+
+This installs the same files as the release ZIP. Add `--plan` to preview. See [Install with uv / pipx](docs/v3/INSTALL-PIP.md).
+
 Existing users can run `python3 mneme.py update` from their vault; on Windows use `py -3 mneme.py update`.
 
 ## How it works
 
 <img src="docs/img/workflow.en.svg" alt="Markdown notes to source-linked recall, bounded handoffs and receipts" width="100%">
+
+<p align="center"><img src="docs/img/demo.en.svg" alt="Terminal demo: save a decision, retrieve it with its source, hand off to another client" width="100%"></p>
 
 - Context is picked per task: the relevant text arrives with its source path and revision, within a configurable budget.
 - Handoff packets keep accepted decisions, proposals and open tasks separate.
@@ -77,7 +87,7 @@ The handoff layer was tested with 60 source-contract scenarios, packet-diff test
 
 ## Client guides
 
-[MCP](docs/v3/MCP.en.md) · [Hermes](docs/v3/HERMES.md) · [OpenCode](docs/v3/OPENCODE.md) · [OMP](docs/v3/OMP.md) · [Multiple machines (Turkish)](docs/v3/MULTI-MACHINE.md)
+[MCP](docs/v3/MCP.en.md) · [Hermes](docs/v3/HERMES.md) · [OpenCode](docs/v3/OPENCODE.md) · [OMP](docs/v3/OMP.md) · [Multiple machines](docs/v3/MULTI-MACHINE.en.md)
 
 The [Turkish installer guide](mneme.md) provides the full one-message installation instructions.
 

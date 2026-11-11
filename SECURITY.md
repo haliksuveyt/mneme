@@ -27,4 +27,4 @@ In scope:
 
 Out of scope: vulnerabilities in the AI clients themselves, the model providers, or third-party tools; issues that require an attacker who already has write access to your vault and your user account; and loss of data you stored in notes without enabling the secret filter.
 
-Earlier design reviews are recorded in [docs/GATE-REVIEW-SECURITY.md](docs/GATE-REVIEW-SECURITY.md). It covers the legacy V2 scripts, which are no longer the supported engine.
+Earlier design reviews are recorded in [docs/archive/GATE-REVIEW-SECURITY.md](docs/archive/GATE-REVIEW-SECURITY.md). It covers the legacy V2 scripts, which are no longer the supported engine.
