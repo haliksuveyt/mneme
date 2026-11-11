@@ -1,13 +1,13 @@
 # Tarihsel V2 rehberi
 
-Bu belge V2 davranışını anlatır. Yeni kurulum ve V3 geçişi için [güncel README](../README.md) kullanılır. Buradaki arka plan model derleyicisi V3 varsayılanı değildir. Eski bağlantılar kendi dönemlerinin kurulumuna aittir.
+Bu belge V2 davranışını anlatır. Yeni kurulum ve V3 geçişi için [güncel README](../../README.md) kullanılır. Buradaki arka plan model derleyicisi V3 varsayılanı değildir. Eski bağlantılar kendi dönemlerinin kurulumuna aittir.
 
 # 🧠 mneme v2.3: hatırlamayı unutmayan ikinci beyin
 
 > **V3 kurulumu üzerinde çalışılıyor.** Mevcut Codex, Claude Code veya Antigravity ajanına
-> “Bu repodaki [SETUP-V3.md](../SETUP-V3.md) dosyasını takip ederek vault'umu kur” diyebilirsin.
+> “Bu repodaki [SETUP-V3.md](../setup/SETUP-V3.md) dosyasını takip ederek vault'umu kur” diyebilirsin.
 > Python dışında ek paket, servis veya Mem0 hesabı gerekmez. Platform doğrulama durumu
-> [burada](v3/PLATFORM-TESTS.md) açıkça listelenir.
+> [burada](../v3/PLATFORM-TESTS.md) açıkça listelenir.
 
 
 [Obsidian](https://obsidian.md) + Claude Code, Codex veya Google Antigravity üstünde çalışan,
@@ -81,7 +81,7 @@ Gereksinimler kurulumdan önce **çalıştırılarak** denetlenir (PowerShell 7,
 Python 3, Git, Claude Code) ve biri bile eksikse **diske hiçbir şey yazılmaz**.
 
 Ne yapıldığı, hangi Windows tuzaklarının ölçüldüğü ve nelerin iddia edilmediği:
-[`docs/WINDOWS-PORT.md`](WINDOWS-PORT.md).
+[`docs/WINDOWS-PORT.md`](../WINDOWS-PORT.md).
 
 Kapsam dışı: v1 → v2 yükseltme, WSL'den taşınma, PowerShell 5.1 ile çalıştırma.
 macOS ve Linux yolları değişmedi.
@@ -197,7 +197,7 @@ Antigravity CLI, [Obsidian](https://obsidian.md) ve Python 3 (macOS/Linux'ta `py
 | --- | --- | --- |
 | macOS | **test edildi** | hepsi: kancalar, `daily/`, `knowledge/`, 🧠 masaüstü kısayolu |
 | Linux | **test edilmedi** | kurulum `uname` ile dallanır: Homebrew, Obsidian cask ve macOS `.app` adımları atlanır, yerine XDG `.desktop` kısayolu yazılır. Vault, kancalar ve scriptler taşınabilir yazıldı ama gerçek bir Linux masaüstünde doğrulanmadı. Denersen sorun aç. |
-| Windows | WSL, **veya** yerel Windows | Tek satırlık `mneme.md` girişi iki yolu ayırır. Yerel Windows için [`SETUP-WINDOWS.md`](../SETUP-WINDOWS.md). WSL'de motor ve vault aynı Linux dağıtımında, Linux dosya sisteminde kalır; Windows Obsidian ile karma çalışma doğrulanmış sayılmaz. Bkz. [`docs/WINDOWS-PORT.md`](WINDOWS-PORT.md). |
+| Windows | WSL, **veya** yerel Windows | Tek satırlık `mneme.md` girişi iki yolu ayırır. Yerel Windows için [`SETUP-WINDOWS.md`](../../SETUP-WINDOWS.md). WSL'de motor ve vault aynı Linux dağıtımında, Linux dosya sisteminde kalır; Windows Obsidian ile karma çalışma doğrulanmış sayılmaz. Bkz. [`docs/WINDOWS-PORT.md`](../WINDOWS-PORT.md). |
 
 Masaüstü kısayolu macOS'ta `osacompile` ve AppKit kullanır, ikisi de Linux'ta yoktur. Vault'un
 kendisi düz Markdown, yani her yerde açılır; kurulum akışının tamamı için doğrulanmış tek platform
@@ -225,7 +225,7 @@ herkes için genelleştirilerek çıkarıldı.
 
 ## Lisans
 
-MIT, [LICENSE](../LICENSE) dosyasına bak. PR'lar açık.
+MIT, [LICENSE](../../LICENSE) dosyasına bak. PR'lar açık.
 
 ---
 
@@ -265,8 +265,8 @@ https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f. MIT licensed.
 
 ## V3 foundation preview
 
-V3 geliştirme temeli [docs/v3/QUICKSTART.md](v3/QUICKSTART.md) altında ayrı ve isteğe bağlıdır.
+V3 geliştirme temeli [docs/v3/QUICKSTART.md](../v3/QUICKSTART.md) altında ayrı ve isteğe bağlıdır.
 Yerel SQLite ile kaynak referanslı arama, görev revizyonları ve sonuç kayıtları sunar;
 Mem0 veya model çağrısı gerekmez. Bu önizleme mevcut V2 hook/installer akışını otomatik
 olarak değiştirmez. Doğruluk senaryoları ve ölçüm sınırları:
-[SEMANTIC-TEST-CONTRACT.md](v3/SEMANTIC-TEST-CONTRACT.md).
+[SEMANTIC-TEST-CONTRACT.md](../v3/SEMANTIC-TEST-CONTRACT.md).
