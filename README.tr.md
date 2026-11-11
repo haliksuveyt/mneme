@@ -11,6 +11,20 @@ Proje kararlarını, notlarını ve öğrendiklerini kendi klasöründe düz Mar
 
 **Claude Code · Codex · Antigravity · Hermes · OpenCode · OMP**
 
+[Tanıtım videosunu izle](https://youtu.be/weSUupkkIJ8)
+
+## Neden Mneme
+
+Tek bir hafıza dosyası, örneğin tek bir `CLAUDE.md`, tek bir ajana aittir ve içine en son ne yazıldıysa onu taşır. Mneme notları kendi klasöründe tutar ve o dosyanın veremediklerini ekler:
+
+- **Ajanlar arasında ortak.** Altı istemci aynı Markdown vault'u okuyup yazar; birinde alınan karar sonrakinde görünür.
+- **Kaynak bağlantılı bağlam.** Her bağlam parçası kaynak yolu ve revizyonuyla gelir; geldiği nota açıp bakabilirsin.
+- **Bütçeli devir paketleri.** Paket bir bütçeye sığar; kabul edilmiş kararları, önerileri ve açık görevleri ayrı tutar.
+- **Receipt'ler.** Biten iş, kaynaklarına bağlanan bir kayıt bırakır; görev güncellemeleri revizyon kontrollüdür.
+- **Yerel ve bağımlılıksız.** Motor makinende Python standart kütüphanesiyle çalışır. Üçüncü taraf paket gerekmez.
+
+Deponun kendi çevrimdışı arama ölçümlerinde (3.8.0 → 3.9.0, standart arama): Recall@1 mühendislik vault'unda (35 not, 32 sorgu) %71,9'dan %93,8'e, Türkçe kişisel vault'ta (8 not, 10 sorgu) %70'ten %100'e çıktı. İki set de küçüktür; yöntem ve bilinen sınırlar için [3.9.0 sürüm notlarına](docs/v3/releases/3.9.0.md) bak.
+
 ## Kurulum
 
 Python 3.11 ya da üstü gerekir. Not klasörünü kullandığın yapay zekâ istemcisinde aç ve şunu gönder:
@@ -57,7 +71,7 @@ Gerçek kaynak Markdown dosyalarıdır. Sync yerel indeksi günceller; arama gü
 
 ## Daha fazlası
 
-[Tanıtım videosu](https://youtu.be/weSUupkkIJ8) · [Mühendislik vaka incelemesi](docs/v3/CASE-STUDY.md) · [3.12.1 sürüm notları](docs/v3/releases/3.12.1.md)
+[Mühendislik vaka incelemesi](docs/v3/CASE-STUDY.md) · [3.12.1 sürüm notları](docs/v3/releases/3.12.1.md)
 
 Devir katmanı 60 kaynak sözleşmesi senaryosu, paket farkı testleri ve gerçek ajan oturumlarıyla denendi. CI, Linux, macOS ve Windows'ta Python 3.11 ve 3.13 ile çalışır. Yöntem ve tasarım kararları [vaka incelemesinde](docs/v3/CASE-STUDY.md).
 
