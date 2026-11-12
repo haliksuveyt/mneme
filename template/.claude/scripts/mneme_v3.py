@@ -245,15 +245,17 @@ def _name_candidates(record):
 NAME_GENERIC_TERMS = _tokens("durum proje projeler not notlar karar kararlar arsiv sablon genel ozet guncel")
 
 
-def _name_match_score(record, terms):
+def _name_match_score(record, terms, scope_tokens=frozenset()):
     """Words of the most specific note name that the query contains whole, else 0.
 
     A note whose name the query says (`Atlas/Atlas.md` for "atlas nerede") is about the query,
-    unlike a hub note that merely mentions the name many times.
+    unlike a hub note that merely mentions the name many times. scope_tokens are the words of
+    the explicit --project: the query side already drops them, so the name side drops them
+    too, or `orbit-database.md` could never be said by "Orbit database" inside project orbit.
     """
     best = 0
     for candidate in _name_candidates(record) if terms else ():
-        meaningful = {t for t in _tokens(candidate) - STOPWORDS if len(t) >= 2}
+        meaningful = {t for t in _tokens(candidate) - STOPWORDS - scope_tokens if len(t) >= 2}
         if meaningful and meaningful - NAME_GENERIC_TERMS and meaningful <= terms:
             best = max(best, len(meaningful))
     return best
@@ -724,6 +726,9 @@ class MemoryStore:
         query_tokens = _tokens(query)
         project_tokens = _tokens(project or "")
         terms = query_tokens - STOPWORDS - project_tokens
+        # Only a query that names the project may drop it from note names; "database" alone, or
+        # "database Atlas" inside project orbit, must not claim orbit-database.md.
+        name_scope = project_tokens if query_tokens & project_tokens else frozenset()
         scoped_listing = project is not None and bool(query_tokens & project_tokens) and not (query_tokens - STOPWORDS - project_tokens)
         ranked = []
         vocabularies = {}
@@ -745,7 +750,7 @@ class MemoryStore:
             vocabularies[record["id"]] = vocabulary
             titles[record["id"]] = _tokens(str(record.get("title", "")) + " " + alias_text) - STOPWORDS
             score = len(terms & vocabulary)
-            name_score = _name_match_score(record, terms)
+            name_score = _name_match_score(record, terms, name_scope)
             if name_score:
                 name_scores[record["id"]] = name_score
             if score or name_score or scoped_listing or snapshot:
