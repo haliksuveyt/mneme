@@ -35,7 +35,7 @@ Ajan paketi kurar ve istemciyi ortak hafızaya bağlar. İstemci güven onayı i
 
 ### Elle kurulum
 
-[Son sürümden](https://github.com/haliksuveyt/mneme/releases/latest) `mneme-v3-3.12.1.zip` ile `.sha256` dosyasını indir, checksum'u kontrol et ve ZIP'i aç. Paket klasöründe:
+[Son sürümden](https://github.com/haliksuveyt/mneme/releases/latest) `mneme-v3-3.12.2.zip` ile `.sha256` dosyasını indir, checksum'u kontrol et ve ZIP'i aç. Paket klasöründe:
 
 ```bash
 # Windows
@@ -71,7 +71,7 @@ Gerçek kaynak Markdown dosyalarıdır. Sync yerel indeksi günceller; arama gü
 
 ## Daha fazlası
 
-[Mühendislik vaka incelemesi](docs/v3/CASE-STUDY.md) · [3.12.1 sürüm notları](docs/v3/releases/3.12.1.md)
+[Mühendislik vaka incelemesi](docs/v3/CASE-STUDY.md) · [3.12.2 sürüm notları](docs/v3/releases/3.12.2.md)
 
 Devir katmanı 60 kaynak sözleşmesi senaryosu, paket farkı testleri ve gerçek ajan oturumlarıyla denendi. CI, Linux, macOS ve Windows'ta Python 3.11 ve 3.13 ile çalışır. Yöntem ve tasarım kararları [vaka incelemesinde](docs/v3/CASE-STUDY.md).
 
