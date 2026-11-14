@@ -11,7 +11,7 @@ pipx install git+https://github.com/haliksuveyt/mneme
 mneme-install --vault ~/Notes
 ```
 
-To pin a release, append its tag to the URL, for example `git+https://github.com/haliksuveyt/mneme@v3.12.1`. Tags older than the one that introduced `pyproject.toml` cannot be installed this way; use the release ZIP for those.
+To pin a release, append its tag to the URL, for example `git+https://github.com/haliksuveyt/mneme@v3.12.2`. Tags older than 3.12.2 have no `pyproject.toml` and cannot be installed this way; use the release ZIP for those.
 
 The package is named `mneme-brain`. It is not on PyPI yet, so `pipx run mneme-brain` and `uvx mneme-brain` do not work; use the repository URL above.
 

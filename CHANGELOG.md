@@ -2,6 +2,13 @@
 
 One entry per release, newest first. Each entry links to its full release notes in `docs/v3/releases/` (most notes are written in Turkish).
 
+## 3.12.2
+[Release notes](docs/v3/releases/3.12.2.md)
+- `context` inside a project now finds a note by its name when the query names the project (`"Orbit database" --project orbit` finds `orbit-database.md`).
+- New install path with uv or pipx from the repository; same files as the release ZIP.
+- README "Why Mneme" section and terminal demo, contributor and security guides, issue templates, English multi-machine guide, tidier `docs/` layout.
+- Test temp-directory cleanup retries transient Windows errors.
+
 ## 3.12.1
 [Release notes](docs/v3/releases/3.12.1.md)
 - Secret filter now redacts prefixed names such as `DB_PASSWORD=`, `OPENAI_API_KEY=` and `refresh_token=` in text, query strings and fact keys.
